@@ -1,18 +1,20 @@
 import React from 'react';
 import { Route, Routes} from "react-router-dom";
 import TestPage from './pages/TestPage';
-import Navigation from "./components/Navigation/NavBar";
+import Login from './pages/Login/Login';
+import NavBar from './components/Navigation/NavBar';
 
 // 여기서 경로 설정해주세요.
 function App() {
 
   return (
     <>
-    <Navigation />
+    <NavBar />
         <Routes>
-        <Route path="/" element={<TestPage />}></Route>
+          <Route path="/" element={<Login />} />
+        <Route path="/test" element={<TestPage />} />
         </Routes>
-    </>
+        </>
   )
 }
 
