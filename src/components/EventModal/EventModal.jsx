@@ -35,7 +35,7 @@ const EventModal = ({modalIsOpen, closeModal, mainContent, highlight, end ,notic
                 <div className='notice'>{notice}</div>
                 <div className='modalBtnWrapper'>
                     <button className='modalBtn' onClick={closeModal}>아니오</button>
-                    <button className='modalBtn'>예</button>
+                    <button className='modalBtn' onClick={() => {action(); closeModal();}}>예</button>
                 </div>
             </div>
         </Modal>

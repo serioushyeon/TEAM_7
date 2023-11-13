@@ -19,5 +19,6 @@
     object-fit: cover;
 }
 .countbox{
-margin-left: 1rem;
+    margin-left: 1rem;
+    color:white;
 }
