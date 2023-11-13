@@ -1,0 +1,170 @@
+.react-calendar {
+}
+
+.react-calendar--doubleView {
+  max-width: 390px;
+}
+
+.react-calendar--doubleView .react-calendar__viewContainer {
+  display: flex;
+}
+
+.react-calendar--doubleView .react-calendar__viewContainer > * {
+  width: 50%;
+}
+
+.react-calendar,
+.react-calendar *,
+.react-calendar *:before,
+.react-calendar *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.react-calendar button {
+  margin: 0;
+  outline: none;
+  border: none;
+  border: 0.3px solid var(--gray-scale-gray-300-border, #CBCBCB);
+}
+
+.react-calendar__navigation__label {
+  display: none;
+}
+
+.react-calendar__navigation__prev-button {
+  display: none;
+}
+
+.react-calendar__navigation__next-button {
+  display: none;
+}
+
+.react-calendar__navigation {
+  display: flex;
+  margin-top: 16rem;
+}
+
+.react-calendar__navigation button {
+  background: none;
+}
+
+.react-calendar__navigation button:disabled {
+  background-color: #f0f0f0;
+}
+
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+  background-color: #e6e6e6;
+}
+
+.react-calendar__month-view {
+  display: flex;
+  max-width: 390px;
+  max-height: 1080px;
+  margin : auto;
+}
+
+.react-calendar__month-view__weekdays {
+  font: inherit;
+  font-size: 10px;
+}
+
+.react-calendar__month-view__days {
+  display: flex;
+  width: auto;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  border: 0.3px solid var(--gray-scale-gray-300-border, #CBCBCB);
+  display: flex;
+  border-bottom: transparent;
+  width: auto;
+  height: 1rem;
+  color: #CBCBCB;
+  padding: 0.2rem;
+  text-align: left;
+  align-items: center;
+}
+
+.saturday {
+  color: var(--primary-color-secondary-color, var(--SecondaryNavyColor, #022859));
+}
+
+.sunday {
+  color: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+}
+
+.react-calendar__month-view__days__day--neighboringMonth {
+  color: var(--font-color-error-text, var(--ErrorTextColor, #757575));
+}
+
+.react-calendar__year-view .react-calendar__tile,
+.react-calendar__decade-view .react-calendar__tile,
+.react-calendar__century-view .react-calendar__tile {
+  
+}
+
+.react-calendar__tile {
+  border: 0.3px solid var(--gray-scale-gray-300-border, #CBCBCB);
+  width: auto;
+  height: auto;
+  background: none;
+  text-align: left;
+  font-size: 10px;
+}
+
+.react-calendar__tile:disabled {
+  
+  color: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+  border: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+  
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus {
+  
+  
+  color: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+  border: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+}
+
+.react-calendar__tile--now {
+  
+  color: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+}
+
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  
+  color: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+  border: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+}
+
+.react-calendar__tile--hasActive {
+  
+  color: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+  border: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+}
+
+.react-calendar__tile--hasActive:enabled:hover,
+.react-calendar__tile--hasActive:enabled:focus {
+  color: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+  border: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+}
+
+.react-calendar__tile--active {
+  color: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+  border: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+}
+
+.react-calendar__tile--active:enabled:hover,
+.react-calendar__tile--active:enabled:focus {
+  color: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+  border: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+}
+
+.react-calendar--selectRange .react-calendar__tile--hover {
+  border: var(--font-color-error-text, var(--ErrorTextColor, #EB2A2A));
+}
