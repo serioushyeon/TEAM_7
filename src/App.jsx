@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import TestPage from "./pages/TestPage";
 import Login from "./pages/Login/Login";
 import NavBar from "./components/Navigation/NavBar";
-import EventPhto from "./pages/Eventphoto/EventPhoto";
+import EventPhoto from "./pages/Eventphoto/EventPhoto";
 
 const Background = styled.div`
   width: 100vw;
@@ -35,7 +35,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/test" element={<TestPage />} />
-            <Route path="/eventphoto" element={<EventPhto />} />
+            <Route path="/eventphoto" element={<EventPhoto />} />
           </Routes>
         </Wrapper>
       </Background>

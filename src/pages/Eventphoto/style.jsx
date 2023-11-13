@@ -5,6 +5,7 @@ export const EventPhotoWrapper = styled.div`
   flex-direction: column;
   background-color: #faf6f4;
   height: 100%;
+  justify-content: center;
 `;
 
 export const EventName = styled.div`
@@ -15,12 +16,14 @@ export const EventName = styled.div`
 
 export const ImageUploadContainer = styled.div`
   display: grid;
+  grid-gap: 0;
   grid-template-columns: 80px 80px auto 1fr;
   justify-content: center;
   margin-top: 50px;
   margin-left: 30px;
-  align-items: center;
-  margin-bottom: 100px;
+  max-height: calc(100vh - 100px - 120px - 140px);
+  overflow-y: scroll;
+  width: 85%;
 `;
 
 export const UploadButton = styled.label`
@@ -49,4 +52,29 @@ export const StyledImage = styled.img`
   width: 80px;
   height: 80px;
   margin: 0;
+  border: ${(props) => (props.isSelected ? "1px solid #F28B50" : "none")};
+`;
+
+export const UploadChange = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 30px;
+  position: fixed;
+  bottom: 120px; // 화면 하단에 위치
+  left: 50%; // 화면의 가운데에 위치
+  transform: translateX(-50%); // 정확한 중앙 정렬을 위해
+  width: auto; // 필요한 너비만큼 자동 조정
+`;
+
+export const UploadChangeItem = styled.div`
+  width: 120px;
+  height: 40px;
+  border: 1px solid ${(props) => (props.isSelected ? "#F28B50" : "#cbcbcb")};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 4px;
+  color: ${(props) => (props.isSelected ? "#F28B50" : "black")};
 `;
