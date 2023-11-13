@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { S } from './LoginStyle';
 
 export default function Login() {
+
   return (
     <S.Container>
         <S.Bg />
@@ -10,9 +11,9 @@ export default function Login() {
             <S.BookContainer>
               <S.Earth />
               <S.Kakao />
-              <S.LoudSpeaker />
-              <S.ChatBox />
             </S.BookContainer>
+            <S.LoudSpeaker />
+              <S.ChatBox />
     </S.Container>
   )
 }
