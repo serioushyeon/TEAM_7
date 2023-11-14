@@ -8,6 +8,9 @@ import EventPhoto from "./pages/Eventphoto/EventPhoto";
 import Passport from "./pages/userInfo/Passport";
 import MyCalendar from "./pages/calendar/Calendar";
 import Start from "./pages/start/Start";
+import EmptyEvent from './pages/EmptyEvent/EmptyEvent';
+import EventSetting from './pages/EventSetting/EventSetting';
+import EventDisplay  from './pages/EventDisplay/EventDisplay';
 
 const Background = styled.div`
   width: 100vw;
@@ -30,6 +33,13 @@ const Wrapper = styled.div`
 
 // 여기서 경로 설정해주세요.
 function App() {
+
+  function setScreenSize() {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`); //"--vh"라는 속성으로 정의해준다.
+  }
+  setScreenSize();
+  window.addEventListener('resize', () => setScreenSize());
   return (
     <>
       <Background>
@@ -42,9 +52,16 @@ function App() {
             <Route path="/start" element={<Start />} />
             <Route path="/userinfo" element={<Passport />} />
             <Route path="/calendar" element={<MyCalendar />} />
+             {/* <EmptyEvent /> */}
+        <Route path="/event" element={<EmptyEvent />} />
+        {/*<EventSetting>*/}
+        <Route path="/eventsetting" element={<EventSetting />} />
+        {/* <EventDisplay /> */}
+        <Route path="/eventdisplay" element={<EventDisplay />} />
           </Routes>
         </Wrapper>
       </Background>
+
     </>
   );
 }
