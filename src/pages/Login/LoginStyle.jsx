@@ -10,14 +10,15 @@ display: flex;
 align-items: center;
 margin: 0 auto;
 max-width: 390px;
-max-height: 1080px;
+max-height: 844px;
 width: 100%;
+height: 100vh;
 `
 
 const Bg = styled.div`
 display: flex;
 width: 390px;
-height: 1080px;
+height: 844px;
 background-color: red;
 `
 // background-color: #FDFCFB 0;
