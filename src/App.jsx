@@ -10,6 +10,7 @@ import Start from "./pages/start/Start";
 import Passport from "./pages/userInfo/Passport";
 import MyCalendar from "./pages/calendar/Calendar";
 import CalendarPhoto from "./pages/calendarPhoto/CalendarPhoto";
+import CalendarBoard from "./pages/calendarPhoto/CalendarBoard";
 
 const Background = styled.div`
   width: 100vw;
@@ -44,6 +45,7 @@ function App() {
             <Route path="/userinfo" element={<Passport />} />
             <Route path="/calendar" element={<MyCalendar />} />
             <Route path="/calendarPhoto" element={<CalendarPhoto />} />
+            <Route path="/calendarDay" element={<CalendarBoard />} />
             <Route path="/test" element={<TestPage />} />
             <Route path="/eventphoto" element={<EventPhoto />} />
           </Routes>
