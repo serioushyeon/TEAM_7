@@ -17,7 +17,6 @@ const Bg = styled.div`
   width: 390px;
   height: auto;
   background-color: white;
-  border: 1px solid red;
   display: flex;
   flex-direction: column;
 `;
