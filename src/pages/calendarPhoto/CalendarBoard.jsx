@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { S } from './CGalleryStyle';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 export default function CalendarBoard() {
     let navigate = useNavigate();
@@ -10,17 +11,13 @@ export default function CalendarBoard() {
     function handleLocateCalendar() {
         navigate('/calendar');
       }
-
-    const [dateOfWeek, setDateofWeek] = useState(); // 요일(ex. 일요일)
-    const [date, setDate] = useState(); // 날짜(ex. 2023-11-01)
-    const [photoCount, setPhotoCount] = useState(); // 올린 사진 카운트
-    const [files, setFiles] = useState([]); // 파일 상태 추가
+      const dateInfo = useSelector((state) => state.date);
 
   return (
     <S.Container>
         <S.Bg> 
-        <S.DayDayWeek>월</S.DayDayWeek>
-        <S.SmallText><S.DayDateColor>2023, 11-01</S.DayDateColor></S.SmallText>
+        <S.DayDayWeek>{dateInfo.dayOfWeek}</S.DayDayWeek>
+        <S.SmallText><S.DayDateColor>{dateInfo.yearMonthDay}</S.DayDateColor></S.SmallText>
         <S.GalleyText><S.SettingText>사진첩</S.SettingText></S.GalleyText>
         <S.HrLine />
         <S.DayPhotoConatiner>

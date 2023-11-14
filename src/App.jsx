@@ -44,8 +44,8 @@ function App() {
             <Route path="/start" element={<Start />} />
             <Route path="/userinfo" element={<Passport />} />
             <Route path="/calendar" element={<MyCalendar />} />
-            <Route path="/calendarPhoto" element={<CalendarPhoto />} />
-            <Route path="/calendarDay" element={<CalendarBoard />} />
+            <Route path="/calendar-photo" element={<CalendarPhoto />} />
+            <Route path="/calendar-non-photo" element={<CalendarBoard />} />
             <Route path="/test" element={<TestPage />} />
             <Route path="/eventphoto" element={<EventPhoto />} />
           </Routes>

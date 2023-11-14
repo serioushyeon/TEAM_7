@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
-import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { selectDate } from '../../redux/dateSlice';
 import './Calendar.css';
 import Lion from '../../assets/images/calendar/lion.png';
 import Calendar1 from "../../assets/images/calendar/Calendar1.svg";
@@ -31,15 +33,20 @@ const imageData = [
 
     // navigate 선언
     let navigate = useNavigate();
+    const dispatch = useDispatch();
   
     // 사진이 없는 경우, 사진 등록 창으로 이동
-    function handleLocatePhoto() {
-      navigate('/calendarphoto');
+    function handleLocatePhoto(date) {
+      navigate('/calendar-photo');
+      dispatch(selectDate(moment(date).format('YYYY-MM-DD')));
+      console.log("캘린더에서 보냄 : ", date);
     }
 
     // 사진이 있는 경우, 사진 표시 창으로 이동
-    function handleLocateDay() {
-      navigate('/calendarDay');
+    function handleLocateDay(date) {
+      navigate('/calendar-non-photo');
+      dispatch(selectDate(moment(date).format('YYYY-MM-DD')));
+      console.log("캘린더에서 보냄 : ", date);
     }
   
     // 월 버튼 클릭 핸들러
@@ -86,13 +93,16 @@ const imageData = [
       }
     };
   
+    // <S.StyledOptionsBox show={selected ? "true" : undefined}>
+    /* 위 문장에서 selected로만 하면 boolean이 아닌 값으로 DOM에 접근할 수 없다는 에러가 발생했는데,
+    undefined인 경우를 설정해주니 오류가 해결됌. */
     return (
         <S.Container>
           <S.BackImage>
           <S.CalendarImage src={Calendar1} alt="Calendar1"/>
           <S.CalendarText>Calendar</S.CalendarText>
           <S.StyledSelect onChange={handleMonthChange} onClick={handleButtonClick}>Month</S.StyledSelect>
-          <S.StyledOptionsBox show={selected}>
+          <S.StyledOptionsBox show={selected ? "true" : undefined}>
         {getMonthOptions()}
         </S.StyledOptionsBox>
         <S.StyledLeftButton onClick={() => handleMonthChange(activeStartDate.getMonth() - 1)} />
@@ -102,7 +112,7 @@ const imageData = [
         onChange={onChange} 
         value={value} 
         activeStartDate={activeStartDate}
-          onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate)}
+        onActiveStartDateChange={({ activeStartDate }) => setActiveStartDate(activeStartDate)}
         tileClassName={tileClassName}
         next2Label={null}
         prev2Label={null}
@@ -134,7 +144,7 @@ const imageData = [
         <div 
         className="report-image" 
         style={style} 
-        onClick={handleLocateDay}
+        onClick={() => handleLocateDay(date)}
         ><S.DayImage src={imageEntry.url}/>
         </div>
       );
@@ -150,7 +160,7 @@ const imageData = [
         <div 
         className="no_image" 
         style={style} 
-        onClick={handleLocatePhoto}/>
+        onClick={() => handleLocatePhoto(date)}/>
       );
     }
   }}
