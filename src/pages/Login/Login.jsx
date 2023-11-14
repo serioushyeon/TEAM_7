@@ -7,7 +7,7 @@ export default function Login() {
   const [isLogin, setIsLogin] = useState(false);
 
   function handleLogin() {
-    navigate('/start');
+    navigate('/substart');
     setIsLogin(true);
   }
 
