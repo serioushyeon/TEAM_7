@@ -61,10 +61,10 @@ export const UploadChange = styled.div`
   justify-content: center;
   gap: 30px;
   position: fixed;
-  bottom: 120px; // 화면 하단에 위치
-  left: 50%; // 화면의 가운데에 위치
-  transform: translateX(-50%); // 정확한 중앙 정렬을 위해
-  width: auto; // 필요한 너비만큼 자동 조정
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
 `;
 
 export const UploadChangeItem = styled.div`

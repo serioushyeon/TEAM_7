@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { setCalendarData } from "../../redux/CalendarPhotoBoard";
 
 export default function CalendarPhoto() {
   let navigate = useNavigate();
@@ -15,12 +16,21 @@ export default function CalendarPhoto() {
   // 일자 데이터
   const dateInfo = useSelector((state) => state.date);
 
-  // 메모 데이터
-  const [memo, setMemo] = useState("");
+  // const calendarPhotoData = useSelector((state) => state.calendarPhotoBoard);
+  // console.log("Calendar Photo Board State:", calendarPhotoData); // 상태 확인
+
+  // Redux 스토어에서 데이터 가져오기
+  const calendarPhotoData = useSelector((state) => state.CalendarPhotoBoard);
+
+  // 컴포넌트 상태 초기화
+  const [memo, setMemo] = useState(calendarPhotoData?.memo || "");
+  const [images, setImages] = useState(calendarPhotoData?.images || []);
+
+  // const [memo, setMemo] = useState("");
   const maxLength = 100;
 
   // 이미지 상태
-  const [images, setImages] = useState([]);
+  // const [images, setImages] = useState([]);
   const fileInputRef = useRef(null);
 
   // 대표 사진 상태
@@ -88,6 +98,28 @@ export default function CalendarPhoto() {
     );
 
     setImages(newImages);
+  };
+
+  // API 요청 함수
+  const postCalendarData = async () => {
+    try {
+      const response = await axios.post(`/api/v1/user/${dateInfo.date}`, {
+        memo: memo,
+        images: images.map((image) => image.file), // 이미지 파일 데이터
+        // 필요한 추가 데이터
+      });
+      console.log(response.data);
+      // 성공 메시지 또는 다른 처리
+    } catch (error) {
+      console.error("Error posting data", error);
+      // 오류 처리
+    }
+  };
+
+  const handleSave = () => {
+    postCalendarData();
+    // Redux 스토어 업데이트
+    dispatch(setCalendarData({ memo, images }));
   };
 
   return (
@@ -174,14 +206,13 @@ export default function CalendarPhoto() {
           maxLength={100}
         />
         <S.StyledMaxLength>{`${memo.length}/${maxLength}`}</S.StyledMaxLength>
-        <S.CancleButton>
-          <S.CalendarButtonStyle onClick={handleLocateCalendar}>
+
+        <S.UploadChange>
+          <S.UploadChangeItem onClick={handleLocateCalendar}>
             취소
-          </S.CalendarButtonStyle>
-        </S.CancleButton>
-        <S.SaveButton>
-          <S.CalendarButtonStyle>저장</S.CalendarButtonStyle>
-        </S.SaveButton>
+          </S.UploadChangeItem>
+          <S.UploadChangeItem onClick={handleSave}>저장</S.UploadChangeItem>
+        </S.UploadChange>
       </S.Bg>
     </S.Container>
   );

@@ -58,8 +58,6 @@ function App() {
             <Route path="/test" element={<TestPage />} />
             <Route path="/eventphoto" element={<EventPhoto />} />
             <Route path="/start" element={<Start />} />
-            <Route path="/userinfo" element={<Passport />} />
-            <Route path="/calendar" element={<MyCalendar />} />
             {/* <EmptyEvent /> */}
             <Route path="/event" element={<EmptyEvent />} />
             {/*<EventSetting>*/}
