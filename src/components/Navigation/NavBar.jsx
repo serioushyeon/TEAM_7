@@ -42,6 +42,7 @@ const ButtonImoge = styled.img`
 margin: 0 2rem 0 2rem;
 width: 28px;
 height: 28px;
+background-repeat: no-repeat;
 `
 
 const ButtonText = styled.div`
