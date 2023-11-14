@@ -5,11 +5,14 @@ import TestPage from "./pages/TestPage";
 import Login from "./pages/Login/Login";
 import NavBar from "./components/Navigation/NavBar";
 import EventPhoto from "./pages/Eventphoto/EventPhoto";
+import Passport from "./pages/userInfo/Passport";
+import MyCalendar from "./pages/calendar/Calendar";
+import Start from "./pages/start/Start";
 
 const Background = styled.div`
   width: 100vw;
   min-height: 100vh;
-  background-color: black;
+  /* background-color: black; */
   position: relative;
 `;
 const Wrapper = styled.div`
@@ -19,7 +22,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 390px;
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
   position: relative;
   height: 100%;
   background-color: #faf6f4;
@@ -36,6 +39,9 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/test" element={<TestPage />} />
             <Route path="/eventphoto" element={<EventPhoto />} />
+            <Route path="/start" element={<Start />} />
+            <Route path="/userinfo" element={<Passport />} />
+            <Route path="/calendar" element={<MyCalendar />} />
           </Routes>
         </Wrapper>
       </Background>
