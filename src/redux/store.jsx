@@ -3,6 +3,7 @@ import userReducer from "./user";
 import themeReducer from "./theme";
 import eventSlice from "./eventSlice";
 import dateSlice from "./dateSlice";
+import CalendarUI from "./CalendarUI";
 
 // 여기서 데이터 관리해주세요.
 export default configureStore({
@@ -11,5 +12,6 @@ export default configureStore({
     theme: themeReducer,
     event: eventSlice,
     date: dateSlice,
+    calendarUI: CalendarUI,
   },
 });

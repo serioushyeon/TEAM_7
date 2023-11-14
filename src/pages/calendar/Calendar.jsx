@@ -3,12 +3,16 @@ import Calendar from 'react-calendar';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+
 import { selectDate } from '../../redux/dateSlice';
+import { setActiveStartDate, toggleSelected } from '../../redux/CalendarUI';
+
+import { S } from './CalendarStyle';
 import './Calendar.css';
 import Lion from '../../assets/images/calendar/lion.png';
 import Calendar1 from "../../assets/images/calendar/Calendar1.svg";
 import Background from "../../assets/images/calendar/Background.svg";
-import { S } from './CalendarStyle';
 
 // 서버에서 받은 images Data
 const imageData = [
@@ -28,12 +32,15 @@ const imageData = [
   
   export default function MyCalendar() {
     const [value, onChange] = useState(new Date());
-    const [activeStartDate, setActiveStartDate] = useState(new Date());
-    const [selected, setSelected] = useState(false);
+    const activeStartDateString = useSelector((state) => state.calendarUI.activeStartDate);
+    const selected = useSelector((state) => state.calendarUI.selected);
 
     // navigate 선언
     let navigate = useNavigate();
     const dispatch = useDispatch();
+
+    // Date 객체로 변환함.
+    const activeStartDate = new Date(activeStartDateString);
   
     // 사진이 없는 경우, 사진 등록 창으로 이동
     function handleLocatePhoto(date) {
@@ -43,21 +50,22 @@ const imageData = [
     }
 
     // 사진이 있는 경우, 사진 표시 창으로 이동
+    // toISOString과 moment(date) 두 가지 방법이 가능하다.
     function handleLocateDay(date) {
       navigate('/calendar-non-photo');
-      dispatch(selectDate(moment(date).format('YYYY-MM-DD')));
+      dispatch(selectDate(date.toISOString().slice(0, 10)));
       console.log("캘린더에서 보냄 : ", date);
     }
   
     // 월 버튼 클릭 핸들러
     const handleButtonClick = () => {
-      setSelected(!selected);
+      dispatch(toggleSelected());
     }
   
     // 월 선택 드롭다운에서 월을 변경했을 때 호출될 함수
     const handleMonthChange = (month) => {
       const year = activeStartDate.getFullYear();
-      setActiveStartDate(new Date(year, month));
+      dispatch(setActiveStartDate(new Date(year, month).toISOString()));
     };
   
     // 옵션을 생성하는 함수
