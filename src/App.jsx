@@ -5,6 +5,7 @@ import Navigation from "./components/Navigation/NavBar";
 import EmptyEvent from './pages/EmptyEvent/EmptyEvent';
 import EventSetting from './pages/EventSetting/EventSetting';
 import EventDisplay  from './pages/EventDisplay/EventDisplay';
+import MoodCloud from './pages/MoodCloud/MoodCloud';
 // 여기서 경로 설정해주세요.
 function App() {
   function setScreenSize() {
@@ -25,6 +26,8 @@ function App() {
         <Route path="/eventsetting" element={<EventSetting />} />
         {/* <EventDisplay /> */}
         <Route path="/eventdisplay" element={<EventDisplay />} />
+        {/* <MoodCloud /> */}
+        <Route path="/bcstore" element={<MoodCloud />} />
         </Routes>
     </>
   )
