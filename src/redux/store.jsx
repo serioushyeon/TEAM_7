@@ -1,11 +1,13 @@
-import { configureStore } from '@reduxjs/toolkit'
-import userReducer from './user'
-import themeReducer from './theme'
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "./user";
+import themeReducer from "./theme";
+import eventSlice from "./eventSlice";
 
 // 여기서 데이터 관리해주세요.
 export default configureStore({
-    reducer:{
-        user: userReducer,
-        theme: themeReducer
-    }
-})
+  reducer: {
+    user: userReducer,
+    theme: themeReducer,
+    event: eventSlice,
+  },
+});
