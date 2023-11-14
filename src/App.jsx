@@ -6,6 +6,7 @@ import EmptyEvent from './pages/EmptyEvent/EmptyEvent';
 import EventSetting from './pages/EventSetting/EventSetting';
 import EventDisplay  from './pages/EventDisplay/EventDisplay';
 import MoodCloud from './pages/MoodCloud/MoodCloud';
+import BarcodeBoard from './pages/BarcodeBoard/BarcodeBoard';
 // 여기서 경로 설정해주세요.
 function App() {
   function setScreenSize() {
@@ -28,6 +29,8 @@ function App() {
         <Route path="/eventdisplay" element={<EventDisplay />} />
         {/* <MoodCloud /> */}
         <Route path="/bcstore" element={<MoodCloud />} />
+        {/* <BarcodeBoard /> */}
+        <Route path="/ticket" element={<BarcodeBoard />} />
         </Routes>
     </>
   )

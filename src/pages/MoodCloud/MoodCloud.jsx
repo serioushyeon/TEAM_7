@@ -1,9 +1,15 @@
 import './MoodCloud.css';
 import Icon from '../../assets/images/MoodCloud/cloud1.png'
+import { useNavigate } from 'react-router-dom';
 const MoodCloudList = ({title}) => {
+    const navigate = useNavigate();
+
+    const goToTicket= () => {
+        navigate("/ticket");
+    }
     return (
         <>
-            <div className="cloudWrapper">
+            <div className="cloudWrapper" onClick={goToTicket}>
                 <div className="cloudIconWrapper">
                     <img className="cloudIcon" src={Icon}/>
                 </div>
