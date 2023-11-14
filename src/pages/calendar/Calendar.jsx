@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Calendar from 'react-calendar';
+import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import './Calendar.css';
 import Lion from '../../assets/images/calendar/lion.png';
@@ -13,12 +14,33 @@ const imageData = [
     { date: "2023-11-15", url: Lion },
     { date: "2023-11-03", url: Background },
     { date: "2023-11-13", url: Background },
+    { date: "2023-11-02", url: Lion },
+    { date: "2023-11-05", url: Lion },
+    { date: "2023-11-06", url: Background },
+    { date: "2023-11-07", url: Background },
+    { date: "2023-11-08", url: Lion },
+    { date: "2023-11-09", url: Lion },
+    { date: "2023-11-10", url: Background },
+    { date: "2023-11-11", url: Background },
   ];
   
   export default function MyCalendar() {
     const [value, onChange] = useState(new Date());
     const [activeStartDate, setActiveStartDate] = useState(new Date());
     const [selected, setSelected] = useState(false);
+
+    // navigate 선언
+    let navigate = useNavigate();
+  
+    // 사진이 없는 경우, 사진 등록 창으로 이동
+    function handleLocatePhoto() {
+      navigate('/calendarphoto');
+    }
+
+    // 사진이 있는 경우, 사진 표시 창으로 이동
+    function handleLocateDay() {
+      navigate('/calendarDay');
+    }
   
     // 월 버튼 클릭 핸들러
     const handleButtonClick = () => {
@@ -109,7 +131,12 @@ const imageData = [
   
       // 해당하는 이미지 데이터가 있다면 이미지 태그를 생성한다.
       return (
-        <div className="report-image" style={style} ><S.DayImage src={imageEntry.url}/></div>
+        <div 
+        className="report-image" 
+        style={style} 
+        onClick={handleLocateDay}
+        ><S.DayImage src={imageEntry.url}/>
+        </div>
       );
     }
     // 사진 파일이 없으면 기본으로
@@ -120,7 +147,10 @@ const imageData = [
       };
   
       return (
-        <div className="report_image" style={style} />
+        <div 
+        className="no_image" 
+        style={style} 
+        onClick={handleLocatePhoto}/>
       );
     }
   }}

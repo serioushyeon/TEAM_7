@@ -152,6 +152,82 @@ top: 740px;
 left: 203px;
 `
 
+// CalendarBoard용
+
+const DayPhotoConatiner = styled.div`
+display: flex;
+flex-wrap: wrap;
+position: absolute;
+justify-content: space-between;
+top: 170px;
+left: 40px;
+width: 310px;
+height:420px;
+`
+
+const DayPhotoBox = styled.div`
+display: block;
+width: 140px;
+height: 200px;
+border-radius: 4px;
+background-color: blue;
+`
+
+const DayMemoBox = styled.div`
+position: absolute;
+top: 650px;
+left: 15px;
+width: 360px;
+height: 120px;
+border : none;
+background-color: transparent;
+`
+
+const GalleyText = styled.div`
+position: absolute;
+top: 120px;
+left: 23px;
+`
+
+const DayMemoText = styled.div`
+position: absolute;
+top: 616px;
+left: 23px;
+`
+
+
+const HrLine = styled.hr`
+position: absolute;
+top: 140px;
+left: 10px;
+width: 368px;
+height: 1px;
+background: #CBCBCB;
+`
+
+const SecondHrLine = styled.hr`
+position: absolute;
+top: 636px;
+left: 10px;
+width: 368px;
+height: 1px;
+background: #CBCBCB;
+`
+
+const DayDateColor = styled.div`
+position: absolute;
+top: 90px;
+left: 153px;
+color: #000;
+`
+
+const DayDayWeek = styled.div`
+position: absolute;
+top: 50px;
+left: 175.5px;
+color: #022859;
+`
+
 export const S = {
     Container,
     Bg,
@@ -170,5 +246,15 @@ export const S = {
     MemoColor,
     CalendarButtonStyle,
     CancleButton,
-    SaveButton
+    SaveButton,
+
+    GalleyText,
+    DayMemoText,
+    DayPhotoConatiner,
+    DayPhotoBox,
+    HrLine,
+    SecondHrLine,
+    DayMemoBox,
+    DayDateColor,
+    DayDayWeek
 }
