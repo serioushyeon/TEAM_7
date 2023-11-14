@@ -3,13 +3,12 @@
 //수정 기능 (세팅 모달)
 import { FiLink } from "react-icons/fi"
 import { FaRegEdit } from "react-icons/fa"
-import { AiOutlineSetting } from "react-icons/ai"
 import './EventHeader.css';
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import EventModal from '../EventModal/EventModal'
 import Toast from '../EventToast/EventToast'
-import { position } from "stylis";
+import { TbDoorExit } from "react-icons/tb";
 const EventHeader = ({eventName, startDate, endDate, isRoomMaker}) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [toast, setToast] = useState(false);
@@ -46,7 +45,7 @@ const EventHeader = ({eventName, startDate, endDate, isRoomMaker}) => {
                     <FiLink size="22" color="white"/>
                 </button>
                 <button className='exit' onClick={openModal}> 
-                    <AiOutlineSetting size="22" color="white"/>
+                    <TbDoorExit size="22" color="white"/>
                 </button>
                 {isRoomMaker ? 
                 <button className='edit'>
@@ -56,10 +55,10 @@ const EventHeader = ({eventName, startDate, endDate, isRoomMaker}) => {
             <EventModal
                 modalIsOpen={modalIsOpen}
                 closeModal={closeModal}
-                mainContent={"방을"}
-                highlight={isRoomMaker? "폭파":""}
-                end={isRoomMaker? "하시겠습니까?":"나가시겠습니까?"}
-                notice={isRoomMaker? "※참여한 모든 인원이 자동으로 나가집니다." : "※지금까지 올린 리스트는 삭제됩니다."}
+                mainContent={"이벤트를"}
+                highlight={isRoomMaker? "폭파":"퇴장"}
+                end={isRoomMaker? "하시겠습니까?":"하시겠습니까?"}
+                notice={isRoomMaker? "※참여한 모든 인원이 자동으로 나가집니다." : "※지금까지 참여한 이벤트가 삭제됩니다."}
                 action={goToEvent}
             />
         </div>
