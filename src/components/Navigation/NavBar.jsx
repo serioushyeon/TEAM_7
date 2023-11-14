@@ -12,8 +12,7 @@ align-items: center;
 justify-content: center;
 margin: 0 auto;
 max-width: 390px;
-max-height: 1080px;
-width: 100%;
+max-height: 844px;
 ` 
 
 const Navigation = styled.div`

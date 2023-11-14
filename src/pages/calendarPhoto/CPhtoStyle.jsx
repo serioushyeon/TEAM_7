@@ -21,8 +21,8 @@ background-color: white;
 
 const DayWeek = styled.div`
 position: absolute;
-top: 114px;
-left: 162.5px;
+top: 54px;
+left: 180.5px;
 color: #022859;
 font-style: normal;
 font-weight: 400;
@@ -38,7 +38,7 @@ line-height: normal;
 
 const DateColor = styled.div`
 position: absolute;
-top: 170px;
+top: 120px;
 left: 153px;
 color: #000;
 `
@@ -62,6 +62,7 @@ top: 518.5px;
 left: 23px;
 `
 
+// 포토박스(여기 사진 넣으면 됨.)
 const AddPhotoBox = styled.div`
 position: absolute; 
 top: 290px;
@@ -109,20 +110,25 @@ font-style: normal;
 font-weight: 400;
 `
 
-const MemoBox = styled.div`
+const MemoBox = styled.textarea`
 position: absolute;
 top: 560px;
 left: 15px;
-width: 360px;
+width: 340px;
 height: 120px;
 border-radius: 4px;
 border: 1px solid #CBCBCB;
+outline: none;
+resize: none;
 background-color: #FFF;
-`
-
-const MemoColor = styled.div`
 color: #CBCBCB;
-margin: 10px;
+font-family: Noto Sans KR;
+font-size: 12px;
+padding: 10px;
+
+::placeholder {
+    color: #CBCBCB;
+}
 `
 
 const CalendarButtonStyle = styled.div`
@@ -152,81 +158,15 @@ top: 740px;
 left: 203px;
 `
 
-// CalendarBoard용
-
-const DayPhotoConatiner = styled.div`
-display: flex;
-flex-wrap: wrap;
-position: absolute;
-justify-content: space-between;
-top: 170px;
-left: 40px;
-width: 310px;
-height:420px;
-`
-
-const DayPhotoBox = styled.div`
-display: block;
-width: 140px;
-height: 200px;
-border-radius: 4px;
-background-color: blue;
-`
-
-const DayMemoBox = styled.div`
-position: absolute;
-top: 650px;
-left: 15px;
-width: 360px;
-height: 120px;
-border : none;
-background-color: transparent;
-`
-
-const GalleyText = styled.div`
-position: absolute;
-top: 120px;
-left: 23px;
-`
-
-const DayMemoText = styled.div`
-position: absolute;
-top: 616px;
-left: 23px;
-`
-
-
-const HrLine = styled.hr`
-position: absolute;
-top: 140px;
-left: 10px;
-width: 368px;
-height: 1px;
-background: #CBCBCB;
-`
-
-const SecondHrLine = styled.hr`
-position: absolute;
-top: 636px;
-left: 10px;
-width: 368px;
-height: 1px;
-background: #CBCBCB;
-`
-
-const DayDateColor = styled.div`
-position: absolute;
-top: 90px;
-left: 153px;
-color: #000;
-`
-
-const DayDayWeek = styled.div`
-position: absolute;
-top: 50px;
-left: 175.5px;
-color: #022859;
-`
+const StyledMaxLength = styled.div`
+  position: absolute;
+  display: flex;
+  top: 677px;
+  right: 22px;
+  color: #CBCBCB;
+  font-family: Noto Sans KR;
+  font-size: 12px;
+`;
 
 export const S = {
     Container,
@@ -243,18 +183,8 @@ export const S = {
     RepresentativePhotoBox,
     RepresentativePhotoText,
     MemoBox,
-    MemoColor,
     CalendarButtonStyle,
     CancleButton,
     SaveButton,
-
-    GalleyText,
-    DayMemoText,
-    DayPhotoConatiner,
-    DayPhotoBox,
-    HrLine,
-    SecondHrLine,
-    DayMemoBox,
-    DayDateColor,
-    DayDayWeek
+    StyledMaxLength
 }
