@@ -52,13 +52,13 @@ line-height: normal;
 
 const SettingPhoto = styled.div`
 position: absolute;
-top: 13.53rem;
+top: 13.23rem;
 left: 1.43rem;
 `
 
 const SettingMemo = styled.div`
 position: absolute;
-top: 32.40rem;
+top: 33.20rem;
 left: 1.43rem;
 `
 
@@ -132,7 +132,7 @@ position: absolute;
 top: 35rem;
 left: 0.93rem;
 width: 21.25rem;
-height: 7.5rem;
+height: 5.6rem;
 border-radius: 4px;
 border: 1px solid #CBCBCB;
 outline: none;
@@ -178,7 +178,7 @@ left: 12.68rem;
 const StyledMaxLength = styled.div`
   position: absolute;
   display: flex;
-  top: 42.3125rem;
+  top: 40.7rem;
   right: 1.375rem;
   color: #CBCBCB;
   font-family: Noto Sans KR;

@@ -144,7 +144,7 @@ const imageData = [
         // Inline style for dynamic background image
         const style = {
           width: 'auto',
-          height: '6rem',
+          height: '4.5rem'
         };
   
       // 해당하는 이미지 데이터가 있다면 이미지 태그를 생성한다.
@@ -161,7 +161,7 @@ const imageData = [
     else {
       const style = {
         width: 'auto',
-        height: '6rem',
+        height: '4.5rem',
       };
   
       return (
