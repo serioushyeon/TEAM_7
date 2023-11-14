@@ -34,6 +34,9 @@ function App() {
           <NavBar />
           <Routes>
             <Route path="/" element={<Login />} />
+            <Route path="/start" element={<Start />} />
+            <Route path="/userinfo" element={<Passport />} />
+            <Route path="/calendar" element={<MyCalendar />} />
             <Route path="/test" element={<TestPage />} />
             <Route path="/eventphoto" element={<EventPhoto />} />
           </Routes>
