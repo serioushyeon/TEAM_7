@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { S } from './CPhtoStyle';
 import axios from 'axios';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export default function CalendarPhoto() {
@@ -11,14 +11,17 @@ export default function CalendarPhoto() {
         navigate('/calendar');
       }
 
+      // 일자 데이터
     const dateInfo = useSelector((state) => state.date);
 
+    // 메모 데이터
     const [memo, setMemo] = useState(""); 
     const maxLength = 100;
 
       // 받은 데이터확인
     console.log(dateInfo);
 
+    // 메모 실시간 변경
     const handleMemoChange = (e) => {
         const value = e.target.value;
 
@@ -31,10 +34,16 @@ export default function CalendarPhoto() {
         <S.DayWeek>{dateInfo.dayOfWeek}</S.DayWeek>
         <S.SmallText><S.DateColor>{dateInfo.yearMonthDay}</S.DateColor></S.SmallText>
         <S.SettingPhoto><S.SettingText>사진 설정</S.SettingText></S.SettingPhoto>
+        <S.PhotoContainer>
         <S.AddPhotoBox>
             <S.CPhotoImage />
             <S.CPhotoText>4/4</S.CPhotoText>
             </S.AddPhotoBox>
+            <S.AddPhotoBox />
+            <S.AddPhotoBox />
+            <S.AddPhotoBox />
+            <S.AddPhotoBox />
+            </S.PhotoContainer>
         <S.SettingMemo><S.SettingText>메모</S.SettingText></S.SettingMemo>
         <S.MemoBox 
         placeholder="아직 작성된 일상 메모가 없습니다."

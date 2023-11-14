@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import EditImoge from '../../assets/images/calendarPhoto/edit.svg'
 
 // 기본 컨테이너
 const Container = styled.div`
@@ -28,7 +29,7 @@ font-weight: 400;
 line-height: normal;
 `
 
-// 
+
 const SettingText = styled.div`
 color: #5E5E5E;
 font-style: normal;
@@ -36,67 +37,85 @@ font-weight: 500;
 line-height: normal;
 `
 
-// CalendarBoard용
-
+// 사진 전체를 포함하는 박스(나중에 사진 리스트로 바꿔서 이 컨테이너 내부로 정렬해주면 자동 정렬 됌.)
 const DayPhotoConatiner = styled.div`
 display: flex;
 flex-wrap: wrap;
 position: absolute;
 justify-content: space-between;
-top: 170px;
-left: 40px;
-width: 310px;
-height:420px;
+top: 10.625rem;
+left: 2.5rem;
+width: 19.375rem;
+height: 26.25rem;
 `
 
+// 사진 하나 크기(나중에 사진 url 가져와서 붙여주세요. 현재는 파란색)
 const DayPhotoBox = styled.div`
 display: block;
-width: 140px;
-height: 200px;
+width: 8.75rem;
+height: 12.5rem;
 border-radius: 4px;
 background-color: blue;
 `
 
-const DayMemoBox = styled.div`
+// 메모 박스
+const DayMemoBox = styled.textarea`
 position: absolute;
-top: 650px;
-left: 15px;
-width: 360px;
-height: 120px;
-border : none;
-background-color: transparent;
+top: 40.8rem;
+left: 1rem;
+width: 21.25rem;
+height: 5.5rem;
+border-radius: 4px;
+border: 1px solid #CBCBCB;
+outline: none;
+resize: none;
+background-color: #FFF;
+color: #CBCBCB;
+font-family: Noto Sans KR;
+font-size: 12px;
+padding: 0.625rem;
+
+::placeholder {
+    color: #CBCBCB;
+}
+
+  ${props => !props.editable && `
+    border: none;
+    background-color: transparent;
+    top: 40rem;
+    left: 1.1rem;
+  `}
 `
 
 const GalleyText = styled.div`
 position: absolute;
-top: 120px;
-left: 23px;
+top: 7.5rem;
+left: 1.43rem;
 `
 
 const DayMemoText = styled.div`
 position: absolute;
-top: 616px;
-left: 23px;
+top: 38.5rem;
+left: 1.43rem;
 `
 const MemoColor = styled.div`
 color: #CBCBCB;
-margin: 10px;
+margin: 0.625rem;
 `
 
 const HrLine = styled.hr`
 position: absolute;
-top: 140px;
-left: 10px;
-width: 368px;
-height: 1px;
+top: 8.75rem;
+left: 0.625rem;
+width: 23rem;
 background: #CBCBCB;
 `
 
 const SecondHrLine = styled.hr`
 position: absolute;
 top: 636px;
-left: 10px;
-width: 368px;
+left: 0.625rem;
+width: 23rem;
 height: 1px;
 background: #CBCBCB;
 `
@@ -104,8 +123,8 @@ const CalendarButtonStyle = styled.div`
 display: flex;            
 justify-content: center;  
 align-items: center;
-width: 120px;
-height: 40px;
+width: 7.5rem;
+height: 2.5rem;
 border-radius: 4px;
 border: 1px solid #CBCBCB;
 color: #BABABA;
@@ -117,28 +136,51 @@ line-height: normal;
 
 const DayDateColor = styled.div`
 position: absolute;
-top: 100px;
-left: 153px;
+top: 6.25rem;
+left: 9.56rem;
 color: #000;
 `
 
 const DayDayWeek = styled.div`
 position: absolute;
-top: 50px;
-left: 175.5px;
+top: 3.125rem;
+left: 10.9687rem;
 color: #022859;
 `
 const DayCancleButton = styled.div`
 position: absolute;
-top: 780px;
-left: 53px;
+top: 48.75rem;
+left: 3.3125rem;
 `
 
 const DaySaveButton = styled.div`
 position: absolute;
-top: 780px;
-left: 203px;
+top: 48.75rem;
+left: 12.6875rem;
 `
+
+const EditButton = styled.div`
+position: absolute;
+top: 38.5rem;
+right: 1.43rem;
+width: 18px;
+height: 18px;
+background-image: url(${EditImoge});
+`
+
+const StyledMaxLength = styled.div`
+  position: absolute;
+  display: flex;
+  top: 46.3125rem;
+  right: 1.375rem;
+  color: #CBCBCB;
+  font-family: Noto Sans KR;
+  font-size: 12px;
+
+  ${props => !props.editable && `
+    display: none;
+  `}
+`;
 
 export const S = {
     Container,
@@ -157,5 +199,7 @@ export const S = {
     DayDayWeek,
     CalendarButtonStyle,
     DayCancleButton,
-    DaySaveButton
+    DaySaveButton,
+    EditButton,
+    StyledMaxLength
 }
