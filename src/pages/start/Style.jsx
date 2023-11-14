@@ -1,11 +1,5 @@
 import styled from 'styled-components';
 
-const FlipContainer = styled.div`
-transform: rotate(90deg);
-width: 100%;
-margin-top: 170px;
-`
-
 const FirstPage = styled.div`
 display: flex;
 position: absolute;
@@ -14,7 +8,7 @@ left: 0.9rem;
 width: 22.5rem;
 height: 35rem;
 border-radius: 4px;
-background-color: red;
+background-color: blue;
 `
 
 const Container = styled.div`
@@ -69,14 +63,21 @@ color : #DE684F;
 margin-left: 0.3rem;
 `
 
+const FlipButton = styled.div`
+border: 1px solid #000;
+position: absolute;
+top: 0px;
+left: 10px;
+`
+
 
 export const S = {
-    FlipContainer,
     FirstPage,
     Container,
     Bg,
     Title,
     MoodTitle,
     Titletext,
-    MoodText
+    MoodText,
+    FlipButton
 }

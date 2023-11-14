@@ -9,10 +9,12 @@ const rotateAndShrink = keyframes`
   from {
     transform: rotate(0deg);
     height: 35rem;
+    width: 22.5rem;
   }
   to {
     transform: rotate(90deg);
     height: 22.5rem; // 예시로 50%로 설정, 필요에 따라 조정 가능
+    width: 15rem;
   }
 `;
 
@@ -67,6 +69,9 @@ top: 7.31rem;
 left: 3.75rem;
 width: 15.625rem;
 height: 15.625rem;
+background-repeat: no-repeat;
+background-size: cover; 
+background-position: center; 
 background-image: url(${EarthImoge});
 background-repeat: no-repeat;
 
