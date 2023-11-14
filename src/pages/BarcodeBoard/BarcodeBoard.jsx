@@ -53,11 +53,11 @@ const BarcodeBoard = () => {
                     {ticket.nickname}&nbsp;님의&nbsp;<span style={{color:"#FF7A45"}}>티켓</span>
                 </div>
                 <div className="ticketBtnWrapper">
-                    <div className="ticketIcon">
-                        <GrCopy size="24"/>
+                    <div>
+                        <GrCopy  className="ticketIcon" size="24"/>
                     </div>
-                    <div className="ticketIcon">
-                        <MdOutlineFileDownload size="28"/>
+                    <div>
+                        <MdOutlineFileDownload  className="ticketIcon" size="28"/>
                     </div>
                 </div>
                 <div className="tickerContainerWrapper">
@@ -118,6 +118,9 @@ const BarcodeBoard = () => {
                         </div>
                     </div>
                 </div>
+                <div className="myMooco">
+                        <button className="myMoocoBtn">나만의 바코드 만들기</button>
+                    </div>
                 <div className="boardTitle">
                     {ticket.nickname}님의 갤러리
                  </div>

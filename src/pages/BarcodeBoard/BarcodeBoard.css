@@ -20,7 +20,7 @@
     justify-content: end;
 }
 .ticketIcon{
-    
+    margin: 0.3rem;
 }
 .tickerContainerWrapper{
     display: flex;
@@ -100,6 +100,25 @@
 }
 .barcode{
     height: 60%;
+}
+.myMooco{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+.myMoocoBtn{
+    font-size: 0.75rem;
+    height: 2.5rem;
+    width: 10rem;
+    border-radius: 4px;
+    color: #5E5E5E;
+    border: 1px solid #F28B50;
+    margin: 2rem 0 1rem 0;
+}
+.myMoocoBtn:hover{
+    transition: 0.1s;
+    color: #DE684F;
+    border-color: #F28B50;
 }
 .GalleryWrapper{
     width: 100%;
