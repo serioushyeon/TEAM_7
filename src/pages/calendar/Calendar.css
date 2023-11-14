@@ -1,6 +1,11 @@
 .react-calendar {
 }
 
+abbr {
+  color: #CBCBCB;
+  position: absolute;
+}
+
 .react-calendar--doubleView {
   max-width: 390px;
 }
@@ -43,7 +48,7 @@
 
 .react-calendar__navigation {
   display: flex;
-  margin-top: 16rem;
+  margin-top: 12rem;
 }
 
 .react-calendar__navigation button {
@@ -98,6 +103,7 @@
 
 .react-calendar__month-view__days__day--neighboringMonth {
   color: var(--font-color-error-text, var(--ErrorTextColor, #757575));
+  z-index: 10;
 }
 
 .react-calendar__year-view .react-calendar__tile,

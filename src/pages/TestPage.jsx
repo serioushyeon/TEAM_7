@@ -8,7 +8,7 @@ export default function TestPage() {
   return (
     <div>
     폰트는 기본 Noto Sans 입니다. <br />
-    패키지 : router, redux, redux toolkit, calendar, styled-component, flip-book
+    패키지 : router, redux, redux toolkit, calendar, styled-component, flip-book, react-multiple-image-uploader, moment, axios
     <Profile />
     <Login />
     <ChangeColor />

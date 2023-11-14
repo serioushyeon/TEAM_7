@@ -14,7 +14,7 @@ const Container = styled.div`
   margin: 0 auto;
   width: 100%;
   max-width: 390px;
-  max-height: 1080px;
+  max-height: 844px;
 `
 
 const BackImage = styled.div`
@@ -22,7 +22,7 @@ const BackImage = styled.div`
   top:0;
   left:0;
   width: 390px;
-  height: 1080px;
+  height: 844px;
   background-position: center;
   background-repeat: no-repeat;
   background-image: url(${Background});
@@ -31,44 +31,45 @@ const BackImage = styled.div`
 const CalendarImage = styled.img`
 position: absolute;
 margin-left: 11rem;
-top: 5rem;
+top: 1rem;
 width: 48px;
 height: 48px;
+transform: scale(0.7);
 `
 
 const CalendarText = styled.div`
 color: var(--gray-scale-gray-100, #EDEDED);
 font-family: Noto Sans KR;
-font-size: 18px;
+font-size: 16px;
 font-style: normal;
 font-weight: 500;
 line-height: normal;
 position: absolute;
-top: 8rem;
-margin-left: 10.4rem;
+top: 4rem;
+margin-left: 10.5rem;
 `
 
 const StyledSelect = styled.button`
 position: absolute;
-top: 12.5rem;
+top: 7.5rem;
 margin-left: 3.5rem;
 width: 10rem;
 height: 2.8rem;
 border-radius: 4px;
-border: 1px solid var(--gray-scale-gray-300-border, #CBCBCB);
+border: 1px solid #CBCBCB;
 background: transparent;
 color: #CBCBCB;
 text-align: center;
 `;
 
 const AddBarcord = styled.button`
-margin-top: 3rem;
-margin-left: 7.2rem;
-margin-bottom: 7.2rem;
+position: absolute;
+left: 7.2rem;
+bottom: 5.2rem;
 width: 10rem;
 height: 2.8rem;
 border-radius: 4px;
-border: 1px solid var(--gray-scale-gray-300-border, #CBCBCB);
+border: 1px solid #CBCBCB;
 background: transparent;
 color: #CBCBCB;
 text-align: center;
@@ -78,7 +79,7 @@ const StyledOptions = styled.button`
 width: 10rem;
 height: 2.8rem;
 border-radius: 4px;
-border: 1px solid var(--gray-scale-gray-300-border, #CBCBCB);
+border: 1px solid #CBCBCB;
 background: transparent;
 color: #CBCBCB;
 text-align: center;
@@ -93,7 +94,7 @@ const StyledOptionsBox = styled.ul`
 background-color: white;
 list-style-type: none;
 position: absolute;
-top: 14rem;
+top: 9rem;
 margin-left: 3.5rem;
 width: 160px;
 height: 360px;
@@ -115,7 +116,7 @@ background-image: url(${leftArrow});
 width: 12px;
 height: 14px;
 position: absolute;
-top: 13.4rem;
+top: 8.5rem;
 margin-left: 14.8rem;
 `
 const StyledRightButton = styled.button`
@@ -123,18 +124,16 @@ background-image: url(${rightArrow});
 width: 12px;
 height: 14px;
 position: absolute;
-top: 13.4rem;
+top: 8.5rem;
 margin-left: 16rem;
 `
 
 const DayImage = styled.img`
 max-width: 130%;  /* 부모 요소의 최대 너비 */
 height: auto;     /* 원본 비율 유지 */
-width: auto;      /* 원본 비율 유지 */
+width: 100%;      /* 원본 비율 유지 */
 objectFit: 'cover';
 backgroundSize: 'contain';
-margin-left: -0.4rem;
-margin-top: 0.4rem;
 `
 
 export const S = {
