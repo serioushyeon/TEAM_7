@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setCalendarData } from "../../redux/CalendarPhotoBoard";
 import { S } from "./CGalleryStyle";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +8,31 @@ import { useSelector } from "react-redux";
 
 export default function CalendarBoard() {
   let navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const dateInfo = useSelector((state) => state.date); // 한 번만 선언
+  console.log("Date Info:", dateInfo); // 현재 상태 출력
+
+  // 데이터 불러오는 함수
+  const fetchCalendarData = async () => {
+    try {
+      const response = await axios.get(`/api/v1/user/${date}`);
+      if (response.data) {
+        const { memo, images } = response.data;
+        setMemo(memo);
+        dispatch(setCalendarData({ memo, images }));
+      } else {
+        navigate("/calendar-photo");
+      }
+    } catch (error) {
+      console.error("Error fetching data", error);
+      navigate("/calendar-photo");
+    }
+  };
+
+  useEffect(() => {
+    fetchCalendarData();
+  }, [dateInfo.yearMonthDay]);
 
   // edit 버튼 클릭하면 편집 활성화
   const [edit, setEdit] = useState(false);
@@ -26,8 +53,6 @@ export default function CalendarBoard() {
   function handleLocateCalendar() {
     navigate("/calendar");
   }
-  const dateInfo = useSelector((state) => state.date);
-  console.log("Date Info:", dateInfo); // 현재 상태 출력
 
   return (
     <S.Container>
