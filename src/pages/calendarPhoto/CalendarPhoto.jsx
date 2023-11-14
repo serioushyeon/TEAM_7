@@ -174,14 +174,13 @@ export default function CalendarPhoto() {
           maxLength={100}
         />
         <S.StyledMaxLength>{`${memo.length}/${maxLength}`}</S.StyledMaxLength>
-        <S.CancleButton>
-          <S.CalendarButtonStyle onClick={handleLocateCalendar}>
+
+        <S.UploadChange>
+          <S.UploadChangeItem onClick={handleLocateCalendar}>
             취소
-          </S.CalendarButtonStyle>
-        </S.CancleButton>
-        <S.SaveButton>
-          <S.CalendarButtonStyle>저장</S.CalendarButtonStyle>
-        </S.SaveButton>
+          </S.UploadChangeItem>
+          <S.UploadChangeItem>저장</S.UploadChangeItem>
+        </S.UploadChange>
       </S.Bg>
     </S.Container>
   );

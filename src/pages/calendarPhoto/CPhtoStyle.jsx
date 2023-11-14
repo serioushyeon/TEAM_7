@@ -168,18 +168,6 @@ const CalendarButtonStyle = styled.div`
   line-height: normal;
 `;
 
-const CancleButton = styled.div`
-  position: absolute;
-  top: 46.25rem;
-  left: 3.3125rem;
-`;
-
-const SaveButton = styled.div`
-  position: absolute;
-  top: 46.25rem;
-  left: 12.68rem;
-`;
-
 const StyledMaxLength = styled.div`
   position: absolute;
   display: flex;
@@ -231,6 +219,30 @@ const StyledImage = styled.img`
   border: ${(props) => (props.isSelected ? "1px solid #F28B50" : "none")};
 `;
 
+const UploadChange = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 30px;
+  position: fixed;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+`;
+
+const UploadChangeItem = styled.div`
+  width: 120px;
+  height: 40px;
+  border: 1px solid ${(props) => (props.isSelected ? "#F28B50" : "#cbcbcb")};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 4px;
+  color: ${(props) => (props.isSelected ? "#F28B50" : "black")};
+`;
+
 export const S = {
   Container,
   Bg,
@@ -248,12 +260,12 @@ export const S = {
   RepresentativePhotoText,
   MemoBox,
   CalendarButtonStyle,
-  CancleButton,
-  SaveButton,
   StyledMaxLength,
   ImageUploadContainer,
   UploadButton,
   UploadIcon,
   UploadCount,
   StyledImage,
+  UploadChange,
+  UploadChangeItem,
 };
