@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
@@ -33,7 +33,25 @@ const imageData = [
   export default function MyCalendar() {
     const [value, onChange] = useState(new Date());
     const activeStartDateString = useSelector((state) => state.calendarUI.activeStartDate);
+    const [selectedYear, setSelectedYear] = useState(moment().year());
+    const [selectedMonth, setSelectedMonth] = useState(moment().month());
     const selected = useSelector((state) => state.calendarUI.selected);
+    
+    const [calendarInfo, setCalendarInfo] = useState({
+      thumbnailInfoList:
+	[
+		{
+			thumbnailUrl: "",
+			date: ""
+		},
+		{
+			thumbnailUrl: "",
+			date: ""
+		}
+    // 위 데이터를 startDate - endDate까지 반복한다.
+	],
+	buttonStatus: false 
+    });
 
     // navigate 선언
     let navigate = useNavigate();
@@ -41,6 +59,28 @@ const imageData = [
 
     // Date 객체로 변환함.
     const activeStartDate = new Date(activeStartDateString);
+
+    // startDate, endDate가 변할 때마다..
+    useEffect(() => {
+
+      // 유저 정보 받아오기
+  const getCalendarInfo = async () => {
+    try {
+      // startDate, endDate 형식은 YYYY-MM-DD
+      const response = await apiClient.get(`/api/v1/user/calender/{startDate}/{endDate}`, {
+        headers: {
+          // 나중에 토큰 수정 필요
+          Authorization: `${Bearer [access_token]}`
+        },
+      });
+      setCalendarInfo(response.data);
+      console.log("성공, UserInfo : ", response.data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+    }, [])
   
     // 사진이 없는 경우, 사진 등록 창으로 이동
     function handleLocatePhoto(date) {
@@ -61,27 +101,36 @@ const imageData = [
     const handleButtonClick = () => {
       dispatch(toggleSelected());
     }
+
+     // 년도 변경 핸들러
+  const handleYearChange = (year) => {
+    setSelectedYear(year);
+    updateActiveStartDate(year, selectedMonth);
+  };
+
+  // 월 변경 핸들러
+  const handleMonthChange = (month) => {
+    setSelectedMonth(month);
+    updateActiveStartDate(selectedYear, month);
+  };
   
-    // 월 선택 드롭다운에서 월을 변경했을 때 호출될 함수
-    const handleMonthChange = (month) => {
-      const year = activeStartDate.getFullYear();
+    // 날짜 변경 핸들러
+    const updateActiveStartDate = (year, month) => {
       dispatch(setActiveStartDate(new Date(year, month).toISOString()));
     };
   
-    // 옵션을 생성하는 함수
+    // 월 선택 드롭다운
     const getMonthOptions = () => {
       const options = [];
-      const currentMonth = new Date().getMonth();
-      const currentYear = new Date().getFullYear();
   
-      for (let i = -12; i <= 12; i++) {
-        const date = new Date(currentYear, currentMonth + i, 1);
+      for (let month = 0; month < 12; month++) {
+        const date = new Date(selectedYear, month, 1);
         options.push(
-          <S.StyledOptionsList key={i} value={date.getMonth()}>
+          <S.StyledOptionsList key={month} value={month}>
             <S.StyledOptions onClick={() => 
-            { handleMonthChange(date.getMonth());
+            { handleMonthChange(month);
               handleButtonClick();}}>
-              {date.toLocaleDateString('default', { month: 'long', year: 'numeric' })}
+              {date.toLocaleDateString('default', { month: 'long' })}
               </S.StyledOptions>
           </S.StyledOptionsList>
         );
@@ -109,12 +158,38 @@ const imageData = [
           <S.BackImage>
           <S.CalendarImage src={Calendar1} alt="Calendar1"/>
           <S.CalendarText>Calendar</S.CalendarText>
-          <S.StyledSelect onChange={handleMonthChange} onClick={handleButtonClick}>Month</S.StyledSelect>
+        <S.StyledSelect onChange={handleMonthChange} onClick={handleButtonClick}>Month</S.StyledSelect>
           <S.StyledOptionsBox show={selected ? "true" : undefined}>
+            <S.StyledYear>
+            <S.YearText
+            top="0.6rem"
+            left="6.3rem"
+            >{selectedYear}</S.YearText>
+          <S.StyledLeftButton 
+          onClick={() => handleYearChange(selectedYear - 1)}
+          top="1rem"
+          left="4.5rem" />
+          <S.StyledRightButton 
+          onClick={() => handleYearChange(selectedYear + 1)}
+          top="1rem"
+          left="9.8rem" />
+          </S.StyledYear>
+          <S.StyledMonth>
         {getMonthOptions()}
+        </S.StyledMonth>
         </S.StyledOptionsBox>
-        <S.StyledLeftButton onClick={() => handleMonthChange(activeStartDate.getMonth() - 1)} />
-        <S.StyledRightButton onClick={() => handleMonthChange(activeStartDate.getMonth() + 1)} />
+        <S.YearText
+            top="8rem"
+            left="18rem"
+            >{selectedYear}.{selectedMonth + 1}</S.YearText>
+        <S.StyledLeftButton 
+        onClick={() => handleMonthChange(selectedMonth - 1)}
+        top="8.5rem"
+        left="14.8rem" />
+        <S.StyledRightButton 
+        onClick={() => handleMonthChange(selectedMonth + 1)}
+        top="8.5rem"
+        left="16rem" />
         <Calendar
         local="en"
         onChange={onChange} 

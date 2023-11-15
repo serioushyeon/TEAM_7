@@ -7,6 +7,9 @@ export default function Passport() {
   return (
     <S.Container>
         <S.Bg>
+        <S.TitleGoorm />
+        <S.Title>MOOCO</S.Title>
+        <S.Titletext>마이페이지</S.Titletext>
           <S.BookBg>
         <First />
         <Second />

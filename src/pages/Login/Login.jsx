@@ -1,27 +1,51 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
 import { S } from './LoginStyle';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
-  let navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(false);
+  const navigate = useNavigate();
 
   function handleLogin() {
-    navigate('/substart');
+    window.location.href = `${
+      import.meta.env.VITE_APP_SERVER_HOST
+    }/oauth/authorization/kakao`;
     setIsLogin(true);
   }
+
+ /* function handleLogin() {
+    navigate('/substart');
+  }*/
 
   return (
     <S.Container>
         <S.Bg />
-        <S.Title><S.MoodTitle>MOOD</S.MoodTitle>BARCORD</S.Title>
-        <S.Titletext>당신의 일상을 특별하게 <S.MoodText>표현</S.MoodText>하세요</S.Titletext>
+        <S.TitleGoorm />
+        <S.Title>MOOCO</S.Title>
+        <S.Titletext>무드를 표현하는 새로운 방법, 무코</S.Titletext>
             <S.BookContainer>
               <S.Earth />
               <S.Kakao onClick={handleLogin}/>
             </S.BookContainer>
             <S.LoudSpeaker />
+            <S.Chatting top="45.4rem" left="4rem">
+              <S.ChattingText>
+                <S.Bold>무코</S.Bold>
+                <S.Normal>가 무엇인가요?</S.Normal>
+                </S.ChattingText>
+                </S.Chatting>
               <S.ChatBox />
+              <S.Chatting top="49.1rem" left="6.5rem">
+              <S.ChattingText>
+              <S.Normal>무드를 담은 바코드아트, </S.Normal>
+                <S.Bold>MoOOd_barCOde</S.Bold>
+                </S.ChattingText>
+                </S.Chatting>
+                <S.Chatting top="52rem" left="1.65rem">
+              <S.ChattingText >
+              <S.Normal>무코는 일상의 순간들을 모아 <S.Bold>무드바코드</S.Bold>로 만들어 드립니다.</S.Normal>
+                </S.ChattingText>
+                </S.Chatting>
     </S.Container>
   )
 }

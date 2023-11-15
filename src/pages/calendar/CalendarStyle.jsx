@@ -76,36 +76,29 @@ text-align: center;
 `;
 
 const StyledOptions = styled.button`
-width: 10rem;
-height: 2.8rem;
+width: 6.25rem;
+height: 1.8125rem;
 border-radius: 4px;
-border: 1px solid #CBCBCB;
-background: transparent;
+background: rgba(221, 221, 221, 0.10);
 color: #CBCBCB;
 text-align: center;
 `;
 
 const StyledOptionsList = styled.li`
-text-align: left;
+text-align: center;
+margin: 0.4rem;
 `;
 
-const StyledOptionsBox = styled.ul`
-// 점 제거
-background-color: white;
-list-style-type: none;
+const StyledOptionsBox = styled.div`
 position: absolute;
-top: 9rem;
-margin-left: 3.5rem;
-width: 160px;
-height: 360px;
-padding: 0;
-overflow: auto;
-
-&::-webkit-scrollbar {
-  display: none; /* 크롬, 사파리 등 */
-}
--ms-overflow-style: none; /* IE, 엣지 */
-scrollbar-width: none; /* 파이어폭스 */
+top: 10rem;
+left: 4.7rem;
+width: 15rem;
+height: 29.625rem;
+border-radius: 4px;
+border: 1px solid var(--BasicWhiteFontColor, #FFF);
+background: rgba(0, 0, 0, 0.66);
+z-index: 100;
 
 display: ${props => props.show ? 'block' : 'none'};
 `
@@ -116,16 +109,56 @@ background-image: url(${leftArrow});
 width: 12px;
 height: 14px;
 position: absolute;
-top: 8.5rem;
-margin-left: 14.8rem;
+top: ${props => props.top};
+margin-left: ${props => props.left};
 `
+//top: 8.5rem; margin-left: 14.8rem;
 const StyledRightButton = styled.button`
 background-image: url(${rightArrow});
 width: 12px;
 height: 14px;
 position: absolute;
-top: 8.5rem;
-margin-left: 16rem;
+top: ${props => props.top};
+margin-left: ${props => props.left};
+`
+// top: 8.5rem; margin-left: 16rem;
+
+const StyledYear = styled.div`
+position: absolute;
+width: 15rem;
+height: 3rem;
+display: flex;
+align-items: center;
+`
+
+const YearText = styled.div`
+position: absolute;
+top: ${props => props.top};
+margin-left: ${props => props.left};
+color: var(--gray-scale-gray-100, #EDEDED);
+font-size: 18px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+`
+
+const StyledMonth = styled.ul`
+position: absolute;
+top: 2rem;
+list-style-type: none;
+width: 15rem;
+height: 24rem;
+align-items: center;
+padding: 0;
+overflow: auto;
+z-index: 50;
+
+&::-webkit-scrollbar {
+  display: none; /* 크롬, 사파리 등 */
+}
+-ms-overflow-style: none; /* IE, 엣지 */
+scrollbar-width: none; /* 파이어폭스 */
+
 `
 
 const DayImage = styled.img`
@@ -148,5 +181,8 @@ export const S = {
     StyledOptionsBox,
     StyledLeftButton,
     StyledRightButton,
-    DayImage
+    DayImage,
+    StyledYear,
+    StyledMonth,
+    YearText
 }
