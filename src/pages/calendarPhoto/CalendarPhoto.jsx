@@ -124,23 +124,29 @@ export default function CalendarPhoto() {
 
   return (
     <S.Container>
-      <S.Bg>
-        <S.DayWeek>{dateInfo.dayOfWeek}</S.DayWeek>
-        <S.SmallText>
-          <S.DateColor>{dateInfo.yearMonthDay}</S.DateColor>
-        </S.SmallText>
-        <S.SettingPhoto>
-          <S.SettingText>사진 설정</S.SettingText>
-        </S.SettingPhoto>
+      <S.DayWeek>{dateInfo.dayOfWeek}</S.DayWeek>
+      <S.SmallText>
+        <S.DateColor>{dateInfo.yearMonthDay}</S.DateColor>
+      </S.SmallText>
+      <S.SettingPhoto>
+        <S.SettingText>사진 설정</S.SettingText>
+      </S.SettingPhoto>
+      <S.PhotoWrapper>
         <S.PhotoContainer>
           {Array.from({ length: 5 }).map((_, index) => {
             const image = images[index - 1];
+            // 첫 번째 줄과 두 번째 줄 구분
+            const isSecondRow = index >= 3;
+
             return (
               <S.AddPhotoBox
                 key={index}
                 id={image ? image.id : `add-photo-box-${index}`} // 고유 ID 사용
                 onClick={index === 0 ? handleImageClick : null}
-                style={{ position: "relative" }}
+                style={{
+                  position: "relative",
+                  marginBottom: isSecondRow ? "20px" : "0", // 두 번째 줄 사진 상자는 아래에 간격 추가
+                }}
               >
                 {/* X 아이콘 추가 및 클릭 핸들러 연결 */}
                 {index !== 0 && image && (
@@ -194,10 +200,11 @@ export default function CalendarPhoto() {
             onChange={handleFileSelect}
           />
         </S.PhotoContainer>
+      </S.PhotoWrapper>
 
-        <S.SettingMemo>
-          <S.SettingText>메모</S.SettingText>
-        </S.SettingMemo>
+      <S.SettingMemo>
+        <S.SettingText>메모</S.SettingText>
+
         <S.MemoBox
           placeholder="아직 작성된 일상 메모가 없습니다."
           name="memo"
@@ -206,14 +213,13 @@ export default function CalendarPhoto() {
           maxLength={100}
         />
         <S.StyledMaxLength>{`${memo.length}/${maxLength}`}</S.StyledMaxLength>
-
-        <S.UploadChange>
-          <S.UploadChangeItem onClick={handleLocateCalendar}>
-            취소
-          </S.UploadChangeItem>
-          <S.UploadChangeItem onClick={handleSave}>저장</S.UploadChangeItem>
-        </S.UploadChange>
-      </S.Bg>
+      </S.SettingMemo>
+      <S.UploadChange>
+        <S.UploadChangeItem onClick={handleLocateCalendar}>
+          취소
+        </S.UploadChangeItem>
+        <S.UploadChangeItem onClick={handleSave}>저장</S.UploadChangeItem>
+      </S.UploadChange>
     </S.Container>
   );
 }
