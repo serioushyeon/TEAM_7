@@ -2,15 +2,19 @@ import styled, { keyframes } from 'styled-components';
 import EarthImoge from '../../assets/images/Login/earthSymbol.svg';
 import Speaker from '../../assets/images/Login/loudspeaker.svg';
 import ChatImoge from '../../assets/images/Login/ChatImoge.svg';
-
+import Intro from '../../assets/images/Login/Introduce.svg';
 
 // 아래 애니메이션이 끝난 후
 const moveDown = keyframes`
   from {
-    transform: translateY(0); // 현재 위치에서 시작
+    position: absolute;
+    top: 8.5rem;
+    transform: translateY(90deg); // 현재 위치에서 시작
   }
   to {
-    transform: translateY(200px); // 아래로 200px 이동
+    position: absolute;
+    top: 26.4rem;
+    transform: translateY(90deg);
   }
 `;
 
@@ -24,9 +28,10 @@ const rotateAndShrink = keyframes`
   }
   to {
     transform: rotate(90deg);
-    height: 22.5rem; // 예시로 50%로 설정, 필요에 따라 조정 가능
+    height: 22.5rem; 
     width: 15rem;
     left: 4.7rem;
+    top: 5.5rem;
   }
 `;
 
@@ -56,6 +61,17 @@ const Kakaorotate = keyframes`
   }
 `;
 
+// 카카오랑 안내
+const IntroAnimation = keyframes`
+  from {
+    transform: rotate(0deg);
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 // background-color: #FDFCFB 0;
 const BookContainer = styled.div`
 display: flex;
@@ -65,12 +81,12 @@ left: 0.9rem;
 width: 22.5rem;
 height: 35rem;
 border-radius: 4px;
-background-color: #DE684F;
+background-color: #BEEAFC;
 box-shadow: 8px 4px 4px 0px rgba(0, 0, 0, 0.50);
 
 transition: transform 2s, width 2s; 
 &.animate {
-    animation: ${rotateAndShrink} 2s forwards;
+    animation: ${rotateAndShrink} 2s forwards, ${moveDown} 2s 2.2s forwards;
   }
 `
 // transition : 애니메이션 지속 시간
@@ -93,20 +109,38 @@ transition: transform 2s, top 2s, left 2s;
   }
 ` 
 
-const Kakao = styled.div`
+const Introduce = styled.div`
 position: absolute;
-top: 28.5rem;
-left: 1.8rem;
-width: 18.75rem;
-height: 2.875rem;
-border: 1px solid #000;
+top: 7rem;
+left: -2.5rem;
+width: 468px;
+height: 390px;
+background-image: url(${Intro});
+opacity: 0;
+scale: 0.9;
+
+transition: transform 2s, top 2s, left 2s; 
+&.animate {
+    animation: ${IntroAnimation} 2s forwards;
+    animation-delay: 2.5s;
+  }
+`
+
+const AnimateButton = styled.div`
+position: absolute;
+top: 1rem;
+left: 0rem;
+width: 22.5rem;
+height: 35rem;
 text-align: center;
 align-items: center;
 justify-contents: center;
+box-shadow: 2px 2px rgba(255, 255, 255, 0.5); 
 
 transition: transform 0.5s, top 2s;
 &.animate {
     animation: ${Kakaorotate} 0.5s forwards;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0); 
   }
 `
 
@@ -164,7 +198,7 @@ const ChatBox = styled.div`
 position: absolute;
 width: 2.5rem;
 height: 2.5rem;
-top: 48.5rem;
+top: 51.5rem;
 right: 1.18rem;
 background-image: url(${ChatImoge});
 background-repeat: no-repeat;
@@ -176,14 +210,60 @@ transition: transform 0.5s, top 2s;
 `
 
 
+const Chatting = styled.div`
+display: inline-flex;
+top: ${(props) => props.top};
+left: ${(props) => props.left};
+flex-direction: row;
+position: absolute;
+border-radius: 4px;
+background-color: #EDEDED;
+padding: 0.75rem;
+
+transition: transform 0.5s, top 2s;
+&.animate {
+    animation: ${Kakaorotate} 0.5s forwards;
+  }
+`
+
+// 12px로 하니 화면을 넘어감.
+const ChattingText = styled.div`
+display: inline-flex;
+white-space: nowrap;
+width: auto;
+font-family: Noto Sans KR;
+font-size: 10px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+`
+
+// 색상 컨테이너에도 display: flex를 해주어야 함.
+const Normal = styled.div`
+display: flex;
+color: #0D0C00;
+`
+
+const Bold = styled.div`
+display: flex;
+color: #001C30;
+`
+
+
+
 export const S = {
     BookContainer,
     Earth,
-    Kakao,
+    Introduce,
+    AnimateButton,
     Title,
     Titletext,
     MoodTitle,
     MoodText,
     LoudSpeaker,
-    ChatBox
+    ChatBox,
+    Chatting,
+    ChattingText,
+    Normal,
+    Bold
 }

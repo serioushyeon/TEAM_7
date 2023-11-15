@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import Intro from '../../assets/images/Login/Introduce.svg';
+import Goorm from '../../assets/images/Login/TitleGoorm.svg';
 
 const FirstPage = styled.div`
 display: flex;
@@ -8,7 +10,6 @@ left: 0.9rem;
 width: 22.5rem;
 height: 35rem;
 border-radius: 4px;
-background-color: blue;
 `
 
 const Container = styled.div`
@@ -17,57 +18,69 @@ display: flex;
 align-items: center;
 margin: 0 auto;
 max-width: 390px;
-max-height: 1080px;
+max-height: 1020px;
 width: 100%;
+height: 100vh;
 `
 
 const Bg = styled.div`
 display: flex;
 width: 390px;
-height: 1080px;
-background-color: red;
+height: 1020px;
+background-color: #FDFCFB;
 `
 
 const Title = styled.div`
 display: flex;
 position: absolute;
 top: 2.625rem;
-left: 5.2rem;
+right: 1rem;
 color: #191919;
-font-size: 36px;
+font-size: 28px;
 font-style: normal;
 font-weight: 700;
 line-height: normal;
 `
 
-const MoodTitle = styled.div`
-color : #DE684F;
-margin-right: 0.3rem;
-`
-
-
 const Titletext = styled.div`
-display: flex;
+display: block;
 position: absolute;
-top: 5.875rem;
-left: 11.35rem;
-color: #191919;
-font-size: 12px;
+top: 4.875rem;
+right: 1rem;
+color: #001C30;
+font-size: 16px;
 font-style: normal;
-font-weight: 400;
+font-weight: 500;
 line-height: normal;
 `
 
-const MoodText = styled.div`
-color : #DE684F;
-margin-left: 0.3rem;
+const TitleGoorm = styled.div`
+position: absolute;
+top: 2.625rem;
+right: 8rem;
+width: 40px;
+height: 32.239px;
+background-image: url(${Goorm});
 `
 
 const FlipButton = styled.div`
-border: 1px solid #000;
+ // border: 1px solid #000;
 position: absolute;
-top: 0px;
-left: 10px;
+top: 35.2rem;
+left: 1rem;
+width: 22.5rem;
+height: 15rem;
+`
+
+const Introduce = styled.div`
+position: absolute;
+top: 7rem;
+left: -2.5rem;
+width: 468px;
+height: 390px;
+background-image: url(${Intro});
+opacity: 1;
+scale: 0.9;
 `
 
 
@@ -76,8 +89,8 @@ export const S = {
     Container,
     Bg,
     Title,
-    MoodTitle,
     Titletext,
-    MoodText,
-    FlipButton
+    TitleGoorm,
+    FlipButton,
+    Introduce
 }
