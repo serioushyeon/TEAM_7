@@ -6,7 +6,6 @@ import Login from "./pages/Login/Login";
 import NavBar from "./components/Navigation/NavBar";
 import EventPhoto from "./pages/Eventphoto/EventPhoto";
 import SubStart from "./pages/start/SubStart";
-import Start from "./pages/start/Start";
 import Passport from "./pages/userInfo/Passport";
 import MyCalendar from "./pages/calendar/Calendar";
 import CalendarPhoto from "./pages/calendarPhoto/CalendarPhoto";
@@ -41,7 +40,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/substart" element={<SubStart />} />
-            <Route path="/start" element={<Start />} />
             <Route path="/userinfo" element={<Passport />} />
             <Route path="/calendar" element={<MyCalendar />} />
             <Route path="/calendar-photo" element={<CalendarPhoto />} />
