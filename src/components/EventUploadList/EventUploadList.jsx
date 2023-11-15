@@ -8,6 +8,7 @@ import { LiaTrashAltSolid } from "react-icons/lia";
 import { useState, useEffect } from "react";
 import EventModel from "../EventModal/EventModal";
 import { io } from "socket.io-client";
+import { useSelector } from 'react-redux';
 
 const EventUploadBlock = ({userId, nickname, imageUrlList,checkStatus,imageCount,loginUserId }) => {
 
@@ -81,21 +82,23 @@ const NoList = () => {
   );
 };
 
-const EventUploadList = ({ userInfo, loginUserId }) => {
+const EventUploadList = () => {
+  const users = useSelector((state) => state.eventList.value);
+
   return (
     <>
       <div className="eventUploadList">
-        {userInfo.map((userInfo) => (
+        {users.userInfo.map((userInfo) => (
           <EventUploadBlock 
           userId={userInfo.userId} 
           nickname = {userInfo.nickname}
           imageUrlList = {userInfo.imageUrlList}
           checkStatus = {userInfo.checkStatus}
           imageCount = {userInfo.imageCount}
-          loginUserId = {loginUserId}
+          loginUserId = {users.loginUserId}
           />
         ))}
-        {userInfo.length === 0 ? <NoList /> : <></>}
+        {users.userInfo.length === 0 ? <NoList /> : <></>}
         <div className="addList">
           <button className="addListBtn">
             <IoIosAddCircleOutline size="40" color="#F28B50" />

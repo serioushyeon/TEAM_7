@@ -5,6 +5,7 @@ import eventSlice from "./eventSlice";
 import dateSlice from "./dateSlice";
 import CalendarUI from "./CalendarUI";
 import CalendarPhotoBoard from "./CalendarPhotoBoard";
+import eventListSlice from "./eventListSlice";
 
 // 여기서 데이터 관리해주세요.
 export default configureStore({
@@ -15,5 +16,6 @@ export default configureStore({
     date: dateSlice,
     calendarUI: CalendarUI,
     CalendarPhotoBoard: CalendarPhotoBoard,
+    eventList: eventListSlice,
   },
 });

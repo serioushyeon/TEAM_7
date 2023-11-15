@@ -2,11 +2,26 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './EmptyEvent.css';
 import { BsCalendar4Event } from "react-icons/bs"
+import axios from "axios";
 const EmptyEvent = () => {
     //참여하고 있는 이벤트가 있는 지 체크
     //참여하고 있다면
     //이벤트 아이디로 링크 이동
     //참여하지 않고 있다면
+
+    const fetchEventData = async () => {
+        try {
+          const response = await axios.get(`/api/v1/user/my-event`);
+          const { isExistEvent, eventId } = response.data;
+          if (isExistEvent) {
+            navigate(`/eventdisplay${eventId}`)
+          } else {
+          }
+        } catch (error) {
+          console.error("Error fetching data", error);
+        }
+      };
+
     const navigate = useNavigate();
     const goToEventSet = () => {
         navigate("/eventsetting");
