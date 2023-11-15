@@ -69,11 +69,6 @@ height: 32.239px;
 background-image: url(${Goorm});
 `
 
-const MoodText = styled.div`
-color : #DE684F;
-margin-left: 0.3rem;
-`
-
 const Earth = styled.div`
 position: absolute;
 top: 7.31rem;
@@ -155,7 +150,6 @@ export const S = {
     Title,
     Titletext,
     TitleGoorm,
-    MoodText,
     Earth,
     Kakao,
     LoudSpeaker,

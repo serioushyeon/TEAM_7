@@ -25,6 +25,7 @@ export default function StartPage() {
               <S.Earth className={isAnimating ? 'animate' : ''} />
               <S.AnimateButton className={isAnimating ? 'animate' : ''}>Click Me!</S.AnimateButton>
             </S.BookContainer>
+            <S.Introduce className={isAnimating ? 'animate' : ''} />
             {showStartComponent && <Start />}
             <S.LoudSpeaker className={isAnimating ? 'animate' : ''} />
               <S.ChatBox className={isAnimating ? 'animate' : ''} />
@@ -34,7 +35,6 @@ export default function StartPage() {
                 <S.Normal>가 무엇인가요?</S.Normal>
                 </S.ChattingText>
                 </S.Chatting>
-              <S.ChatBox />
               <S.Chatting top="49.1rem" left="6.5rem" className={isAnimating ? 'animate' : ''}>
               <S.ChattingText>
               <S.Normal>무드를 담은 바코드아트, </S.Normal>

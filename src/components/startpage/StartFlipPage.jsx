@@ -6,10 +6,11 @@ import EarthImoge from '../../assets/images/Login/earthSymbol.svg';
 const BookContainer = styled.div`
 display: flex;
 position: absolute;
+left: 3.5rem;
 height: 22.5rem; 
 width: 15rem;
 border-radius: 4px;
-background-color: #DE684F;
+background-color: #BEEAFC;
 box-shadow: 8px 4px 4px 0px rgba(0, 0, 0, 0.50);
 `
 

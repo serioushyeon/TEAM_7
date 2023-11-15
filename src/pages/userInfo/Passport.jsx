@@ -7,6 +7,9 @@ export default function Passport() {
   return (
     <S.Container>
         <S.Bg>
+        <S.TitleGoorm />
+        <S.Title>MOOCO</S.Title>
+        <S.Titletext>무드를 표현하는 새로운 방법, 무코</S.Titletext>
           <S.BookBg>
         <First />
         <Second />

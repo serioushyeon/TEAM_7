@@ -2,7 +2,7 @@ import styled, { keyframes } from 'styled-components';
 import EarthImoge from '../../assets/images/Login/earthSymbol.svg';
 import Speaker from '../../assets/images/Login/loudspeaker.svg';
 import ChatImoge from '../../assets/images/Login/ChatImoge.svg';
-
+import Intro from '../../assets/images/Login/Introduce.svg';
 
 // 아래 애니메이션이 끝난 후
 const moveDown = keyframes`
@@ -13,7 +13,7 @@ const moveDown = keyframes`
   }
   to {
     position: absolute;
-    top: 22.5rem;
+    top: 26.4rem;
     transform: translateY(90deg);
   }
 `;
@@ -31,6 +31,7 @@ const rotateAndShrink = keyframes`
     height: 22.5rem; 
     width: 15rem;
     left: 4.7rem;
+    top: 5.5rem;
   }
 `;
 
@@ -60,6 +61,17 @@ const Kakaorotate = keyframes`
   }
 `;
 
+// 카카오랑 안내
+const IntroAnimation = keyframes`
+  from {
+    transform: rotate(0deg);
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 // background-color: #FDFCFB 0;
 const BookContainer = styled.div`
 display: flex;
@@ -74,7 +86,7 @@ box-shadow: 8px 4px 4px 0px rgba(0, 0, 0, 0.50);
 
 transition: transform 2s, width 2s; 
 &.animate {
-    animation: ${rotateAndShrink} 2s forwards, ${moveDown} 2s 2s forwards;
+    animation: ${rotateAndShrink} 2s forwards, ${moveDown} 2s 2.2s forwards;
   }
 `
 // transition : 애니메이션 지속 시간
@@ -96,6 +108,23 @@ transition: transform 2s, top 2s, left 2s;
     animation: ${Earthrotate} 2s forwards;
   }
 ` 
+
+const Introduce = styled.div`
+position: absolute;
+top: 7rem;
+left: -2.5rem;
+width: 468px;
+height: 390px;
+background-image: url(${Intro});
+opacity: 0;
+scale: 0.9;
+
+transition: transform 2s, top 2s, left 2s; 
+&.animate {
+    animation: ${IntroAnimation} 2s forwards;
+    animation-delay: 2.5s;
+  }
+`
 
 const AnimateButton = styled.div`
 position: absolute;
@@ -225,6 +254,7 @@ color: #001C30;
 export const S = {
     BookContainer,
     Earth,
+    Introduce,
     AnimateButton,
     Title,
     Titletext,

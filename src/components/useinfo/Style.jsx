@@ -12,8 +12,9 @@ left: 0.9rem;
 width: 22.5rem;
 height: 15rem;
 border-radius: 4px;
-background-color: #DE684F;
-box-shadow: 8px 4px 4px 0px rgba(0, 0, 0, 0.50);
+border-radius: 0px 4px 0px 0px;
+background: linear-gradient(180deg, rgba(235, 237, 238, 0.74) 0%, rgba(253, 251, 251, 0.63) 100%);
+box-shadow: 0px -1px 4px 0px rgba(0, 0, 0, 0.50);
 `
 
 const CloudImage = styled.div`
@@ -44,13 +45,14 @@ left: 14.5rem;
 const Book2Container = styled.div`
 display: flex;
 position: absolute;
-top: 27.6rem;
+top: 29.6rem;
 left: 0.9rem;
 width: 22.5rem;
 height: 15rem;
 border-radius: 4px;
-background-color: #DE684F;
-box-shadow: 8px 4px 4px 0px rgba(0, 0, 0, 0.50);
+border-radius: 0px 4px 0px 0px;
+background: linear-gradient(180deg, rgba(235, 237, 238, 0.74) 0%, rgba(253, 251, 251, 0.63) 100%);
+box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.50);
 `
 
 // 29.68rem 하면 기존 여백 있게
