@@ -5,6 +5,9 @@ import EventParticipants from "../../components/EventParticipants/EventParticipa
 import EventUploadList from "../../components/EventUploadList/EventUploadList";
 import "./EventDisplay.css";
 import BarcodeLoading from "../../components/BarcodeLoading/BarcodeLoading"
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { setEventList } from '../../redux/eventListSlice';
 const EventDisplay = () => {
   //   const navigate = useNavigate();
   //   // 로그인 상태와 사용자 정보를 저장할 스테이트
@@ -27,59 +30,30 @@ const EventDisplay = () => {
   //       });
   //     }
   //   }, []);
-
-
   const {id} = useParams();
+  const dispatch = useDispatch();
 
-  const userList = {
-    profileImgUrlList:["https://via.placeholder.com/150","https://via.placeholder.com/150","https://via.placeholder.com/150"],
-		isRoomMaker : true,
-		eventName : "경복궁 나들이",   
-		startDate : "2023-10-09",   //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
-		endDate : "2023-10-09",     //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
-		loginUserId : "123",
-		userInfo:
-		[
-			{
-				userId : "123",
-				nickname : "방장",
-				imageUrlList:["https://via.placeholder.com/150","https://via.placeholder.com/150",],
-				checkStatus : true,
-				imageCount : 2
-			},
-			{	
-				userId : "String",
-				nickname : "String",
-				imageUrlList:["https://via.placeholder.com/150"],
-				checkStatus : false,
-				imageCount : 1
 
-			},
-			{
-				userId : "String",
-				nickname : "String",
-				imageUrlList:["https://via.placeholder.com/150","https://via.placeholder.com/150"],
-				checkStatus : false,
-				imageCount : 2
+  const fetchEventListData = async () => {
+    try {
+      const response = await axios.get(`/api/v1/event/${id}`);
+      const {profileImgUrlList, isRoomMaker, eventName, startDate, endDate, loginUserId, userCount, userInfo} = response.data;
+      dispatch(setEventList({profileImgUrlList, isRoomMaker, eventName, startDate, endDate, loginUserId, userCount, userInfo}));
+    } catch (error) {
+      console.error("Error fetching data", error);
+    }
+  };//useEffect
 
-			}
-		]
-  }
+  const users = useSelector((state) => state.eventList.value);
 
   return (
     <>
       <div className="eventDisplayWrap">
-        <EventHeader 
-        eventName = {userList.eventName}
-        startDate = {userList.startDate}
-        endDate={userList.endDate}
-        isRoomMaker={userList.isRoomMaker}
-        />
-        <EventParticipants
-        profileImgUrlList = {userList.profileImgUrlList}
-        />
-        <EventUploadList userInfo = {userList.userInfo} loginUserId = {userList.loginUserId}/>
-        {userList.isRoomMaker ? (
+        <EventHeader/>
+        <EventParticipants/>
+        {console.log(users.userCount)}
+        <EventUploadList userInfo = {users.userInfo} loginUserId = {users.loginUserId}/>
+        {users.isRoomMaker ? (
           <div className="makeBarcode">
             <button className="makeBarcodeBtn">무코 생성</button>
           </div>

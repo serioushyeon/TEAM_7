@@ -9,7 +9,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import EventModal from '../EventModal/EventModal'
 import Toast from '../EventToast/EventToast'
 import { TbDoorExit } from "react-icons/tb";
-const EventHeader = ({eventName, startDate, endDate, isRoomMaker}) => {
+import { useSelector } from 'react-redux';
+
+const EventHeader = () => {
+    const users = useSelector((state) => state.eventList.value);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [toast, setToast] = useState(false);
     const openModal = () => {
@@ -39,8 +42,8 @@ const EventHeader = ({eventName, startDate, endDate, isRoomMaker}) => {
         {toast && <Toast setToast={setToast} text={"클립보드에 복사되었습니다."}/>}
         <div className="header">
             <div className = "left">
-                <div className='name'>{eventName}</div>
-                <div className='date'>{startDate}~{endDate}</div>
+                <div className='name'>{users.eventName}</div>
+                <div className='date'>{users.startDate}~{users.endDate}</div>
             </div>
             <div className='right'>
                 <button className='invite' onClick={copyUrl}> 
@@ -49,7 +52,7 @@ const EventHeader = ({eventName, startDate, endDate, isRoomMaker}) => {
                 <button className='exit' onClick={openModal}> 
                     <TbDoorExit size="22" color="white"/>
                 </button>
-                {isRoomMaker ? 
+                {users.isRoomMaker ? 
                 <button className='edit' onClick={goToSetting}>
                     <FaRegEdit size="22" color="white"/>
                 </button> : <></>}
@@ -58,9 +61,9 @@ const EventHeader = ({eventName, startDate, endDate, isRoomMaker}) => {
                 modalIsOpen={modalIsOpen}
                 closeModal={closeModal}
                 mainContent={"이벤트를"}
-                highlight={isRoomMaker? "폭파":"퇴장"}
-                end={isRoomMaker? "하시겠습니까?":"하시겠습니까?"}
-                notice={isRoomMaker? "※참여한 모든 인원이 자동으로 나가집니다." : "※지금까지 참여한 이벤트가 삭제됩니다."}
+                highlight={users.isRoomMaker? "폭파":"퇴장"}
+                end={users.isRoomMaker? "하시겠습니까?":"하시겠습니까?"}
+                notice={users.isRoomMaker? "※참여한 모든 인원이 자동으로 나가집니다." : "※지금까지 참여한 이벤트가 삭제됩니다."}
                 action={goToEvent}
             />
         </div>
