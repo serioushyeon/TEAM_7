@@ -12,7 +12,6 @@ import NavBar from "./components/Navigation/NavBar";
 import EventPhoto from "./pages/Eventphoto/EventPhoto";
 import SubStart from "./pages/start/SubStart";
 import Passport from "./pages/userInfo/Passport";
-import SubStart from "./pages/start/SubStart";
 import MyCalendar from "./pages/calendar/Calendar";
 import CalendarPhoto from "./pages/calendarPhoto/CalendarPhoto";
 import CCalendarGallery from "./pages/calendarPhoto/CalendarGallery";
