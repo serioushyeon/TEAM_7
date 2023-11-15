@@ -1,13 +1,22 @@
 import './MoodCloud.css';
 import Icon from '../../assets/images/MoodCloud/cloud1.png'
-import { useNavigate, useParams } from 'react-router-dom';
-const MoodCloudList = ({title}) => {
-    const {id} = useParams();
+import { useNavigate } from 'react-router-dom';
+const MoodCloudList = ({title, id}) => {
     const navigate = useNavigate();
 
     const goToTicket= () => {
         navigate(`/ticket/${id}`);
     }
+
+    const fetchBarcodeListData = async () => {
+        try {
+          const response = await axios.get(`/api/v1/barcode/list`);
+          const barcodeList = response.data;
+        } catch (error) {
+          console.error("Error fetching data", error);
+        }
+      };//useEffect
+
     return (
         <>
             <div className="cloudWrapper" onClick={goToTicket}>
@@ -23,7 +32,23 @@ const MoodCloudList = ({title}) => {
 }
 
 const MoodCloud = () => {
-    const title = ["2023-10-20", "2023-10-20", "2023-10-20", "2023-10-20","2023-10-20","2023-10-20","2023-10-20","2023-10-20","2023-10-20","2023-10-20","2023-10-20","2023-10-20"];
+    const barcodeList = [
+        {
+            id: "123",
+            imageUrl: "https://via.placeholder.com/150",
+            title: "2023-10-20"
+        },
+        {
+            id: "456",
+            imageUrl: "https://via.placeholder.com/150",
+            title: "2023-10-21"
+        },
+        {
+            id: "789",
+            imageUrl: "https://via.placeholder.com/150",
+            title: "2023-10-22"
+        }
+    ];
     return (
         <>
             <div className='mCWrapper'>
@@ -31,7 +56,7 @@ const MoodCloud = () => {
                     <span className='highlight'>무드&nbsp;</span>클라우드
                 </div>
                 <div className="cloudList">
-                    {title.map((item) => <MoodCloudList title={item}></MoodCloudList> )}
+                    {barcodeList.map((item) => <MoodCloudList title={item.title} id = {item.id}></MoodCloudList> )}
                     <div className='marginB'></div>
                     <div className='marginB'></div>
                 </div>
