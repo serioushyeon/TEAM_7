@@ -12,6 +12,9 @@ function EventPhoto() {
 
   const [eventId, setEventId] = useState("이벤트 아이디");
 
+  //드래그 이미지 선택 상태 관리 (삭제 드래그)
+  const [isDragging, setIsDragging] = useState(false);
+
   const handleImageChange = (e) => {
     // 선택된 파일 목록을 배열로 변환
     const files = Array.from(e.target.files);
@@ -120,6 +123,27 @@ function EventPhoto() {
     setSelectedImages(new Set()); // 선택 상태 초기화
   };
 
+  const handleMouseDown = () => {
+    setIsDragging(true);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const handleMouseMove = (index) => {
+    if (isDragging) {
+      // 드래그 중 이미지 선택 처리
+      toggleImageSelection(index);
+    }
+  };
+
+  const handleClick = (index) => {
+    if (!isDragging) {
+      toggleImageSelection(index);
+    }
+  };
+
   return (
     <S.EventPhotoWrapper>
       <S.EventName>나의 이벤트명</S.EventName>
@@ -148,8 +172,12 @@ function EventPhoto() {
             key={index}
             src={image}
             alt={`Uploaded ${index}`}
-            onClick={() => toggleImageSelection(index)}
+            // onClick={() => toggleImageSelection(index)}
             isSelected={selectedImages.has(index)}
+            onMouseDown={handleMouseDown}
+            onMouseMove={() => handleMouseMove(index)}
+            onMouseUp={handleMouseUp}
+            onClick={() => handleClick(index)}
           />
         ))}
       </S.ImageUploadContainer>

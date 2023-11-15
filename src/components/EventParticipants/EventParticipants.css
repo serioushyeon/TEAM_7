@@ -1,0 +1,24 @@
+.block {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.box{
+    flex : 0 0 auto;
+    background-color: aliceblue;
+    width: 3rem;
+    height: 3rem; 
+    border-radius: 70%;
+    overflow: hidden;
+}
+.profile{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.countbox{
+    margin-left: 1rem;
+    color:white;
+}
