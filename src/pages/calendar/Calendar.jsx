@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Calendar from 'react-calendar';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
@@ -34,6 +34,21 @@ const imageData = [
     const [value, onChange] = useState(new Date());
     const activeStartDateString = useSelector((state) => state.calendarUI.activeStartDate);
     const selected = useSelector((state) => state.calendarUI.selected);
+    const [calendarInfo, setCalendarInfo] = useState({
+      thumbnailInfoList:
+	[
+		{
+			thumbnailUrl: "",
+			date: ""
+		},
+		{
+			thumbnailUrl: "",
+			date: ""
+		}
+    // 위 데이터를 startDate - endDate까지 반복한다.
+	],
+	buttonStatus: false 
+    });
 
     // navigate 선언
     let navigate = useNavigate();
@@ -41,6 +56,28 @@ const imageData = [
 
     // Date 객체로 변환함.
     const activeStartDate = new Date(activeStartDateString);
+
+    // startDate, endDate가 변할 때마다..
+    useEffect(() => {
+
+      // 유저 정보 받아오기
+  const getCalendarInfo = async () => {
+    try {
+      // startDate, endDate 형식은 YYYY-MM-DD
+      const response = await apiClient.get(`/api/v1/user/calender/{startDate}/{endDate}`, {
+        headers: {
+          // 나중에 토큰 수정 필요
+          Authorization: `${Bearer [access_token]}`
+        },
+      });
+      setCalendarInfo(response.data);
+      console.log("성공, UserInfo : ", response.data);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+    }, [])
   
     // 사진이 없는 경우, 사진 등록 창으로 이동
     function handleLocatePhoto(date) {
