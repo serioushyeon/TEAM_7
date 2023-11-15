@@ -5,18 +5,17 @@ import { useNavigate } from 'react-router-dom';
 export default function Login() {
   const [isLogin, setIsLogin] = useState(false);
   const navigate = useNavigate();
-  /* 카카오 로그인으로 이동
+
   function handleLogin() {
     window.location.href = `${
       import.meta.env.VITE_APP_SERVER_HOST
-    }/oauth2/authorization/kakao`;
+    }/oauth/authorization/kakao`;
     setIsLogin(true);
   }
-  */
 
-  function handleLogin() {
+ /* function handleLogin() {
     navigate('/substart');
-  }
+  }*/
 
   return (
     <S.Container>
