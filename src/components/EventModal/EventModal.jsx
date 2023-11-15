@@ -3,13 +3,15 @@ import './EventModal.css';
 const EventModal = ({modalIsOpen, closeModal, mainContent, highlight, end ,notice, action}) => {
     const customModalStyles = {
         overlay: {
-          backgroundColor: " rgba(0, 0, 0, 0.4)",
-          width: "100%",
-          height: "100vh",
-          zIndex: "10",
-          position: "absolute",
-          top: "0",
-          left: "0",
+            backgroundColor: " rgba(0, 0, 0, 0.4)",
+            maxWidth: "390px",
+            width: "100vw",
+            height: "100vh",
+            zIndex: "10",
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: " translate(-50%, -50%)"
         },
         content: {
         borderStyle: "none",

@@ -4,6 +4,7 @@
     justify-content: center;
 }
 .uploadlist{
+    position: relative;
     align-items: center;
     display: flex;
     width: 100%;
@@ -13,6 +14,19 @@
     height: 3.8rem;
     margin-bottom: 1rem;
     color:white;
+    z-index: 1;
+}
+.uploadlist::after{
+    position: absolute;
+    content: "";
+    top:0;
+    left:0;
+    width: 100%;
+    height: 3.8rem;
+    background-image: url('../../assets/images/Event/eventAlbum.png');
+    background-size: 47%;
+    opacity: 0.7;
+    z-index: -1;
 }
 .nicknameBox{
     width: 65%;
@@ -74,6 +88,8 @@ input[type="checkbox"]:disabled{
     margin-right: 1%;
 }
 .deleteBtn{
+    display: flex;
+    align-items: center;
     height: fit-content;
 }
 .deleteIcon{
@@ -83,20 +99,7 @@ input[type="checkbox"]:disabled{
 .addList{
     display: flex;
     justify-content: center;
-}
-.makeBarcode{
-    display: flex;
-    position: absolute;
-    top: 70%;
-    width: 100%;
-    justify-content: center;
-}
-.makeBarcodeBtn{
-    font-size: 0.75rem;
-    height: 2.5rem;
-    width: 10rem;
-    border-radius: 4px;
-    border: 1px solid #FAFAFA;
+    margin-bottom: 200px;
 }
 .makeBarcodeBtn:enabled{
     background-color: rgba(25, 25, 25, 0.1);
@@ -106,7 +109,7 @@ input[type="checkbox"]:disabled{
     transition: 0.1s;
     color: #DE684F;
     border-color: #F28B50;
-    background-color: rgba(25, 25, 25, 0.1);
+    background-color: rgba(25, 25, 25, 0.5);
 }
 .makeBarcodeBtn:disabled{
     background-color: rgba(25, 25, 25, 0.3);

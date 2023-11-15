@@ -1,6 +1,6 @@
 import "./EventSetting.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { BsCalendarHeart, BsCalendarWeek } from "react-icons/bs";
 import { ko } from "date-fns/esm/locale";
 import DatePicker from "react-datepicker";
@@ -13,11 +13,12 @@ const EventSetting = () => {
   const saveEventName = (e) => {
     setEventName(e.target.value);
   };
+  const {id} = useParams();
 
   const navigate = useNavigate();
 
   const goToEventDisplay = () => {
-    navigate("/eventdisplay", { state: { startDate, endDate, eventName } });
+    navigate(`/eventdisplay/${id}`, { state: { startDate, endDate, eventName } });
   };
 
   return (
@@ -92,10 +93,15 @@ const EventSetting = () => {
             </div>
           </form>
         </div>
-        <div className="eventMake">
+        <div className="eventMake">{
+          !id ? 
           <button className="eventMakeBtn" onClick={goToEventDisplay}>
             이벤트 생성
+          </button> :
+          <button className="eventMakeBtn" onClick={goToEventDisplay}>
+            이벤트 수정
           </button>
+          }
         </div>
       </div>
     </>

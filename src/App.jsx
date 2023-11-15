@@ -1,15 +1,17 @@
+import { Route, Routes} from "react-router-dom";
+import TestPage from './pages/TestPage';
+import EmptyEvent from './pages/EmptyEvent/EmptyEvent';
+import EventSetting from './pages/EventSetting/EventSetting';
+import EventDisplay  from './pages/EventDisplay/EventDisplay';
+import MoodCloud from './pages/MoodCloud/MoodCloud';
+import BarcodeBoard from './pages/BarcodeBoard/BarcodeBoard';
 import React from "react";
 import { styled } from "styled-components";
-import { Route, Routes } from "react-router-dom";
-import TestPage from "./pages/TestPage";
 import Login from "./pages/Login/Login";
 import NavBar from "./components/Navigation/NavBar";
 import EventPhoto from "./pages/Eventphoto/EventPhoto";
 import Passport from "./pages/userInfo/Passport";
 import Start from "./pages/start/Start";
-import EmptyEvent from "./pages/EmptyEvent/EmptyEvent";
-import EventSetting from "./pages/EventSetting/EventSetting";
-import EventDisplay from "./pages/EventDisplay/EventDisplay";
 import SubStart from "./pages/start/SubStart";
 import MyCalendar from "./pages/calendar/Calendar";
 import CalendarPhoto from "./pages/calendarPhoto/CalendarPhoto";
@@ -62,8 +64,15 @@ function App() {
             <Route path="/event" element={<EmptyEvent />} />
             {/*<EventSetting>*/}
             <Route path="/eventsetting" element={<EventSetting />} />
+            <Route path="/eventsetting/:id" element={<EventSetting />} />
             {/* <EventDisplay /> */}
             <Route path="/eventdisplay" element={<EventDisplay />} />
+            <Route path="/eventdisplay/:id" element={<EventDisplay />} />
+            {/* <MoodCloud /> */}
+            <Route path="/bcstore" element={<MoodCloud />} />
+            {/* <BarcodeBoard /> */}
+            <Route path="/ticket" element={<BarcodeBoard />} />
+            <Route path="/ticket/:id" element={<BarcodeBoard />} />
           </Routes>
         </Wrapper>
       </Background>
