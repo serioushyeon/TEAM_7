@@ -64,12 +64,15 @@ function App() {
             <Route path="/event" element={<EmptyEvent />} />
             {/*<EventSetting>*/}
             <Route path="/eventsetting" element={<EventSetting />} />
+            <Route path="/eventsetting/:id" element={<EventSetting />} />
             {/* <EventDisplay /> */}
             <Route path="/eventdisplay" element={<EventDisplay />} />
+            <Route path="/eventdisplay/:id" element={<EventDisplay />} />
             {/* <MoodCloud /> */}
             <Route path="/bcstore" element={<MoodCloud />} />
             {/* <BarcodeBoard /> */}
             <Route path="/ticket" element={<BarcodeBoard />} />
+            <Route path="/ticket/:id" element={<BarcodeBoard />} />
           </Routes>
         </Wrapper>
       </Background>
