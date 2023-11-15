@@ -25,7 +25,7 @@ const Bg = styled.div`
 display: flex;
 width: 390px;
 height: 1080px;
-background-color: red;
+background-color: #FDFCFB;
 `
 
 const Title = styled.div`
@@ -66,8 +66,10 @@ margin-left: 0.3rem;
 const FlipButton = styled.div`
 border: 1px solid #000;
 position: absolute;
-top: 0px;
-left: 10px;
+top: 26.7rem;
+left: 1rem;
+width: 22.5rem;
+height: 15rem;
 `
 
 

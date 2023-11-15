@@ -1,6 +1,7 @@
 import HTMLFlipBook from "react-pageflip";
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { S } from './Style';
+import { useNavigate } from "react-router-dom";
 import StartFlipPage from "../../components/startpage/StartFlipPage";
 import FirstInfoFlip from "../../components/startpage/FirstInfoFlip";
 import SecondInfoFlip from "../../components/startpage/SecondInfo";
@@ -9,8 +10,10 @@ import SecondInfoFlip from "../../components/startpage/SecondInfo";
 // PageContainer에서 위치 지정하면 적용이 안됨. 
 
 const StartPageFlip = React.forwardRef((props, ref) => {
+  const { onClick } = props;
+
   return (
-    <div className="demoPage" ref={ref}> 
+    <div className="demoPage" ref={ref} onClick={onClick}> 
     <StartFlipPage />
     </div>
   );
@@ -34,6 +37,9 @@ const SecondFlip = React.forwardRef((props, ref) => {
 
 
 export default function Start() {
+  const navigate = useNavigate();
+  const [disableFlip, setDisableFlip] = useState(false);
+
   // 페이지 플립 컴포넌트에 대한 ref 생성 및 초기화
   const pageFlipRef = useRef(null);
 
@@ -41,7 +47,17 @@ export default function Start() {
   const goToNextPage = () => {
     if (pageFlipRef.current) {
       pageFlipRef.current.pageFlip().flipNext('bottom'); //top도 가능
+
+      setTimeout(() => {
+        console.log('Navigating to /userinfo'); // 디버깅을 위한 콘솔 로그
+        navigate('/userinfo');
+      }, 700);
     }
+  };
+
+  const handlePageTwoClick = () => {
+    console.log('Page two clicked'); // 디버깅을 위한 콘솔 로그
+    setDisableFlip(true);
   };
 
   return (
@@ -61,11 +77,11 @@ export default function Start() {
         transform: 'rotate(90deg)',
         width: '15rem',
         height: '22.5rem',
-        top: '14.375rem',
+        top: '15.375rem',
         left: '-10.2rem'
       }}>
         <div className="demoPage"number="1"> </div>
-      <StartPageFlip number="2">1</StartPageFlip>
+      <StartPageFlip number="2" onClick={handlePageTwoClick}>1</StartPageFlip>
       <FirstFlip number="3">2</FirstFlip>
       <SecondFlip number="4">3</SecondFlip>
     </HTMLFlipBook>

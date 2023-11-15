@@ -72,6 +72,7 @@ width: 100px;
 height: 140px;
 background-image: url(${Profile});
 `
+// ${props => !props.editable && `display: none;`}
 
 const Question = styled.div`
 color: #5E5E5E;
@@ -81,17 +82,21 @@ font-weight: 400;
 line-height: normal;
 `
 
-const Answer = styled.div`
+const Answer = styled.input`
 color: #000;
 font-size: 12px;
 font-style: normal;
 font-weight: 500;
 line-height: normal;
+background-color: transparent;
+border: none;
+outline: none;
 `
 
 const NickName = styled.div`
 display: block;
 position: absolute;
+font-size: 12px;
 top: 2.875rem;
 left: 8.125rem;
 width: auto;
@@ -101,6 +106,7 @@ height: 27px;
 const Date = styled.div`
 display: block;
 position: absolute;
+font-size: 12px;
 top: 4.8125rem;
 left: 8.125rem;
 width: auto;
@@ -110,6 +116,7 @@ height: 27px;
 const Sex = styled.div`
 display: block;
 position: absolute;
+font-size: 12px;
 top: 6.75rem;
 left: 8.125rem;
 width: auto;
@@ -119,19 +126,31 @@ height: 27px;
 const DateOfIssue = styled.div`
 display: block;
 position: absolute;
+font-size: 12px;
 top: 8.75rem;
 left: 8.125rem;
 width: auto;
 height: 27px;
+color: #000;
+font-size: 12px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
 `
 
 const NunberBarcord = styled.div`
 display: block;
 position: absolute;
+font-size: 12px;
 top: 8.75rem;
 right: 1rem;
 width: auto;
 height: 27px;
+color: #000;
+font-size: 12px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
 `
 
 const UserBarcord = styled.div`
@@ -141,6 +160,19 @@ height: 50px;
 top: 12.8rem;
 left: 0;
 background-image: url(${InfoBarcord});
+`
+
+const InputProfile = styled.input`
+position: absolute;
+top: 2rem;
+left: 0.625rem;
+width: 100px;
+height: 140px;
+padding: 0;
+margin: -1px;
+overflow: hidden;
+
+border: 0;
 `
 
 export const S = {
@@ -159,5 +191,6 @@ export const S = {
     Sex,
     DateOfIssue,
     NunberBarcord,
-    UserBarcord  
+    UserBarcord,
+    InputProfile
 }
