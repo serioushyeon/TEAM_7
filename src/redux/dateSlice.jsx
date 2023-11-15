@@ -3,7 +3,7 @@ import moment from "moment";
 
 const koreanDayofWeek = ['일', '월', '화', '수', '목', '금', '토', '일'];
 
-const initialCalendarState = {
+const dateState = {
     yearMonthDay: '',
     dayOfWeek: '',
     monthDay: '',
@@ -11,7 +11,7 @@ const initialCalendarState = {
 
 export const dateSlice = createSlice({
     name: "date",
-    initialState: initialCalendarState,
+    initialState: dateState,
     reducers: {
       selectDate: (state, action) => {
       const date = action.payload; // action에서 전달된 일자
