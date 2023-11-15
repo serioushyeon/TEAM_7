@@ -1,15 +1,14 @@
 import './EventParticipants.css'
 
 //초대 링크 복사 및 노티스
-const EventParticipants = ({users}) => {
-
-    const profile = ({users}) => {
-        const count = users.length <= 6 ? users.length-1 : 5;
-        const arr = [];
+const EventParticipants = (profileImgUrlList) => {
+    const arr = [];
+    const profile = ({profileImgUrlList}) => {
+        const count = profileImgUrlList.length <= 6 ? profileImgUrlList.length-1 : 5;
         for(let i = 0; i <= count; i++){
             arr.push(
             <div className="box">
-                <img className="profile" src = {users[i]}/>
+                <img className="profile" src = {profileImgUrlList[i]}/>
             </div>)
         }
         return (arr);
@@ -18,9 +17,9 @@ const EventParticipants = ({users}) => {
     return (
         <>
             <div class="block">
-                {profile({users})}
+                {profile({profileImgUrlList})}
                 <div className='countbox'>
-                    +{users.length}
+                    +{arr.length}
                 </div>
             </div>
         </>

@@ -27,6 +27,7 @@
     color: white;
 }
 .modalBtn:hover{
+    color: #FAFAFA;
     border: 1px solid #FAFAFA ;
     border-radius: 4px;
     background-color: rgba(0, 0, 0, 0.3);

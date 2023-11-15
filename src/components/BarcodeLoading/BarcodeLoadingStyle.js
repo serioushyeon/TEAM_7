@@ -8,7 +8,7 @@ left: 50%;
 transform: translate(-50%, -50%);
 width: 100vw;
 height: 100vh;
-background: #ffffffb7;
+background: rgba(0, 0, 0, 0.7);
 z-index: 999;
 display: flex;
 align-items: center;
@@ -20,4 +20,6 @@ max-width: 390px;
 export const LoadingText = styled.div`
 font: 1rem 'Noto Sans KR';
 text-align: center;
+color: #F28B50;
+height: 3rem;
 `;

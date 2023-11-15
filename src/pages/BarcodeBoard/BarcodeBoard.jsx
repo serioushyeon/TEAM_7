@@ -11,6 +11,26 @@ import Toast from '../../components/EventToast/EventToast'
 import html2canvas from 'html2canvas';
 import saveAs from "file-saver";
 import barcode from "../../assets/images/Barcode/barcodebg.jpg"
+
+//   const navigate = useNavigate();
+  //   // 로그인 상태와 사용자 정보를 저장할 스테이트
+  //   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  //   const [userInfo, setUserInfo] = useState(null);
+
+  //   useEffect(() => {
+  //     // 여기에 로그인 상태를 확인하는 로직을 구현
+  //     // 예를 들어, 로컬 스토리지나 세션 스토리지에서 토큰을 확인
+  //     const token = localStorage.getItem("kakaoToken");
+  //     if (!token) {
+  //       // 토큰이 없으면 로그인 페이지로 리디렉션
+  //       navigate("/");
+  //     } else {
+  //       // 토큰이 있으면 유저정보 페이지로 
+  //       navigate("/userinfo");  
+  //       });
+  //     }
+  //   }, []);
+
 const EventG = () => {
     return (
         <>
@@ -234,7 +254,7 @@ const BarcodeBoard = () => {
             <Modal style={customModalStyles}ariaHideApp={false} isOpen={modalIsOpen} shouldCloseOnOverlayClick={false}>
             <button className="modalCloseBtn" onClick={closeModal}>X</button>
             <div className="modalWrapper">
-                <div className='modalContent'>어떻게 저장하시겠습니까?</div>
+                <div className='modalContent'>무엇을 저장하시겠습니까?</div>
                 <div className='notice'></div>
                 <div className='modalBtnWrapper'>
                     <button className='modalBtn' onClick={()=>{handleDownload();}}>티켓 저장</button>

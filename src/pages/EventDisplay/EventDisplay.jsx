@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import EventHeader from "../../components/EventHeader/EventHeader";
 import EventParticipants from "../../components/EventParticipants/EventParticipants";
 import EventUploadList from "../../components/EventUploadList/EventUploadList";
 import "./EventDisplay.css";
+import BarcodeLoading from "../../components/BarcodeLoading/BarcodeLoading"
 const EventDisplay = () => {
-  //방장인지 참여자인지 체크
-  //필요 데이터
-  //1. 이벤트 id, 이벤트 명, 이벤트 기간, 방장 id, 현재 접속 id
-  //2. 이벤트에 참여한 유저 목록(프로필 이미지, 닉네임 필요)
-  //3. 이벤트에서 리스트를 추가한 유저(닉네임, 프로필 이미지, 올린 사진 목록)
-
   //   const navigate = useNavigate();
   //   // 로그인 상태와 사용자 정보를 저장할 스테이트
   //   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -33,59 +28,64 @@ const EventDisplay = () => {
   //     }
   //   }, []);
 
-  //+버튼이 리스트 추가, 혹은 수정
-  const [users, setUsers] = useState([
-    {
-      name: "user1",
-      img: [
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/100",
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/100",
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150",
-      ],
-    },
-    {
-      name: "user2",
-      img: [
-        "https://via.placeholder.com/150",
-        "https://via.placeholder.com/150",
-      ],
-    },
-  ]); //유저 id, 올린 이미지 목록
 
-  const onRemove = (name) => {
-    setUsers(users.filter((user) => user.name !== name));
-  };
+  const {id} = useParams();
+
+  const userList = {
+    profileImgUrlList:["https://via.placeholder.com/150","https://via.placeholder.com/150","https://via.placeholder.com/150"],
+		isRoomMaker : true,
+		eventName : "경복궁 나들이",   
+		startDate : "2023-10-09",   //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
+		endDate : "2023-10-09",     //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
+		loginUserId : "123",
+		userInfo:
+		[
+			{
+				userId : "123",
+				nickname : "방장",
+				imageUrlList:["https://via.placeholder.com/150","https://via.placeholder.com/150",],
+				checkStatus : true,
+				imageCount : 2
+			},
+			{	
+				userId : "String",
+				nickname : "String",
+				imageUrlList:["https://via.placeholder.com/150"],
+				checkStatus : false,
+				imageCount : 1
+
+			},
+			{
+				userId : "String",
+				nickname : "String",
+				imageUrlList:["https://via.placeholder.com/150","https://via.placeholder.com/150"],
+				checkStatus : false,
+				imageCount : 2
+
+			}
+		]
+  }
+
   return (
     <>
       <div className="eventDisplayWrap">
-        <EventHeader
-          eventName={"경복궁 나들이"}
-          startDate={"2023-11-05"}
-          endDate={"2023-11-05"}
-          isRoomMaker={true}
+        <EventHeader 
+        eventName = {userList.eventName}
+        startDate = {userList.startDate}
+        endDate={userList.endDate}
+        isRoomMaker={userList.isRoomMaker}
         />
         <EventParticipants
-          users={[
-            "https://via.placeholder.com/150",
-            "https://via.placeholder.com/150",
-            "https://via.placeholder.com/150",
-            "https://via.placeholder.com/150",
-            "https://via.placeholder.com/150",
-          ]}
+        profileImgUrlList = {userList.profileImgUrlList}
         />
-        <EventUploadList users={users} onRemove={onRemove} isRoomMaker={true} />
+        <EventUploadList userInfo = {userList.userInfo} loginUserId = {userList.loginUserId}/>
+        {userList.isRoomMaker ? (
+          <div className="makeBarcode">
+            <button className="makeBarcodeBtn">무코 생성</button>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );

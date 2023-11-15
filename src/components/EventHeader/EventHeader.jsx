@@ -5,14 +5,13 @@ import { FiLink } from "react-icons/fi"
 import { FaRegEdit } from "react-icons/fa"
 import './EventHeader.css';
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import EventModal from '../EventModal/EventModal'
 import Toast from '../EventToast/EventToast'
 import { TbDoorExit } from "react-icons/tb";
 const EventHeader = ({eventName, startDate, endDate, isRoomMaker}) => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [toast, setToast] = useState(false);
-
     const openModal = () => {
         setModalIsOpen(true);
       };
@@ -25,11 +24,14 @@ const EventHeader = ({eventName, startDate, endDate, isRoomMaker}) => {
         await navigator.clipboard.writeText(location.href); // 링크 복사 부분
         setToast(true);
       };
-
+      const {id} = useParams();
       const navigate = useNavigate();
 
       const goToEvent = () => {
           navigate("/event")
+      }
+      const goToSetting = () => {
+        navigate(`/eventsetting/${id}`);
       }
     return (
         <>
@@ -48,7 +50,7 @@ const EventHeader = ({eventName, startDate, endDate, isRoomMaker}) => {
                     <TbDoorExit size="22" color="white"/>
                 </button>
                 {isRoomMaker ? 
-                <button className='edit'>
+                <button className='edit' onClick={goToSetting}>
                     <FaRegEdit size="22" color="white"/>
                 </button> : <></>}
             </div>

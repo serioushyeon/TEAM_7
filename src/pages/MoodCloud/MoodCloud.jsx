@@ -1,11 +1,12 @@
 import './MoodCloud.css';
 import Icon from '../../assets/images/MoodCloud/cloud1.png'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 const MoodCloudList = ({title}) => {
+    const {id} = useParams();
     const navigate = useNavigate();
 
     const goToTicket= () => {
-        navigate("/ticket");
+        navigate(`/ticket/${id}`);
     }
     return (
         <>

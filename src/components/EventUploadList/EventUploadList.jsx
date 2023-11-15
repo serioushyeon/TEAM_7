@@ -9,7 +9,8 @@ import { useState, useEffect } from "react";
 import EventModel from "../EventModal/EventModal";
 import { io } from "socket.io-client";
 
-const EventUploadBlock = ({ user, onRemove }) => {
+const EventUploadBlock = ({userId, nickname, imageUrlList,checkStatus,imageCount,loginUserId }) => {
+
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
@@ -30,29 +31,32 @@ const EventUploadBlock = ({ user, onRemove }) => {
 
   // 이미지 개수가 30개 이상이면 checkbox를 활성화
   useEffect(() => {
-    if (user.img.length >= 30) {
+    if (imageCount >= 30) {
       setIsChecked(true);
 
       // 클라이언트에서 서버로 체크 상태를 보냄
-      socket.emit(`/topic/check/${user.id}`, { checkStatus: true });
+      socket.emit(`/topic/check/${userId}`, { checkStatus: true });
     }
-  }, [user.img.length, socket, user.id]);
+  }, [imageCount, socket, userId]);
 
   return (
     <div className="list">
       <div className="uploadlist">
         <div className="done">
-          <input type="checkbox" id="check_btn" checked={isChecked} />
+          <input type="checkbox" id="check_btn" checked={checkStatus ? isChecked : !isChecked} />
         </div>
         <div className="nicknameBox">
-          나는 <span className="nickname">{user.name}</span>이야!
+          나는 <span className="nickname">{nickname}</span>이야!
         </div>
-        <div className="count">+{user.img.length}</div>
-        <div className="btn">
-          <button className="deleteBtn" onClick={openModal}>
-            <LiaTrashAltSolid size="24" color="white" />
-          </button>
-        </div>
+        <div className="count">+{imageCount}</div>
+          {userId == loginUserId ?
+          <div className="btn">
+            <button className="deleteBtn" onClick={openModal}>
+              <LiaTrashAltSolid size="24" color="white" />
+            </button>
+          </div>
+          : <div className="btn"></div>
+          }
       </div>
       <EventModel
         modalIsOpen={modalIsOpen}
@@ -77,26 +81,26 @@ const NoList = () => {
   );
 };
 
-const EventUploadList = ({ users, onRemove, isRoomMaker }) => {
+const EventUploadList = ({ userInfo, loginUserId }) => {
   return (
     <>
       <div className="eventUploadList">
-        {users.map((user) => (
-          <EventUploadBlock user={user} key={user.id} onRemove={onRemove} />
+        {userInfo.map((userInfo) => (
+          <EventUploadBlock 
+          userId={userInfo.userId} 
+          nickname = {userInfo.nickname}
+          imageUrlList = {userInfo.imageUrlList}
+          checkStatus = {userInfo.checkStatus}
+          imageCount = {userInfo.imageCount}
+          loginUserId = {loginUserId}
+          />
         ))}
-        {users.length === 0 ? <NoList /> : <></>}
+        {userInfo.length === 0 ? <NoList /> : <></>}
         <div className="addList">
           <button className="addListBtn">
             <IoIosAddCircleOutline size="40" color="#F28B50" />
           </button>
         </div>
-        {isRoomMaker ? (
-          <div className="makeBarcode">
-            <button className="makeBarcodeBtn">무코 생성</button>
-          </div>
-        ) : (
-          <></>
-        )}
       </div>
     </>
   );
