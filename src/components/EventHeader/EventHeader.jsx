@@ -22,7 +22,7 @@ const EventHeader = ({eventName, startDate, endDate, isRoomMaker}) => {
       };
 
       const copyUrl = async () => {
-        //await navigator.clipboard.writeText(url); // 링크 복사 부분
+        await navigator.clipboard.writeText(location.href); // 링크 복사 부분
         setToast(true);
       };
 
