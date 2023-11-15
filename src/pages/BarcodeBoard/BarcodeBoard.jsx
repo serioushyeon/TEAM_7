@@ -4,6 +4,13 @@ import { FaRegCircle } from "react-icons/fa";
 import QR from "qrcode.react";
 import './BarcodeBoard.css'
 import Icon from '../../assets/images/MoodCloud/cloud1.png'
+import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Modal from 'react-modal';
+import Toast from '../../components/EventToast/EventToast'
+import html2canvas from 'html2canvas';
+import saveAs from "file-saver";
+import barcode from "../../assets/images/Barcode/barcodebg.jpg"
 const EventG = () => {
     return (
         <>
@@ -46,21 +53,115 @@ const BarcodeBoard = () => {
 	createdAt:"2028-03-11", //2023.09.08
 	memberCnt: 0
     }
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [toast, setToast] = useState(false);
+
+    const openModal = () => {
+        setModalIsOpen(true);
+      };
+    
+      const closeModal = () => {
+        setModalIsOpen(false);
+      };
+
+      const copyUrl = async () => {
+        await navigator.clipboard.writeText(location.href); // 링크 복사 부분
+        setToast(true);
+      };
+
+      const navigate = useNavigate();
+
+      const goToUser = () => {
+          navigate("/event")
+      }
+      const goToLogin = () => {
+        navigate("/event")
+    }
+
+    const divRef = useRef(null);
+
+    const handleDownload = async () => {
+        if (!divRef.current) return;
+    
+        try {
+          const div = divRef.current;
+          const canvas = await html2canvas(div, { scale: 2 });
+          canvas.toBlob((blob) => {
+            if (blob !== null) {
+              saveAs(blob, "ticket.png");
+            }
+          });
+        } catch (error) {
+          console.error("Error converting div to image:", error);
+        }
+      };
+      const downloadFile = (url) => {
+      
+        fetch(url, { method: 'GET' })
+            .then((res) => {
+                return res.blob();
+            })
+            .then((blob) => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "MooCo.png";
+                document.body.appendChild(a);
+                a.click();
+                setTimeout((_) => {
+                    window.URL.revokeObjectURL(url);
+                }, 60000);
+                a.remove();
+                setOpen(false);
+            })
+            .catch((err) => {
+                console.error('err: ', err);
+            });
+    };
+    const customModalStyles = {
+        overlay: {
+            backgroundColor: " rgba(0, 0, 0, 0.4)",
+            maxWidth: "390px",
+            width: "100vw",
+            height: "100vh",
+            zIndex: "10",
+            position: "fixed",
+            top: "50%",
+            left: "50%",
+            transform: " translate(-50%, -50%)"
+        },
+        content: {
+        borderStyle: "none",
+        width: "70%",
+        height: "6.25rem",
+        zIndex: "150",
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        borderRadius: "10px",
+        boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
+        backgroundColor: "rgba(0, 0, 0, 0.66)",
+        justifyContent: "center",
+        overflow: "auto",
+        },
+      };
     return (
         <>
             <div className="boardWrapper">
+            {toast && <Toast setToast={setToast} text={"클립보드에 복사되었습니다."}/>}
                 <div className="boardTitle">
                     {ticket.nickname}&nbsp;님의&nbsp;<span style={{color:"#FF7A45"}}>티켓</span>
                 </div>
                 <div className="ticketBtnWrapper">
                     <div>
-                        <GrCopy  className="ticketIcon" size="24"/>
+                        <GrCopy onClick={copyUrl} className="ticketIcon" size="24"/>
                     </div>
                     <div>
-                        <MdOutlineFileDownload  className="ticketIcon" size="28"/>
+                        <MdOutlineFileDownload  onClick={openModal}className="ticketIcon" size="28"/>
                     </div>
                 </div>
-                <div className="tickerContainerWrapper">
+                <div className="tickerContainerWrapper" ref = {divRef}>
                 <div className="ticketContainer">
                     <div className="ticketTitle">
                         <div className="ticketCreateDate">{ticket.createdAt}</div>
@@ -102,8 +203,8 @@ const BarcodeBoard = () => {
                                 <div className="QRCode">
                                     <QR
                                     value={window.location.href}
-                                    size={160}
-                                    level={"H"}
+                                    size={140}
+                                    level={"L"}
                                     includeMargin={false}
                                     />
                                 </div>
@@ -113,7 +214,9 @@ const BarcodeBoard = () => {
                     <div className="barcodeContainer">
                             <div className="barcodeTitle">무코</div>
                             <div className="barcode">
-                                <img src={ticket.barcodeUrl}/>
+                                <div className="barcodeImage"style={{backgroundImage: "url("+(barcode)+")"}}>
+
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -128,6 +231,17 @@ const BarcodeBoard = () => {
                     <EventG/>
                  </div>
             </div>
+            <Modal style={customModalStyles}ariaHideApp={false} isOpen={modalIsOpen} shouldCloseOnOverlayClick={false}>
+            <button className="modalCloseBtn" onClick={closeModal}>X</button>
+            <div className="modalWrapper">
+                <div className='modalContent'>어떻게 저장하시겠습니까?</div>
+                <div className='notice'></div>
+                <div className='modalBtnWrapper'>
+                    <button className='modalBtn' onClick={()=>{handleDownload();}}>티켓 저장</button>
+                    <button className='modalBtn' onClick={()=>{downloadFile(barcode);}}>바코드 저장</button>
+                </div>
+            </div>
+        </Modal>
         </>
     )
 }
