@@ -4,31 +4,23 @@ import CameraImoge from "../../assets/images/calendarPhoto/camera.svg";
 const Container = styled.div`
   position: relative;
   display: flex;
-  align-items: center;
   margin: 0 auto;
-  max-width: 390px;
-  max-height: 844px;
-  height: 100%;
   flex-direction: column;
-`;
-
-const Bg = styled.div`
-  position: relative;
-  width: 390px;
-  height: auto;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
+  width: 100%;
+  overflow-y: scroll;
+  height: calc(100vh - 100px);
 `;
 
 const DayWeek = styled.div`
-  position: absolute;
-  top: 3.375rem;
-  left: 11.28rem;
   color: #022859;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  width: 100%;
+  height: 40px;
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
 `;
 
 const SmallText = styled.div`
@@ -39,52 +31,52 @@ const SmallText = styled.div`
 `;
 
 const DateColor = styled.div`
-  position: absolute;
-  top: 7.5rem;
-  left: 9.9rem;
+  display: flex;
+  justify-content: center;
   color: #000;
 `;
 
-const SettingText = styled.div`
-  color: #5e5e5e;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-`;
+const SettingText = styled.div``;
 
 const SettingPhoto = styled.div`
-  position: absolute;
-  top: 13.23rem;
-  left: 1.43rem;
+  display: flex;
+  margin-top: 90px;
+  margin-left: 30px;
+  margin-bottom: 15px;
 `;
 
 const SettingMemo = styled.div`
-  position: absolute;
-  top: 33.2rem;
-  left: 1.43rem;
+  margin-top: 20px;
+  margin-left: 30px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+`;
+
+const PhotoWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;
 
 // 사진 전체 컨테이너(나중에 배경색 바꿔주세요)
 const PhotoContainer = styled.div`
   display: flex;
-  position: absolute;
   flex-wrap: wrap;
   gap: 0.7rem;
-  top: 15.125rem;
-  left: 01rem;
-  width: 21.2rem;
-  height: 14.5rem;
-  padding: 0.5rem;
+  width: 90%;
+  height: 230px;
+  align-items: center;
+  justify-content: flex-start;
 `;
 
 // 포토박스(이 컴포넌트에 사진 넣으면 알아서 정렬됨(5개)
 const AddPhotoBox = styled.div`
   display: flex;
-  width: 6.25rem;
-  height: 6.25rem;
+  width: 30%;
+  height: 100px;
   border-radius: 4px;
   border: 1px solid #cbcbcb;
-  /* background-color: #FAFAFA; */
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -109,16 +101,6 @@ const CPhotoText = styled.div`
   display: flex;
 `;
 
-// 대표사진 표시 박스(추후 위치 지정 해야함)
-const RepresentativePhotoBox = styled.div`
-  width: 6.25rem;
-  height: 1.625rem;
-  border-radius: 0px 0px 4px 4px;
-  background: #303030;
-  align-items: center;
-  text-align: center;
-`;
-
 // 대표 사진 텍스트
 const RepresentativePhotoText = styled.div`
   color: white;
@@ -128,106 +110,46 @@ const RepresentativePhotoText = styled.div`
   position: absolute;
   bottom: 0;
   width: 92%;
+  height: 20px;
   border-radius: 0px 0px 4px 4px;
+  font-size: 13px;
 `;
 
 const MemoBox = styled.textarea`
-  position: absolute;
-  top: 35rem;
-  left: 0.93rem;
-  width: 21.25rem;
-  height: 5.6rem;
   border-radius: 4px;
   border: 1px solid #cbcbcb;
   outline: none;
-  resize: none;
+  /* resize: none; */
   background-color: #fff;
-  color: #cbcbcb;
+  color: black;
   font-family: Noto Sans KR;
   font-size: 12px;
   padding: 0.625rem;
+  width: 85%;
+  /* margin-left: 20px; */
+  margin-top: 10px;
+  height: 100px;
+  position: relative;
 
   ::placeholder {
     color: #cbcbcb;
   }
 `;
 
-const CalendarButtonStyle = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 7.5rem;
-  height: 2.5rem;
-  border-radius: 4px;
-  border: 1px solid #cbcbcb;
-  color: #bababa;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-`;
-
 const StyledMaxLength = styled.div`
-  position: absolute;
-  display: flex;
-  top: 40.7rem;
-  right: 1.375rem;
-  color: #cbcbcb;
-  font-family: Noto Sans KR;
+  position: absolute; /* 절대 위치 설정 */
+  bottom: 5px; /* 하단 여백 조절 */
+  right: 40px; /* 우측 여백 조절 */
+  color: gray;
   font-size: 12px;
-`;
-
-const ImageUploadContainer = styled.div`
-  display: grid;
-  grid-gap: 0;
-  grid-template-columns: 80px 80px auto 1fr;
-  justify-content: center;
-  margin-top: 50px;
-  margin-left: 30px;
-  max-height: calc(100vh - 100px - 120px - 140px);
-  overflow-y: scroll;
-  width: 85%;
-`;
-
-const UploadButton = styled.label`
-  width: 76px;
-  height: 76px;
-  border: 1px solid ${(props) => (props.hasImages ? "black" : "#cbcbcb")};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  cursor: pointer;
-  border-radius: 4px 0 0 0;
-  flex-direction: column;
-`;
-
-const UploadIcon = styled.img`
-  width: 50%;
-`;
-
-const UploadCount = styled.div`
-  font-size: 12px;
-  margin-top: 10px;
-  color: ${(props) => (props.hasImages ? "black" : "#cbcbcb")};
-`;
-const StyledImage = styled.img`
-  width: 80px;
-  height: 80px;
-  margin: 0;
-  border: ${(props) => (props.isSelected ? "1px solid #F28B50" : "none")};
 `;
 
 const UploadChange = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: center;
   gap: 30px;
-  position: fixed;
-  bottom: 120px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: auto;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
 `;
 
 const UploadChangeItem = styled.div`
@@ -244,7 +166,6 @@ const UploadChangeItem = styled.div`
 
 export const S = {
   Container,
-  Bg,
   DayWeek,
   SmallText,
   DateColor,
@@ -255,16 +176,11 @@ export const S = {
   AddPhotoBox,
   CPhotoText,
   CPhotoImage,
-  RepresentativePhotoBox,
   RepresentativePhotoText,
   MemoBox,
-  CalendarButtonStyle,
+  // CalendarButtonStyle,
   StyledMaxLength,
-  ImageUploadContainer,
-  UploadButton,
-  UploadIcon,
-  UploadCount,
-  StyledImage,
   UploadChange,
   UploadChangeItem,
+  PhotoWrapper,
 };
