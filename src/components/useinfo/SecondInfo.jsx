@@ -26,7 +26,7 @@ const DUMMY_USERINFO = {
   nickName: "Eunji",
     birth: "2002.08.27",
     gender: "Y",
-    dateOfIssue: "2023.11.15",
+    dateOfIssue: "2023-11-15",
     barcodeCount: 4,
     profileImage: "",
     recentBarcodeImg: "",
@@ -38,9 +38,9 @@ export default function SecondInfo() {
   const [edit, setEdit] = useState(false);
   const [userData, setUserData] = useState({
     nickName: "Eunji",
-    birth: "2002.08.27",
-    gender: "Y",
-    dateOfIssue: "2023.11.15",
+    birth: "",
+    gender: "",
+    dateOfIssue: "",
     barcodeCount: 4,
     profileImage: "",
     recentBarcodeImg: "",
@@ -87,7 +87,8 @@ const handleEditUserInfo = () => {
     <S.Book2Container>
             <S.EditButton onClick={handleEditUserInfo}/>
             <S.ProfileImage url = {userData.profileImage}/>
-            <S.InputProfile type="file" />
+            <S.ProfileLabel for="profile">프로필 사진<br />변경</S.ProfileLabel>
+            <S.InputProfile type="file" id="profile"/>
             <S.NickName>
             <S.Question>닉네임/Nick name</S.Question>
             <S.Answer 
@@ -100,25 +101,54 @@ const handleEditUserInfo = () => {
             <S.Date>
               <S.Question>생일/Date of birth</S.Question>  
             <S.Answer 
-            type="text" 
+            type="date" 
+            name="birthday"
+            min="1900-01-01"
+            max="2024-01-01"
             value={userData.birth}
             onChange={(e) => handleInfoChange(e, 'birth')} 
             readOnly={!edit} />
             </S.Date>
             <S.Sex>
             <S.Question>성별</S.Question>
-            <S.Answer 
-            type="text" 
-            value={userData.gender}
+              {edit ? (
+                <>
+                <input
+                type="radio" 
+                value="M"
+                name="gender"
+                onChange={(e) => handleInfoChange(e, 'gender')} 
+                onlyone
+                />M
+                <input
+            type="radio" 
+            value="Y"
+            name="gender"
             onChange={(e) => handleInfoChange(e, 'gender')} 
-            readOnly={!edit} />
+            />Y
+                </>
+              ) : (
+            <>
+             <S.Answer 
+             type="text" 
+             value={userData.gender === 'M' ? '남성' : '여성'}
+             readOnly
+           />
+           </>
+              )}
+            
             </S.Sex>
             <S.DateOfIssue>
-            <S.Question>발급일/Date of issue</S.Question>
+            <S.Question
+            placeholder="1999.09.30"
+            readOnly
+            >발급일/Date of issue</S.Question>
             {userData.dateOfIssue}
             </S.DateOfIssue>
             <S.NunberBarcord>
-            <S.Question>보유 바코드 수/Number</S.Question>
+            <S.Question
+            readOnly
+            >보유 바코드 수/Number</S.Question>
             {userData.barcodeCount}
             </S.NunberBarcord>
             <S.UserBarcord />

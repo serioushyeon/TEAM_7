@@ -24,6 +24,15 @@ height: 100px;
 background-image: url(${Cloud});
 `
 
+const BarcordImage =styled.div`
+position: absolute;
+width: 120px;
+height: 100px;
+background-size: cover;
+background-position: center;
+`
+// BarcordImage가 CloudImage 내부에 위치하도록
+
 const FirstCloud = styled.div`
 position: absolute;
 top: 2.5rem;
@@ -85,14 +94,24 @@ line-height: normal;
 `
 
 const Answer = styled.input`
-color: #000;
+color: #5E5E5E;
 font-size: 12px;
 font-style: normal;
-font-weight: 500;
+font-weight: 400;
 line-height: normal;
 background-color: transparent;
 border: none;
 outline: none;
+
+/* value가 비어있지 않을 때 적용할 스타일
+속성을 css로 변경할 수는 없고, prop으로 전달해야하는 듯. */
+  ${({ value }) => value && `
+  color: #000;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  `}
 `
 
 const NickName = styled.div`
@@ -166,20 +185,45 @@ background-image: url(${InfoBarcord});
 
 const InputProfile = styled.input`
 position: absolute;
-top: 2rem;
-left: 0.625rem;
-width: 100px;
-height: 140px;
-padding: 0;
-margin: -1px;
-overflow: hidden;
-
-border: 0;
+width: 1px;
+height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip:rect(0,0,0,0);
+  border: 0;
 `
+
+const ProfileLabel = styled.label`
+  position: absolute;
+  display: flex;
+  padding: 49px;
+  text-align: center;
+  align-items: center;  // 수직 중앙 정렬
+  justify-content: center;  // 수평 중앙 정렬
+  top: 2rem;
+  left: 0.625rem;
+  width: 99px;  
+  height: 140px; 
+  cursor: pointer;
+  border-radius: 4px;  
+  border: 1px solid var(--gray-scale-gray-300-border, #CBCBCB);
+  background: rgba(94, 94, 94, 0.50);
+
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  color: #FAFAFA;
+  padding: 0;
+`
+// 위 padding: 49px만 있을 땐 글자가 같이 축소해서 수직 일렬로 섰는데,
+// 아래 padding: 0을 추가하니 글자가 컨테이너 내부에서 완벽하게 중앙 정렬이 되었음.
 
 export const S = {
     BookContainer,
     CloudImage,
+    BarcordImage,
     FirstCloud,
     SecondCloud,
     ThirdCloud,
@@ -194,5 +238,6 @@ export const S = {
     DateOfIssue,
     NunberBarcord,
     UserBarcord,
-    InputProfile
+    InputProfile,
+    ProfileLabel
 }
