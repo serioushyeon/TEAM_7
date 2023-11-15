@@ -1,0 +1,54 @@
+.eventsetting{
+    position: relative;
+    height: calc(var(--vh, 1vh) * 100);
+    color: #5E5E5E;
+  }
+  .eventIconDiv{
+    width: 100%;
+    position: absolute;
+    top: 20%;
+    text-align: center;
+  }
+  .noEvent{
+    width: 100%;
+    position: absolute;
+    top: 25%;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 400;
+  }
+  .eventComment{
+    width: 100%;
+    position: absolute;
+    top: 30%;
+    text-align: center;
+    font-weight: 600;
+  }
+  .eventComment span{
+    color: #F28B50;
+  }
+  .newEventBox{
+    display: flex;
+    position: absolute;
+    top: 37%;
+    width: 100%;
+    justify-content: center;
+  }
+  .newEvent{
+    display: flex;
+    font-size: 0.875rem;
+    color: #CBCBCB;
+    width: 12.5rem;
+    height: 7.5rem;
+    border: 1px #CBCBCB solid;
+    border-radius: 4%;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+  }
+  .newEvent:hover{
+    transition: 0.2s;
+    color: #DE684F;
+    border-color: #F28B50;
+  }
+  

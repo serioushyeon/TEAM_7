@@ -1,0 +1,57 @@
+::-webkit-scrollbar {
+    display: none;
+}
+.mCWrapper{
+    position: relative;
+    height: 100vh;
+    overflow-y: scroll;
+}
+.cloudList{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    height: 70%;
+}
+
+.mCTitle{
+    display: flex;
+    height: 10%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+.marginB{
+    width: 50%;
+    height: 100px;
+}
+.cloudWrapper{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.cloudIconWrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 7.5rem;
+    height: 7.5rem;
+}
+.cloudIcon{
+    width: 90%;
+    height: 90%;
+}
+.cloudTitleWrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.875rem;
+
+}
+.cloudTitle{
+
+}
