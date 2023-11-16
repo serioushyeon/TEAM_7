@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import EarthImoge from '../../assets/images/Login/earthSymbol.svg';
 import KakaoLogin from '../../assets/images/Login/kakaoLogin.svg';
 import Speaker from '../../assets/images/Login/loudspeaker.svg';
-import Chat from '../../assets/images/Login/chatImoge.svg';
+import Chat from '../../assets/images/Login/ChatImoge.svg';
 import Goorm from '../../assets/images/Login/TitleGoorm.svg';
 
 const Container = styled.div`

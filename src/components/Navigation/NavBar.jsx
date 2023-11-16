@@ -11,7 +11,7 @@ display: flex;
 align-items: center;
 justify-content: center;
 margin: 0 auto;
-max-width: 390px;
+max-width: 100vw;
 max-height: 844px;
 ` 
 
@@ -20,13 +20,16 @@ position: fixed;
 background: var(--PrimaryLightVer, #FAFAFA);
 bottom: 0;
 display: flex;
-width: 390px;
+width: 100%;
+max-width: 390px;
 height: 100px;
+justify-content:center;
 align-items: center;
 z-index: 500;
 `
 
 const NavigationButton = styled(Link)`
+width: 25%;
 font-size : 14px;
 text-align: center;
 
@@ -39,8 +42,8 @@ text-decoration: none;
 
 const ButtonImoge = styled.img`
 margin: 0 2rem 0 2rem;
-width: 28px;
-height: 28px;
+width: 24px;
+height: 24px;
 background-repeat: no-repeat;
 `
 

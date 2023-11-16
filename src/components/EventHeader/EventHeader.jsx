@@ -24,9 +24,18 @@ const EventHeader = () => {
       };
 
       const copyUrl = async () => {
-        await navigator.clipboard.writeText(location.href); // 링크 복사 부분
+        var textarea = document.createElement('textarea');
+        textarea.value = location.href;
+
+        document.body.appendChild(textarea);
+        textarea.select();
+        textarea.setSelectionRange(0, 9999);  // 추가
+
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+
         setToast(true);
-      };
+    };
       const navigate = useNavigate();
 
       const goToEvent = () => {

@@ -3,6 +3,7 @@ import { S } from './PassportStyle';
 import First from '../../components/useinfo/FirstInfo';
 import Second from '../../components/useinfo/SecondInfo'
 
+
 export default function Passport() {
   return (
     <S.Container>

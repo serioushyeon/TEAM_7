@@ -5,8 +5,11 @@ import eventSlice from "./eventSlice";
 import dateSlice from "./dateSlice";
 import CalendarUI from "./CalendarUI";
 import CalendarPhotoBoard from "./CalendarPhotoBoard";
+import dateRangeSlice from "./dateRangeSlice";
 import eventListSlice from "./eventListSlice";
 import myEventSlice from "./myEventSlice";
+import barcodeListSlice from "./barcodeListSlice";
+import ticketSlice from "./ticketSlice";
 
 // 여기서 데이터 관리해주세요.
 export default configureStore({
@@ -17,7 +20,10 @@ export default configureStore({
     date: dateSlice,
     calendarUI: CalendarUI,
     CalendarPhotoBoard: CalendarPhotoBoard,
+    dateRange: dateRangeSlice,
     eventList: eventListSlice,
-    myEvent: myEventSlice
+    myEvent: myEventSlice,
+    barcodeList: barcodeListSlice,
+    ticket: ticketSlice
   },
 });

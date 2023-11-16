@@ -10,7 +10,7 @@ import { setEventList } from "../../redux/eventListSlice";
 import axios from "axios";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
-
+import BG from "../../assets/images/Event/eventBG.jpg"
 const EventDisplay = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -47,6 +47,7 @@ const EventDisplay = () => {
     };
   }, [id]); // id가 변경될 때마다 연결을 재설정합니다.
 
+
   // 바코드 생성 핸들러
   const handleBarcodeGeneration = async () => {
     if (buttonEnabled) {
@@ -63,7 +64,7 @@ const EventDisplay = () => {
 
   return (
     <>
-      <div className="eventDisplayWrap">
+      <div className="eventDisplayWrap" style={{backgroundImage:`url(${BG})`}}>
         <EventHeader />
         <EventParticipants />
         <EventUploadList

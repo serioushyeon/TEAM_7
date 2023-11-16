@@ -6,66 +6,110 @@ import { ko } from "date-fns/esm/locale";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setEventId } from "../../redux/myEventSlice";
+import { setEventDate, setEventName } from "../../redux/eventListSlice";
 
 const EventSetting = () => {
   const event = useSelector((state)=>state.eventList);
   const myEvent = useSelector((state)=>state.myEvent);
+  const dispatch = useDispatch();
+  const getAccessCookie = localStorage.getItem("accessCookie");
+
   const title = event.eventName;
   const startD = event.startDate
   const endD = event.endDate;
 
   const [startDate, setStartDate] = useState(new Date(startD));
   const [endDate, setEndDate] = useState(new Date(endD));
-  const [eventName, setEventName] = useState(title);
-
+  const [eventName, setEventTitle] = useState(title);
+  const [flag, setFlag] = useState(true);
   
   const saveEventName = (e) => {
-    setEventName(e.target.value);
+    setEventTitle(e.target.value);
   };
 
-  const navigate = useNavigate();
+  const eventAlert = () => {
+    if( startDate > endDate ) {
+      setFlag(false);
+      alert("날짜를 다시 지정해주세요");
+    }
+    else {
+      setFlag(true);
+    }
+    if(!eventName){
+      setFlag(false);
+      alert("이벤트 명을 작성해주세요");
+    }
+    else {
+      setFlag(true);
+    }
+  }
 
+  const navigate = useNavigate();
+  const makeEvent = () => {
+    postEventData();
+  }
   const goToEventDisplay = () => {
-    navigate(`/eventdisplay/${myEvent.eventId}`, { state: { startDate, endDate, eventName } });
+    navigate(`/eventdisplay/${myEvent.eventId}`);
   };
 
   const editEvent = () => {
     putEventName();
-    putEventNDate();
+    putEventDate();
     goToEventDisplay();
   }
+
+  //이벤트 생성 API
   const postEventData = async () => {
     try {
-      const response = await axios.post(`/api/v1/event/new-event`, {
+      const response = await apiClient.post(`/api/v1/event/new-event`, {
         title: eventName,
         startDate : startDate,
         endDate: endDate,
-      });
-      console.log(response.data);
+      }, {
+        headers: {
+          Authorization: `Bearer ${getAccessCookie}`
+      }
+    });
+      const { eventId } = response.data;
+      dispatch(setEventId({eventId}));
       goToEventDisplay();
     } catch (error) {
       console.error("Error posting data", error);
     }
   };
 
+  //이벤트 이름 수정 API
   const putEventName = async () => {
     try {
       const response = await axios.put(`/api/v1/event/${event.id}/event-name`, {
         eventName: eventName
-      });
+      }, {
+        headers: {
+          Authorization: `Bearer ${getAccessCookie}`
+      }
+    });
       console.log(response.data);
+      dispatch(setEventName({eventName}));
     } catch (error) {
       console.error("Error posting data", error);
     }
   }
-  const putEventNDate = async () => {
+
+  //이벤트 기간 수정 API
+  const putEventDate = async () => {
     try {
       const response = await axios.put(`/api/v1/event/${id}/event-name`, {
         startDate : startDate,
         endDate: endDate,
-      });
+      }, {
+        headers: {
+          Authorization: `Bearer ${getAccessCookie}`
+      }
+    });
       console.log(response.data);
+      dispatch(setEventDate({startDate, endDate}));
     } catch (error) {
       console.error("Error posting data", error);
     }
@@ -144,10 +188,10 @@ const EventSetting = () => {
         </div>
         <div className="eventMake">{
           !myEvent.isExistEvent ? 
-          <button className="eventMakeBtn" onClick={goToEventDisplay}>
+          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? makeEvent : ()=>{}}}>
             이벤트 생성
           </button> :
-          <button className="eventMakeBtn" onClick={goToEventDisplay}>
+          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? editEvent : ()=>{}}}>
             이벤트 수정
           </button>
           }

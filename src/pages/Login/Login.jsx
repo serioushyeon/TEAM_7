@@ -1,21 +1,21 @@
 import React, { useState } from 'react'
 import { S } from './LoginStyle';
 import { useNavigate } from 'react-router-dom';
+import { apiClient } from '../../api/ApiClient';
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(false);
   const navigate = useNavigate();
 
-  function handleLogin() {
+  console.log('환경변수', import.meta.env.VITE_APP_SERVER_HOST);
+  console.log('apiClient', apiClient);
+
+   function handleLogin() {
     window.location.href = `${
       import.meta.env.VITE_APP_SERVER_HOST
-    }/oauth/authorization/kakao`;
+    }/oauth2/authorization/kakao`;
     setIsLogin(true);
   }
-
- /* function handleLogin() {
-    navigate('/substart');
-  }*/
 
   return (
     <S.Container>
