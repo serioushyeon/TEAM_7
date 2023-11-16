@@ -48,9 +48,9 @@ const DayG = ({imageInfoList}) => {
                     <div className="uploadBImgBlock">
                         <img className="uploadBImg"src={image}/>
                     </div>)}
-                <div className='marginG'></div>
-                <div className='marginG'></div>
-                <div className='marginG'></div>
+                <div className='uploadBImgBlock'></div>
+                <div className='uploadBImgBlock'></div>
+                <div className='uploadBImgBlock'></div>
                 </div>
             </>
         )}
@@ -68,9 +68,9 @@ const EventG = ({imageInfoList}) => {
                     </div>)}
                 </>
         )}
-            <div className='marginG'></div>
-            <div className='marginG'></div>
-            <div className='marginG'></div>
+            <div className='uploadBImgBlock'></div>
+            <div className='uploadBImgBlock'></div>
+            <div className='uploadBImgBlock'></div>
          </div>
         </>
     )
@@ -259,6 +259,7 @@ const BarcodeBoard = () => {
                                 </div>
                                 <div className="QRCode">
                                     <QR
+                                    className="QRQR"
                                     value={window.location.href}
                                     size={120}
                                     level={"L"}

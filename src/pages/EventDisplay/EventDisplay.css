@@ -7,7 +7,6 @@ body{
 .eventDisplayWrap{
     height: calc(var(--vh, 1vh) * 100);
     overflow-y: hidden;
-    background-image: url('../../assets/images/Event/eventBg.jpg');
     background-size: cover;
 }
 .header{
@@ -30,9 +29,10 @@ body{
 .makeBarcode{
     display: flex;
     position: absolute;
-    top: 60%;
+    top: 65%;
     width: 100%;
     justify-content: center;
+    z-index: 4;
 }
 .makeBarcodeBtn{
     font-size: 0.75rem;
