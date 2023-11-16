@@ -13,7 +13,7 @@ export default function Login() {
    function handleLogin() {
     window.location.href = `${
       import.meta.env.VITE_APP_SERVER_HOST
-    }/oauth/authorization/kakao`;
+    }/oauth2/authorization/kakao`;
     setIsLogin(true);
   }
 
