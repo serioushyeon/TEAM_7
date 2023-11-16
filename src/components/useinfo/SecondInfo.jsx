@@ -4,8 +4,9 @@ import { S } from './Style'
 import { apiClient } from '../../api/ApiClient';
 import DafaultProfile from '../../assets/images/userinfo/defaultProfile.svg';
 import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useCookies } from "react-cookie";
+import userInfoSlice from '../../redux/userInfoSlice';
 
 /*
 {
@@ -36,21 +37,12 @@ const DUMMY_USERINFO = {
 }
 
 export default function SecondInfo() {
-    // useCookit를 이용해서 웹 브라우저의 쿠키에서 데이터를 읽어옴
-    const [accessCookie] = useCookies(["accessCookie"]);
-    const [refreshCookie] = useCookies(["refreshCookie"]);
-  
-     // accessCookie를 로컬 스토리지에 저장
-    /* localStorage.setItem("accessCookie", accessCookie.accessCookie);
-     localStorage.setItem("refreshCookie", refreshCookie.refreshCookie);
-*/
-    // 웹 브라우저의 로컬 스토리지에 저장된 값을 읽어옴. (클라이언트만 확인)
-    const getAccessCookie = localStorage.getItem("accessCookie");
-    const getRefreshCookie = localStorage.getItem("refreshCookie");
+  const dispatch = useDispatch()
+  var formData = new FormData();
 
   const [edit, setEdit] = useState(false);
   const [userData, setUserData] = useState({
-    nickName: "Eunji",
+    nickName: "",
     birth: "",
     gender: "",
     dateOfIssue: "",
@@ -61,8 +53,10 @@ export default function SecondInfo() {
     modalActive: false,
   })
   
+  const [accessCookie] = useCookies(["accessCookie"]);
+   const [refreshCookie] = useCookies(["refreshCookie"]);
 
-  // 리덕스
+  // 리덕스(userData 대신 사용)
   const userInfo = useSelector((state) => state.userData);
 
   // 유저 정보 받아오기
@@ -70,30 +64,51 @@ export default function SecondInfo() {
     try {
       const response = await apiClient.get(`/api/v1/user/user-info`, {
         headers: {
-          // 나중에 토큰 수정 필요
-          Authorization: `${Bearer [access_token]}`
+          // 쿠키 보냄
+          Authorization: `${Bearer [accessCookie]}`
         },
       });
       console.log("성공, UserInfo : ", response.data);
+      dispatch(userInfoSlice(userData));
+      // 데이터 재세팅
 
     } catch (error) {
       console.log(error);
     }
   }
 
-  setUserData
-  // 유저 정보 수정 시 전송
-  const setUserInfo = async () => {
-
-  }
-
+  // 유저 데이터 실시간 수정
   const handleInfoChange = (e, field) => {
     setUserData({ ...userData, [field]: e.target.value });
   };
   
+// 편집 버튼 클릭 시
+const handleEditUserInfo = async (event) => {
+  if(edit === false) {
+    setEdit(!edit); // 편집 모드 토글
+  }
+  // 편집 후 다시 버튼 클릭 시
+  else {
+    event.preventDefault();
+// 폼 데이터로 전송
+    formData.append('profileImage', userData.profileImage);
+    formData.append('nickName', userData.nickName);
+    formData.append('birth', userData.birth);
+    formData.append('gender', userData,gender);
 
-const handleEditUserInfo = () => {
-  setEdit(!edit); // 편집 모드 토글
+    try {
+      const response = await axios.post(`/api/v1/user/user-info`, formData, {
+        headers: {
+          // 쿠키 보냄, axios가 자동으로 Content-type 설정해줌.
+          // 'Content-Type': 'multipart/form-data' <= 미설정 시 이 코드 추가
+          Authorization: `${Bearer [accessCookie]}`
+        },
+      });
+      console.log("성공 formData : ", response.data);
+    } catch (error) {
+      console.error("실패 error : ", error);
+    }
+  }
 };
 
   return (

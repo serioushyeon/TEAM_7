@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
+    "@syncfusion/ej2-react-calendars": "^23.1.41",
     "axios": "^1.6.1",
     "date-fns": "^2.30.0",
     "file-saver": "^2.0.5",
