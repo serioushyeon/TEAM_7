@@ -7,7 +7,7 @@ const EventParticipants = () => {
 
     const arr = [];
     const profile = () => {
-        const count = users.userCount < 6 ? users.userCount-1 : 6;
+        const count = users.userCount < 6 ? users.userCount-1 : 5;
         for(let i = 0; i <= count; i++){
             console.log(users.profileImgUrlList[i]);
             arr.push(
@@ -23,7 +23,7 @@ const EventParticipants = () => {
             <div class="block">
                 {profile()}
                 <div className='countbox'>
-                    +{arr.length}
+                    +{users.userCount}
                 </div>
             </div>
         </>

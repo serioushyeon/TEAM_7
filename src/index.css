@@ -9,12 +9,17 @@
   width: 100vw;
   height: 100vh;
   height: calc(var(--vh, 1vh) * 100);
+  min-height: calc(var(--vh, 1vh) * 100);
   max-width: 390px;
   max-height: 844px;
 }
 
 body {
+  position: fixed;
   margin: 0;
+  overflow: hidden;
+  touch-action: none;
+  
 }
 
 button {
