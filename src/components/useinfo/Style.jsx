@@ -37,18 +37,21 @@ const FirstCloud = styled.div`
 position: absolute;
 top: 2.5rem;
 left: 0.625rem;
+background-image: url(${props => props.url}});
 `
 
 const SecondCloud = styled.div`
 position: absolute;
 top: 7.68rem;
 left: 8.125rem;
+background-image: url(${props => props.url}});
 `
 
 const ThirdCloud = styled.div`
 position: absolute;
 top: 1rem;
 left: 14.5rem;
+background-image: url(${props => props.url}});
 `
 
 const Book2Container = styled.div`
@@ -81,8 +84,9 @@ top: 2rem;
 left: 0.625rem;
 width: 100px;
 height: 140px;
-background-image: url(${Profile});
+background-image: url(${props => props.url});
 `
+// ${props => props.left}
 // ${props => !props.editable && `display: none;`}
 
 const Question = styled.div`
@@ -180,7 +184,7 @@ width: 360px;
 height: 50px;
 top: 12.8rem;
 left: 0;
-background-image: url(${InfoBarcord});
+background-image: url(${props => props.url}});
 `
 
 const InputProfile = styled.input`

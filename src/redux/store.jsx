@@ -9,11 +9,13 @@ import dateRangeSlice from "./dateRangeSlice";
 import eventListSlice from "./eventListSlice";
 import myEventSlice from "./myEventSlice";
 import dateDaySlice from "./dateDaySlice";
+import userInfoSlice from "./userInfoSlice";
 
 // 여기서 데이터 관리해주세요.
 export default configureStore({
   reducer: {
     user: userReducer,
+    userdata: userInfoSlice,
     theme: themeReducer,
     event: eventSlice,
     date: dateSlice,
