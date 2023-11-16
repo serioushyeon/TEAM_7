@@ -1,74 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-const initialStateValue = {
-	profileImgUrlList:["https://via.placeholder.com/150","https://via.placeholder.com/150","https://via.placeholder.com/150"],
-	isRoomMaker : true,
-	eventName : "경복궁 나들이",   
-	startDate : "2023-10-09",   //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
-	endDate : "2023-10-09",     //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
-	loginUserId : "123",
-	userCount : 3,
-	userInfo:
-	[
-	  {
-		userId : "123",
-		nickname : "방장",
-		imageUrlList:["https://via.placeholder.com/150","https://via.placeholder.com/150",],
-		checkStatus : true,
-		imageCount : 2
-	  },
-	  {	
-		userId : "String",
-		nickname : "String",
-		imageUrlList:["https://via.placeholder.com/150"],
-		checkStatus : false,
-		imageCount : 1
-
-	  },
-	  {
-		userId : "String",
-		nickname : "String",
-		imageUrlList:["https://via.placeholder.com/150","https://via.placeholder.com/150"],
-		checkStatus : false,
-		imageCount : 2
-
-	  }
-	]
-  }
+import {format} from 'date-fns';
 
 export const eventListSlice = createSlice({
     name: "eventList",
     initialState: {
-	profileImgUrlList:["https://via.placeholder.com/150","https://via.placeholder.com/150","https://via.placeholder.com/150"],
-	isRoomMaker : true,
-	eventName : "경복궁 나들이",   
-	startDate : "2023-10-09",   //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
-	endDate : "2023-10-09",     //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
-	loginUserId : "123",
-	userCount : 3,
-	userInfo:[{
-		userId : "123",
-		nickname : "방장",
-		imageUrlList:["https://via.placeholder.com/150","https://via.placeholder.com/150",],
-		checkStatus : true,
-		imageCount : 2
-	  },
-	  {	
-		userId : "String",
-		nickname : "String",
-		imageUrlList:["https://via.placeholder.com/150"],
-		checkStatus : false,
-		imageCount : 1
-
-	  },
-	  {
-		userId : "String",
-		nickname : "String",
-		imageUrlList:["https://via.placeholder.com/150","https://via.placeholder.com/150"],
-		checkStatus : false,
-		imageCount : 2
-
-	  }]
+		profileImgUrlList:["https://via.placeholder.com/150"],
+		isRoomMaker : true,
+		eventName : "이벤트 명",   
+		startDate : `${format(new Date(), "yyyy-MM-dd")}`,   //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
+		endDate : `${format(new Date(), "yyyy-MM-dd")}`,     //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
+		loginUserId : "",
+		userCount : 1,
+		userInfo:
+		[]
 	},
     reducers: {
         setEventList: (state, action) => {
@@ -82,8 +26,21 @@ export const eventListSlice = createSlice({
 			state.userInfo = action.payload.userInfo;
         }
     },
+},
+{
+	name: "myEvent",
+	initialState: {
+		isExistEvent : false,
+		eventId: ""
+	},
+	reducers: {
+		setMyEvent: (state, action) => {
+			state.isExistEvent = action.payload.isExistEvent;
+			state.eventId = action.payload.eventId;
+		}
+	}
 });
 
-export const { setEventList } = eventListSlice.actions;
+export const { setEventList,setMyEvent } = eventListSlice.actions;
 
 export default eventListSlice.reducer;

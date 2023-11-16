@@ -8,10 +8,17 @@ import { LiaTrashAltSolid } from "react-icons/lia";
 import { useState, useEffect } from "react";
 import EventModel from "../EventModal/EventModal";
 import { io } from "socket.io-client";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
-const EventUploadBlock = ({userId, nickname, imageUrlList,checkStatus,imageCount,loginUserId }) => {
-
+const EventUploadBlock = ({
+  userId,
+  nickname,
+  imageUrlList,
+  checkStatus,
+  imageCount,
+  loginUserId,
+  onCheckStatusChange,
+}) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
@@ -34,9 +41,8 @@ const EventUploadBlock = ({userId, nickname, imageUrlList,checkStatus,imageCount
   useEffect(() => {
     if (imageCount >= 30) {
       setIsChecked(true);
-
-      // 클라이언트에서 서버로 체크 상태를 보냄
-      socket.emit(`/topic/check/${userId}`, { checkStatus: true });
+      console.log(`Sending check status for user ${userId}: true`);
+      socket.emit("checkStatusChanged", { userId, checkStatus: true });
     }
   }, [imageCount, socket, userId]);
 
@@ -44,20 +50,21 @@ const EventUploadBlock = ({userId, nickname, imageUrlList,checkStatus,imageCount
     <div className="list">
       <div className="uploadlist">
         <div className="done">
-          <input type="checkbox" id="check_btn" checked={checkStatus ? isChecked : !isChecked} />
+          <input type="checkbox" id="check_btn" checked={isChecked} readOnly />
         </div>
         <div className="nicknameBox">
           나는 <span className="nickname">{nickname}</span>이야!
         </div>
         <div className="count">+{imageCount}</div>
-          {userId == loginUserId ?
+        {userId == loginUserId ? (
           <div className="btn">
             <button className="deleteBtn" onClick={openModal}>
               <LiaTrashAltSolid size="24" color="white" />
             </button>
           </div>
-          : <div className="btn"></div>
-          }
+        ) : (
+          <div className="btn"></div>
+        )}
       </div>
       <EventModel
         modalIsOpen={modalIsOpen}
@@ -83,19 +90,19 @@ const NoList = () => {
 };
 
 const EventUploadList = () => {
-  const users = useSelector((state) => state.eventList.value);
+  const users = useSelector((state) => state.eventList);
 
   return (
     <>
       <div className="eventUploadList">
         {users.userInfo.map((userInfo) => (
-          <EventUploadBlock 
-          userId={userInfo.userId} 
-          nickname = {userInfo.nickname}
-          imageUrlList = {userInfo.imageUrlList}
-          checkStatus = {userInfo.checkStatus}
-          imageCount = {userInfo.imageCount}
-          loginUserId = {users.loginUserId}
+          <EventUploadBlock
+            userId={userInfo.userId}
+            nickname={userInfo.nickname}
+            imageUrlList={userInfo.imageUrlList}
+            checkStatus={userInfo.checkStatus}
+            imageCount={userInfo.imageCount}
+            loginUserId={users.loginUserId}
           />
         ))}
         {users.userInfo.length === 0 ? <NoList /> : <></>}
