@@ -95,7 +95,7 @@ const BarcodeBoard = () => {
     const fetchTicketData = async () => {
         try {
           const response = await axios.get(`/api/v1/barcode/${id}/my-ticket`,{
-            headers: { Authorization: `Bearer [${getAccessCookie}]}` }
+            headers: { Authorization: `Bearer ${getAccessCookie}` }
           });
           const {nickname, title, barcodeUrl, startDate, endDate, createdAt, memberCnt,imageInfoList} = response.data;
           dispatch(setTicket({nickname, title, barcodeUrl, startDate, endDate, createdAt, memberCnt,imageInfoList}));

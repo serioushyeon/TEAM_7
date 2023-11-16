@@ -35,7 +35,7 @@ const MoodCloud = () => {
     const fetchBarcodeListData = async () => {
         try {
           const response = await axios.get(`/api/v1/barcode/list`,{
-            headers: { Authorization: `Bearer [${getAccessCookie}]}` }
+            headers: { Authorization: `Bearer ${getAccessCookie}` }
           });
           //리덕스
           const { barcodeList } = response.data;

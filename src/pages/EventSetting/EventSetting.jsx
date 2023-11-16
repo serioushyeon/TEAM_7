@@ -69,7 +69,7 @@ const EventSetting = () => {
         endDate: endDate,
       }, {
         headers: {
-          Authorization: `Bearer [${getAccessCookie}]`
+          Authorization: `Bearer ${getAccessCookie}`
       }
     });
       const { eventId } = response.data;
@@ -87,7 +87,7 @@ const EventSetting = () => {
         eventName: eventName
       }, {
         headers: {
-          Authorization: `Bearer [${getAccessCookie}]`
+          Authorization: `Bearer ${getAccessCookie}`
       }
     });
       console.log(response.data);
@@ -105,7 +105,7 @@ const EventSetting = () => {
         endDate: endDate,
       }, {
         headers: {
-          Authorization: `Bearer [${getAccessCookie}]`
+          Authorization: `Bearer ${getAccessCookie}`
       }
     });
       console.log(response.data);
