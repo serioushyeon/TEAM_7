@@ -6,15 +6,12 @@ export default function Login() {
   const [isLogin, setIsLogin] = useState(false);
   const navigate = useNavigate();
 
-  /* function handleLogin() {
+   function handleLogin() {
     window.location.href = `${
       import.meta.env.VITE_APP_SERVER_HOST
     }/oauth/authorization/kakao`;
     setIsLogin(true);
-  } */
-
- function handleLogin() {
-    navigate('/substart');
+    console.log(import.meta.env);
   }
 
   return (
