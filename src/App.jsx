@@ -56,7 +56,7 @@ function App() {
             <Route path="/calendar-photo" element={<CalendarPhoto />} />
             <Route path="/calendar-non-photo" element={<CCalendarGallery />} />
             <Route path="/test" element={<TestPage />} />
-            <Route path="/eventphoto/:eventId" element={<EventPhoto />} />
+            <Route path="/eventphoto" element={<EventPhoto />} />
             {/* <EmptyEvent /> */}
             <Route path="/event" element={<EmptyEvent />} />
             {/*<EventSetting>*/}
