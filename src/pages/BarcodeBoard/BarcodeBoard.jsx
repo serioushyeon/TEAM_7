@@ -293,13 +293,13 @@ const BarcodeBoard = () => {
                  </div>
             </div>
             <Modal style={customModalStyles}ariaHideApp={false} isOpen={modalIsOpen} shouldCloseOnOverlayClick={false}>
-            <button className="modalCloseBtn" onClick={closeModal}>X</button>
+            <button className="modalCloseBtnB" onClick={closeModal}>X</button>
             <div className="modalWrapper">
-                <div className='modalContent'>무엇을 저장하시겠습니까?</div>
+                <div className='modalContentB'>무엇을 저장하시겠습니까?</div>
                 <div className='notice'></div>
-                <div className='modalBtnWrapper'>
-                    <button className='modalBtn' onClick={()=>{handleDownload();}}>티켓 저장</button>
-                    <button className='modalBtn' onClick={()=>{downloadFile(barcode);}}>바코드 저장</button>
+                <div className='modalBtnWrapperB'>
+                    <button className='modalBtnB' onClick={()=>{handleDownload();}}>티켓 저장</button>
+                    <button className='modalBtnB' onClick={()=>{downloadFile(barcode);}}>바코드 저장</button>
                 </div>
             </div>
         </Modal>

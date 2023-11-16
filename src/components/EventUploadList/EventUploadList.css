@@ -101,19 +101,6 @@ input[type="checkbox"]:disabled{
     justify-content: center;
     margin-bottom: 200px;
 }
-.makeBarcodeBtn:enabled{
-    background-color: rgba(25, 25, 25, 0.1);
-    color: #DDDDDD;
-}
-.makeBarcodeBtn:hover{
-    transition: 0.1s;
-    color: #DE684F;
-    border-color: #F28B50;
-    background-color: rgba(25, 25, 25, 0.5);
-}
-.makeBarcodeBtn:disabled{
-    background-color: rgba(25, 25, 25, 0.3);
-}
 .noList{
     display: flex;
     align-items: center;

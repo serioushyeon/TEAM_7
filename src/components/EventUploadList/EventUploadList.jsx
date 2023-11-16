@@ -90,7 +90,7 @@ const NoList = () => {
 };
 
 const EventUploadList = () => {
-  const users = useSelector((state) => state.eventList.value);
+  const users = useSelector((state) => state.eventList);
 
   return (
     <>

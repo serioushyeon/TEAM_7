@@ -13,7 +13,7 @@ import { io } from "socket.io-client";
 const EventDisplay = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.eventList.value);
+  const users = useSelector((state) => state.eventList);
   const [buttonEnabled, setButtonEnabled] = useState(false);
 
   // API 요청 및 소켓 설정
@@ -22,7 +22,8 @@ const EventDisplay = () => {
       const response = await axios.get(`/api/v1/event/${id}`, {
         headers: { Authorization: `Bearer [access_token]` },
       });
-      dispatch(setEventList(response.data));
+      const {profileImgUrlList, isRoomMaker, eventName, startDate, endDate, loginUserId, userCount, userInfo} = response.data
+      dispatch(setEventList({profileImgUrlList, isRoomMaker, eventName, startDate, endDate, loginUserId, userCount, userInfo}));
       setupSockets();
     } catch (error) {
       console.error("Error fetching data", error);
