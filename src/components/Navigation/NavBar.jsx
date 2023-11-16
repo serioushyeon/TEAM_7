@@ -16,7 +16,7 @@ max-height: 844px;
 ` 
 
 const Navigation = styled.div`
-position: absolute;
+position: fixed;
 background: var(--PrimaryLightVer, #FAFAFA);
 bottom: 0;
 display: flex;
