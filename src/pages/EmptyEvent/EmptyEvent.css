@@ -25,7 +25,7 @@
     font-weight: 600;
   }
   .eventComment span{
-    color: #F28B50;
+    color: #001C30;
   }
   .newEventBox{
     display: flex;
@@ -48,7 +48,9 @@
   }
   .newEvent:hover{
     transition: 0.2s;
-    color: #DE684F;
-    border-color: #F28B50;
+    color: #001C30;
+    font-weight: bold;
+    border-color: #001C30;
+    background-color: white;
   }
   

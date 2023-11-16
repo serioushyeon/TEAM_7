@@ -53,7 +53,7 @@ const MoodCloud = () => {
         <>
             <div className='mCWrapper'>
                 <div className='mCTitle'>
-                    <span className='highlight'>무드&nbsp;</span>클라우드
+                    무드 클라우드
                 </div>
                 <div className="cloudList">
                     {barcodeList.map((item) => <MoodCloudList title={item.title} id = {item.id}></MoodCloudList> )}
