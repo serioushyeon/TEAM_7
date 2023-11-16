@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import Toast from "../../components/EventToast/EventToast";
 
 const EventSetting = () => {
   const event = useSelector((state)=>state.eventList);
@@ -18,14 +19,20 @@ const EventSetting = () => {
   const [startDate, setStartDate] = useState(new Date(startD));
   const [endDate, setEndDate] = useState(new Date(endD));
   const [eventName, setEventName] = useState(title);
-
+  const [toast, setToast] = useState(false);
   
   const saveEventName = (e) => {
     setEventName(e.target.value);
   };
 
+  const showToast = () => {
+    alert("날짜를 다시 지정해주세요");
+  }
   const navigate = useNavigate();
+  const makeEvent = () => {
+    postEventData();
 
+  }
   const goToEventDisplay = () => {
     navigate(`/eventdisplay/${myEvent.eventId}`, { state: { startDate, endDate, eventName } });
   };
@@ -144,10 +151,10 @@ const EventSetting = () => {
         </div>
         <div className="eventMake">{
           !myEvent.isExistEvent ? 
-          <button className="eventMakeBtn" onClick={goToEventDisplay}>
+          <button className="eventMakeBtn" onClick={(startDate > endDate) ? showToast : goToEventDisplay}>
             이벤트 생성
           </button> :
-          <button className="eventMakeBtn" onClick={goToEventDisplay}>
+          <button className="eventMakeBtn" onClick={(startDate > endDate) ? showToast : goToEventDisplay}>
             이벤트 수정
           </button>
           }

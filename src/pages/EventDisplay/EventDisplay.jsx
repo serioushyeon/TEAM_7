@@ -52,7 +52,7 @@ const EventDisplay = () => {
   };
 
   useEffect(() => {
-    fetchEventListData();
+    //fetchEventListData();
   }, [id, dispatch]);
 
   // 바코드 생성 핸들러
