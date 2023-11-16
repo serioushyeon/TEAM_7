@@ -5,22 +5,71 @@ import { BsCalendarHeart, BsCalendarWeek } from "react-icons/bs";
 import { ko } from "date-fns/esm/locale";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const EventSetting = () => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [eventName, setEventName] = useState("");
+  const event = useSelector((state)=>state.eventList);
+  const myEvent = useSelector((state)=>state.myEvent);
+  const title = event.eventName;
+  const startD = event.startDate
+  const endD = event.endDate;
+
+  const [startDate, setStartDate] = useState(new Date(startD));
+  const [endDate, setEndDate] = useState(new Date(endD));
+  const [eventName, setEventName] = useState(title);
+
+  
   const saveEventName = (e) => {
     setEventName(e.target.value);
   };
-  const {id} = useParams();
 
   const navigate = useNavigate();
 
   const goToEventDisplay = () => {
-    navigate(`/eventdisplay/${id}`, { state: { startDate, endDate, eventName } });
+    navigate(`/eventdisplay/${myEvent.eventId}`, { state: { startDate, endDate, eventName } });
   };
 
+  const editEvent = () => {
+    putEventName();
+    putEventNDate();
+    goToEventDisplay();
+  }
+  const postEventData = async () => {
+    try {
+      const response = await axios.post(`/api/v1/event/new-event`, {
+        title: eventName,
+        startDate : startDate,
+        endDate: endDate,
+      });
+      console.log(response.data);
+      goToEventDisplay();
+    } catch (error) {
+      console.error("Error posting data", error);
+    }
+  };
+
+  const putEventName = async () => {
+    try {
+      const response = await axios.put(`/api/v1/event/${event.id}/event-name`, {
+        eventName: eventName
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error posting data", error);
+    }
+  }
+  const putEventNDate = async () => {
+    try {
+      const response = await axios.put(`/api/v1/event/${id}/event-name`, {
+        startDate : startDate,
+        endDate: endDate,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error posting data", error);
+    }
+  }
   return (
     <>
       <div className="eventSetting">
@@ -94,7 +143,7 @@ const EventSetting = () => {
           </form>
         </div>
         <div className="eventMake">{
-          !id ? 
+          !myEvent.isExistEvent ? 
           <button className="eventMakeBtn" onClick={goToEventDisplay}>
             이벤트 생성
           </button> :

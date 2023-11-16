@@ -1,93 +1,136 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import EventHeader from "../../components/EventHeader/EventHeader";
 import EventParticipants from "../../components/EventParticipants/EventParticipants";
 import EventUploadList from "../../components/EventUploadList/EventUploadList";
 import "./EventDisplay.css";
-import BarcodeLoading from "../../components/BarcodeLoading/BarcodeLoading"
+import BarcodeLoading from "../../components/BarcodeLoading/BarcodeLoading";
+import { useDispatch, useSelector } from "react-redux";
+import { setEventList } from "../../redux/eventListSlice";
+import axios from "axios";
+import { io } from "socket.io-client";
+
 const EventDisplay = () => {
-  //   const navigate = useNavigate();
-  //   // 로그인 상태와 사용자 정보를 저장할 스테이트
-  //   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  //   const [userInfo, setUserInfo] = useState(null);
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const users = useSelector((state) => state.eventList);
+  const [buttonEnabled, setButtonEnabled] = useState(false);
 
-  //   useEffect(() => {
-  //     // 여기에 로그인 상태를 확인하는 로직을 구현
-  //     // 예를 들어, 로컬 스토리지나 세션 스토리지에서 토큰을 확인
-  //     const token = localStorage.getItem("kakaoToken");
-  //     if (!token) {
-  //       // 토큰이 없으면 로그인 페이지로 리디렉션
-  //       navigate("/");
-  //     } else {
-  //       // 토큰이 있으면 사용자 정보를 불러와서 저장
-  //       setIsLoggedIn(true);
-  //       // 예: 카카오 API를 사용하여 사용자 정보 가져오기
-  //       fetchKakaoUserInfo(token).then((userInfo) => {
-  //         setUserInfo(userInfo);
-  //       });
-  //     }
-  //   }, []);
+  // 방장이 나가기 알림을 위한 소켓 설정
+  const leaveEventSocket = io("/ws-leave-event");
 
+  // API 요청 및 소켓 설정
+  const fetchEventListData = async () => {
+    try {
+      const response = await axios.get(`/api/v1/event/${id}`, {
+        headers: { Authorization: `Bearer [access_token]` },
+      });
+      const {
+        profileImgUrlList,
+        isRoomMaker,
+        eventName,
+        startDate,
+        endDate,
+        loginUserId,
+        userCount,
+        userInfo,
+      } = response.data;
+      dispatch(
+        setEventList({
+          profileImgUrlList,
+          isRoomMaker,
+          eventName,
+          startDate,
+          endDate,
+          loginUserId,
+          userCount,
+          userInfo,
+        })
+      );
+      setupSockets();
+    } catch (error) {
+      console.error("Error fetching data", error);
+    }
+  };
 
-  const {id} = useParams();
+  // 소켓 설정 함수
+  const setupSockets = () => {
+    const checkSocket = io("/ws-check");
+    const buttonSocket = io("/ws-button");
+    const leaveEventSocket = io("/ws-leave-event");
 
-  const userList = {
-    profileImgUrlList:["https://via.placeholder.com/150","https://via.placeholder.com/150","https://via.placeholder.com/150"],
-		isRoomMaker : true,
-		eventName : "경복궁 나들이",   
-		startDate : "2023-10-09",   //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
-		endDate : "2023-10-09",     //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
-		loginUserId : "123",
-		userInfo:
-		[
-			{
-				userId : "123",
-				nickname : "방장",
-				imageUrlList:["https://via.placeholder.com/150","https://via.placeholder.com/150",],
-				checkStatus : true,
-				imageCount : 2
-			},
-			{	
-				userId : "String",
-				nickname : "String",
-				imageUrlList:["https://via.placeholder.com/150"],
-				checkStatus : false,
-				imageCount : 1
+    // 버튼 소켓 이벤트 리스너 설정
+    buttonSocket.on(`/subscribe/button/${id}`, (data) => {
+      if (data.eventId === id) {
+        setButtonEnabled(data.buttonStatus);
+      }
+    });
 
-			},
-			{
-				userId : "String",
-				nickname : "String",
-				imageUrlList:["https://via.placeholder.com/150","https://via.placeholder.com/150"],
-				checkStatus : false,
-				imageCount : 2
+    // 컴포넌트 언마운트 시 소켓 연결 해제
+    return () => {
+      checkSocket.disconnect();
+      buttonSocket.disconnect();
+      leaveEventSocket.disconnect();
+    };
+  };
 
-			}
-		]
-  }
+  useEffect(() => {
+    fetchEventListData();
+  }, [id, dispatch]);
+
+  // 바코드 생성 핸들러
+  const handleBarcodeGeneration = async () => {
+    if (buttonEnabled) {
+      try {
+        const response = await axios.post(`/api/v1/event/${id}/result`);
+        console.log("Barcode generated successfully:", response.data);
+      } catch (error) {
+        console.error("Error in generating barcode:", error);
+      }
+    } else {
+      console.log("Barcode generation button is disabled.");
+    }
+  };
+
+  // 소켓 이벤트 리스너 추가
+  useEffect(() => {
+    // 방장이 나갈 때 알림을 받음
+    leaveEventSocket.on(`/subscribe/leave-event/${id}`, (data) => {
+      if (data.eventStatus && data.eventId === id) {
+        // 방이 폭파되었다는 알림을 여기서 처리
+        alert("방이 폭파되었습니다.");
+      }
+    });
+
+    return () => {
+      // 컴포넌트 언마운트 시 소켓 연결 해제
+      leaveEventSocket.disconnect();
+    };
+  }, [id]);
 
   return (
     <>
       <div className="eventDisplayWrap">
-        <EventHeader 
-        eventName = {userList.eventName}
-        startDate = {userList.startDate}
-        endDate={userList.endDate}
-        isRoomMaker={userList.isRoomMaker}
+        <EventHeader />
+        <EventParticipants />
+        <EventUploadList
+          userInfo={users.userInfo}
+          loginUserId={users.loginUserId}
         />
-        <EventParticipants
-        profileImgUrlList = {userList.profileImgUrlList}
-        />
-        <EventUploadList userInfo = {userList.userInfo} loginUserId = {userList.loginUserId}/>
-        {userList.isRoomMaker ? (
+        {users.isRoomMaker && (
           <div className="makeBarcode">
-            <button className="makeBarcodeBtn">무코 생성</button>
+            <button
+              className="makeBarcodeBtn"
+              onClick={handleBarcodeGeneration}
+              disabled={!buttonEnabled}
+            >
+              무코 생성
+            </button>
           </div>
-        ) : (
-          <></>
         )}
       </div>
     </>
   );
 };
+
 export default EventDisplay;

@@ -5,7 +5,7 @@ import QR from "qrcode.react";
 import './BarcodeBoard.css'
 import Icon from '../../assets/images/MoodCloud/cloud1.png'
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Modal from 'react-modal';
 import Toast from '../../components/EventToast/EventToast'
 import html2canvas from 'html2canvas';
@@ -31,39 +31,60 @@ import barcode from "../../assets/images/Barcode/barcodebg.jpg"
   //     }
   //   }, []);
 
-const EventG = () => {
+const DayG = ({imageInfoList}) => {
+    console.log(imageInfoList[0].imageList)
     return (
         <>
-        <div className="GalleryDate">
-            2028-03-11
-        </div>
-        <div className="uploadBImgList">
-            <div className="uploadBImgBlock">
-                <img className="uploadBImg"src={Icon}/>
-            </div>
-            <div className='marginG'></div>
-            <div className='marginG'></div>
-            <div className='marginG'></div>
-        </div>
+        {imageInfoList.map((item)=>
+            <>
+                <div className="GalleryDate">
+                    {item.date}
+                </div>
+                <div className="uploadBImgList">
+                    {item.imageList.map((image)=>
+                    <div className="uploadBImgBlock">
+                        <img className="uploadBImg"src={image}/>
+                    </div>)}
+                <div className='marginG'></div>
+                <div className='marginG'></div>
+                <div className='marginG'></div>
+                </div>
+            </>
+        )}
         </>
     )
 }
-const DayG = () => {
+const EventG = ({imageInfoList}) => {
     return (
         <>
         <div className="uploadBImgList">
-            <div className="uploadBImgBlock">
-                <img className="uploadBImg"src={Icon}/>
-            </div>
+        {imageInfoList.map((item)=><>
+                    {item.imageList.map((image)=>
+                    <div className="uploadBImgBlock">
+                        <img className="uploadBImg"src={image}/>
+                    </div>)}
+                </>
+        )}
             <div className='marginG'></div>
             <div className='marginG'></div>
             <div className='marginG'></div>
-        </div>
+         </div>
         </>
     )
 }
 
 const BarcodeBoard = () => {
+    const {id} = useParams();
+
+    const fetchticketData = async () => {
+        try {
+          const response = await axios.get(`/api/v1/barcode/${id}/my-ticket`);
+          const ticket = response.data;
+        } catch (error) {
+          console.error("Error fetching data", error);
+        }
+      };//useEffect
+
     const ticket = {
     nickname:"String",
 	title:"String",
@@ -71,7 +92,21 @@ const BarcodeBoard = () => {
 	startDate:"2028-03-11", //2023-09-10  //////09-10,2023(보류)
 	endDate:"2028-03-11",   //2023-09-10  //////09-10,2023(보류)
 	createdAt:"2028-03-11", //2023.09.08
-	memberCnt: 0
+	memberCnt: 0,
+    imageInfoList: [
+        {
+			date:"2023-09-12", // 2023-09-10
+			imageList: [Icon,Icon,Icon,Icon] 	//1~4개
+		},
+		{
+			date:"2023-09-12", 
+			imageList: [Icon,Icon]  	//1~4개
+		},
+		{
+			date:"2023-09-13", 
+			imageList: [Icon,Icon,Icon]  	//1~4개
+		}
+    ]
     }
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [toast, setToast] = useState(false);
@@ -151,17 +186,19 @@ const BarcodeBoard = () => {
             transform: " translate(-50%, -50%)"
         },
         content: {
+        display: "flex",
+        alignItems: "center",
         borderStyle: "none",
         width: "70%",
-        height: "6.25rem",
+        height: "8rem",
         zIndex: "150",
         position: "absolute",
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        borderRadius: "10px",
+        borderRadius: "4px",
         boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
-        backgroundColor: "rgba(0, 0, 0, 0.66)",
+        backgroundColor: "white",
         justifyContent: "center",
         overflow: "auto",
         },
@@ -171,7 +208,7 @@ const BarcodeBoard = () => {
             <div className="boardWrapper">
             {toast && <Toast setToast={setToast} text={"클립보드에 복사되었습니다."}/>}
                 <div className="boardTitle">
-                    {ticket.nickname}&nbsp;님의&nbsp;<span style={{color:"#FF7A45"}}>티켓</span>
+                    {ticket.nickname}&nbsp;님의&nbsp;<span style={{fontWeight:"bold"}}>티켓</span>
                 </div>
                 <div className="ticketBtnWrapper">
                     <div>
@@ -193,7 +230,7 @@ const BarcodeBoard = () => {
                                 탑승자
                             </div>
                             <div className="ticketContentContent">
-                                {ticket.nickname}
+                                {ticket.nickname}{ticket.memberCnt !== 0 ? ` 외${ticket.memberCnt} 명` : ""}
                             </div>
                             <div className="ticketContentTitle">
                                 출발일
@@ -215,6 +252,10 @@ const BarcodeBoard = () => {
                             </div>
 
                         </div>
+                        <div className="ticketMiddle">
+                        </div>
+                        <div className="ticketMiddleMiddle">
+                        </div>
                         <div className="ticketRight">
                             <div className="QRContainer">
                                 <div className="QRTitle">
@@ -223,7 +264,7 @@ const BarcodeBoard = () => {
                                 <div className="QRCode">
                                     <QR
                                     value={window.location.href}
-                                    size={140}
+                                    size={120}
                                     level={"L"}
                                     includeMargin={false}
                                     />
@@ -244,21 +285,21 @@ const BarcodeBoard = () => {
                 <div className="myMooco">
                         <button className="myMoocoBtn">나만의 바코드 만들기</button>
                     </div>
-                <div className="boardTitle">
+                <div className="boardTitle" style={{fontWeight:"bold"}}>
                     {ticket.nickname}님의 갤러리
                  </div>
                  <div className="GalleryWrapper">
-                    <EventG/>
+                    {!ticket.imageInfoList[0].date ? <EventG imageInfoList = {ticket.imageInfoList}/> : <DayG imageInfoList = {ticket.imageInfoList} />}
                  </div>
             </div>
             <Modal style={customModalStyles}ariaHideApp={false} isOpen={modalIsOpen} shouldCloseOnOverlayClick={false}>
-            <button className="modalCloseBtn" onClick={closeModal}>X</button>
+            <button className="modalCloseBtnB" onClick={closeModal}>X</button>
             <div className="modalWrapper">
-                <div className='modalContent'>무엇을 저장하시겠습니까?</div>
+                <div className='modalContentB'>무엇을 저장하시겠습니까?</div>
                 <div className='notice'></div>
-                <div className='modalBtnWrapper'>
-                    <button className='modalBtn' onClick={()=>{handleDownload();}}>티켓 저장</button>
-                    <button className='modalBtn' onClick={()=>{downloadFile(barcode);}}>바코드 저장</button>
+                <div className='modalBtnWrapperB'>
+                    <button className='modalBtnB' onClick={()=>{handleDownload();}}>티켓 저장</button>
+                    <button className='modalBtnB' onClick={()=>{downloadFile(barcode);}}>바코드 저장</button>
                 </div>
             </div>
         </Modal>
