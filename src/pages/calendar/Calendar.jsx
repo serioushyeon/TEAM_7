@@ -43,6 +43,11 @@ const imageData = {
     // 리듀서들
     const activeStartDateString = useSelector((state) => state.calendarUI.activeStartDate);
     const dateRange = useSelector(state => state.dateRange.dateRange);
+  
+
+    // 설정 해야함
+    console.log('startDate: ', dateRange.startDate, 'endDate: ', dateRange.endDate);
+    console.log('year:', dateRange.year, 'month: ', dateRange.month);
     
     const [calendarInfo, setCalendarInfo] = useState({
       thumbnailInfoList:
@@ -71,6 +76,8 @@ const imageData = {
 
       // 유저 정보 받아오기
   const getCalendarInfo = async () => {
+    console.log('startDate: ', dateRange.startDate, 'endDate: ', dateRange.endDate);
+    console.log('Rangeyear:', dateRange.year, 'Rangemonth: ', dateRange.month);
     try {
       // startDate, endDate 형식은 YYYY-MM-DD
       const response = await apiClient.get(`/api/v1/user/calender`, {

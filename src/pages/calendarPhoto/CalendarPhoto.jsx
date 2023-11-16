@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { setCalendarData } from "../../redux/CalendarPhotoBoard";
+import PhotoOption from "../../components/calendar/PhotoOption";
+import dateDaySlice, { updateDay, updateMonth, updateYear } from '../../redux/dateDaySlice';
 
 export default function CalendarPhoto() {
   let navigate = useNavigate();
@@ -15,6 +17,7 @@ export default function CalendarPhoto() {
 
   // 일자 데이터
   const dateInfo = useSelector((state) => state.date);
+  const dateDay = useSelector((state) => state.dateDay.dateDay);
 
   // const calendarPhotoData = useSelector((state) => state.calendarPhotoBoard);
   // console.log("Calendar Photo Board State:", calendarPhotoData); // 상태 확인
@@ -124,6 +127,7 @@ export default function CalendarPhoto() {
 
   return (
     <S.Container>
+      <PhotoOption />
       <S.DayWeek>{dateInfo.dayOfWeek}</S.DayWeek>
       <S.SmallText>
         <S.DateColor>{dateInfo.yearMonthDay}</S.DateColor>

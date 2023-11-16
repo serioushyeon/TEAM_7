@@ -39,5 +39,5 @@ export const dateRangeSlice = createSlice({
 
 });
 
-export const { setDateRange, updateDateRange } = dateRangeSlice.actions;
+export const { updateDateRange } = dateRangeSlice.actions;
 export default dateRangeSlice.reducer;

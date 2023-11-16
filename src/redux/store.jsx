@@ -8,6 +8,7 @@ import CalendarPhotoBoard from "./CalendarPhotoBoard";
 import dateRangeSlice from "./dateRangeSlice";
 import eventListSlice from "./eventListSlice";
 import myEventSlice from "./myEventSlice";
+import dateDaySlice from "./dateDaySlice";
 
 // 여기서 데이터 관리해주세요.
 export default configureStore({
@@ -20,6 +21,7 @@ export default configureStore({
     CalendarPhotoBoard: CalendarPhotoBoard,
     dateRange: dateRangeSlice,
     eventList: eventListSlice,
-    myEvent: myEventSlice
+    myEvent: myEventSlice,
+    dateDay: dateDaySlice
   },
 });
