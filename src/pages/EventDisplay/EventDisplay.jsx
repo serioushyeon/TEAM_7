@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setEventList } from "../../redux/eventListSlice";
 import axios from "axios";
 import { io } from "socket.io-client";
-
+import BG from "../../assets/images/Event/eventBG.jpg"
 const EventDisplay = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -110,7 +110,7 @@ const EventDisplay = () => {
 
   return (
     <>
-      <div className="eventDisplayWrap">
+      <div className="eventDisplayWrap" style={{backgroundImage:`url(${BG})`}}>
         <EventHeader />
         <EventParticipants />
         <EventUploadList
