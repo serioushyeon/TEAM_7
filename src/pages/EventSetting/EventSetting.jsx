@@ -5,6 +5,7 @@ import { BsCalendarHeart, BsCalendarWeek } from "react-icons/bs";
 import { ko } from "date-fns/esm/locale";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from "axios";
 
 const EventSetting = () => {
   const [startDate, setStartDate] = useState(new Date());
@@ -21,6 +22,53 @@ const EventSetting = () => {
     navigate(`/eventdisplay/${id}`, { state: { startDate, endDate, eventName } });
   };
 
+  const fetchEventData = async () => {
+    try {
+      const response = await axios.get(`/api/v1/user/my-event`);
+      const { isExistEvent, eventId } = response.data;
+      if (isExistEvent) {
+        navigate(`/eventdisplay${eventId}`)
+      } else {
+      }
+    } catch (error) {
+      console.error("Error fetching data", error);
+    }
+  };
+  
+  const postEventData = async () => {
+    try {
+      const response = await axios.post(`/api/v1/event/new-event`, {
+        title: eventName,
+        startDate : startDate,
+        endDate: endDate,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error posting data", error);
+    }
+  };
+
+  const putEventName = async () => {
+    try {
+      const response = await axios.put(`/api/v1/event/${id}/event-name`, {
+        eventName: eventName
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error posting data", error);
+    }
+  }
+  const putEventNDate = async () => {
+    try {
+      const response = await axios.put(`/api/v1/event/${id}/event-name`, {
+        startDate : startDate,
+        endDate: endDate,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error posting data", error);
+    }
+  }
   return (
     <>
       <div className="eventSetting">
