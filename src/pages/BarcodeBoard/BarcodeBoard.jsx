@@ -105,12 +105,20 @@ const BarcodeBoard = () => {
       const closeModal = () => {
         setModalIsOpen(false);
       };
-
       const copyUrl = async () => {
-        await navigator.clipboard.writeText(location.href); // 링크 복사 부분
-        setToast(true);
-      };
+        var textarea = document.createElement('textarea');
+        textarea.value = location.href;
 
+        document.body.appendChild(textarea);
+        textarea.select();
+        textarea.setSelectionRange(0, 9999);  // 추가
+
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+
+        setToast(true);
+    };
+      
       const navigate = useNavigate();
 
       const goToUser = () => {
@@ -123,11 +131,12 @@ const BarcodeBoard = () => {
     const divRef = useRef(null);
 
     const handleDownload = async () => {
+        closeModal();
         if (!divRef.current) return;
     
         try {
           const div = divRef.current;
-          const canvas = await html2canvas(div, { scale: 2 });
+          const canvas = await html2canvas(div, { scale: 4 });
           canvas.toBlob((blob) => {
             if (blob !== null) {
               saveAs(blob, "ticket.png");
@@ -192,8 +201,8 @@ const BarcodeBoard = () => {
       };
     return (
         <>
+        {toast && <Toast setToast={setToast} text={"클립보드에 복사되었습니다."}/>}
             <div className="boardWrapper">
-            {toast && <Toast setToast={setToast} text={"클립보드에 복사되었습니다."}/>}
                 <div className="boardTitle">
                     {ticket.nickname}&nbsp;님의&nbsp;<span style={{fontWeight:"bold"}}>티켓</span>
                 </div>
