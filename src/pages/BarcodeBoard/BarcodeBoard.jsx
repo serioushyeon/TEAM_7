@@ -186,17 +186,19 @@ const BarcodeBoard = () => {
             transform: " translate(-50%, -50%)"
         },
         content: {
+        display: "flex",
+        alignItems: "center",
         borderStyle: "none",
         width: "70%",
-        height: "6.25rem",
+        height: "8rem",
         zIndex: "150",
         position: "absolute",
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        borderRadius: "10px",
+        borderRadius: "4px",
         boxShadow: "2px 2px 2px rgba(0, 0, 0, 0.25)",
-        backgroundColor: "rgba(0, 0, 0, 0.66)",
+        backgroundColor: "white",
         justifyContent: "center",
         overflow: "auto",
         },
@@ -206,7 +208,7 @@ const BarcodeBoard = () => {
             <div className="boardWrapper">
             {toast && <Toast setToast={setToast} text={"클립보드에 복사되었습니다."}/>}
                 <div className="boardTitle">
-                    {ticket.nickname}&nbsp;님의&nbsp;<span style={{color:"#FF7A45"}}>티켓</span>
+                    {ticket.nickname}&nbsp;님의&nbsp;<span style={{fontWeight:"bold"}}>티켓</span>
                 </div>
                 <div className="ticketBtnWrapper">
                     <div>
@@ -250,6 +252,10 @@ const BarcodeBoard = () => {
                             </div>
 
                         </div>
+                        <div className="ticketMiddle">
+                        </div>
+                        <div className="ticketMiddleMiddle">
+                        </div>
                         <div className="ticketRight">
                             <div className="QRContainer">
                                 <div className="QRTitle">
@@ -258,7 +264,7 @@ const BarcodeBoard = () => {
                                 <div className="QRCode">
                                     <QR
                                     value={window.location.href}
-                                    size={140}
+                                    size={120}
                                     level={"L"}
                                     includeMargin={false}
                                     />
@@ -279,7 +285,7 @@ const BarcodeBoard = () => {
                 <div className="myMooco">
                         <button className="myMoocoBtn">나만의 바코드 만들기</button>
                     </div>
-                <div className="boardTitle">
+                <div className="boardTitle" style={{fontWeight:"bold"}}>
                     {ticket.nickname}님의 갤러리
                  </div>
                  <div className="GalleryWrapper">
