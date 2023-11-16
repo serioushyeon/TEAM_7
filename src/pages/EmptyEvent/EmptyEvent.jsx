@@ -5,12 +5,17 @@ import { BsCalendar4Event } from "react-icons/bs"
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setMyEvent } from "../../redux/myEventSlice";
+import { useCookies } from "react-cookie";
 const EmptyEvent = () => {
     //참여하고 있는 이벤트가 있는 지 체크
     //참여하고 있다면
     //이벤트 아이디로 링크 이동
     //참여하지 않고 있다면
 
+    // useCookie를 이용해서 웹 브라우저의 쿠키에서 데이터를 읽어옴
+    const getAccessCookie = localStorage.getItem("accessCookie");
+
+    console.log(getAccessCookie);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -19,7 +24,7 @@ const EmptyEvent = () => {
     const fetchEventData = async () => {
         try {
           const response = await axios.get(`/api/v1/user/my-event`, {
-            headers: { Authorization: `${Bearer [access_token]}` },
+            headers: { Authorization: `Bearer [${getAccessCookie}]` },
           });
           const { isExistEvent, eventId } = response.data;
           dispatch(setMyEvent({ isExistEvent, eventId }));
