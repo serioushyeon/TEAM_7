@@ -16,7 +16,8 @@ import Calendar1 from "../../assets/images/calendar/Calendar1.svg";
 import Background from "../../assets/images/calendar/Background.svg";
 
 // 서버에서 받은 images Data
-const imageData = [
+const imageData = {
+  thumbnailInfoList: [
     { date: "2023-11-01", url: Lion },
     { date: "2023-11-15", url: Lion },
     { date: "2023-11-03", url: Background },
@@ -29,11 +30,18 @@ const imageData = [
     { date: "2023-11-09", url: Lion },
     { date: "2023-11-10", url: Background },
     { date: "2023-11-11", url: Background },
-  ];
+  ],
+  buttonStatus: false
+}
+
   
+  // 서버에서 데이터를 받아와 사진을 배치한다.
   export default function MyCalendar() {
     const [value, onChange] = useState(new Date());
+
+    // 리듀서들
     const activeStartDateString = useSelector((state) => state.calendarUI.activeStartDate);
+    const dateRange = useSelector(state => state.dateRange.dateRange);
     
     const [calendarInfo, setCalendarInfo] = useState({
       thumbnailInfoList:
@@ -64,8 +72,14 @@ const imageData = [
   const getCalendarInfo = async () => {
     try {
       // startDate, endDate 형식은 YYYY-MM-DD
-      const response = await apiClient.get(`/api/v1/user/calender/{startDate}/{endDate}`, {
-        headers: {
+      const response = await apiClient.get(`/api/v1/user/calender`, {
+        // 서버에서 params 기준으로 값 가져옴.
+        params: {
+            startDate: dateRange.startDate,
+            endDate: dateRange.endDate,
+            year: dateRange.year,
+            month: dateRange.month
+        }, headers: {
           // 나중에 토큰 수정 필요
           Authorization: `${Bearer [access_token]}`
         },
@@ -73,11 +87,18 @@ const imageData = [
       setCalendarInfo(response.data);
       console.log("성공, UserInfo : ", response.data);
 
-    } catch (error) {
-      console.log(error);
+    } catch(error) {
+      console.error('전송 실패 : ', error);
     }
+  };
+
+  if(dateRange.startDate && dateRange.endDate) {
+    getCalendarInfo();
   }
-    }, [])
+  // 실제 시작일, 끝일이 업데이트 된 이후 서버에 요청한다.
+}, [dateRange.startDate, dateRange.endDate]);
+
+// 사진 추가 / 삭제 할 때도 계속 get 보내야하나?
 
     const userinfo = {
       id: "",
@@ -110,6 +131,34 @@ const imageData = [
         }
       }
     };
+
+    // 바코드 생성 시
+    function onClickBarcord() {
+
+      // 서버로 연, 월 전송
+      const postBarcordInfo = async () => {
+        try {
+          // startDate, endDate 형식은 YYYY-MM-DD
+          const response = await apiClient.post(`/api/v1/user/new-barcode`, {
+                year: dateRange.year,
+                month: dateRange.month
+            }, {
+              headers: {
+              // 나중에 토큰 수정 필요
+              // Bearer 토근 앞에 공백 필요..?
+              Authorization: `${ Bearer [access_token]}`
+            }
+          });
+          console.log("성공, response : ", response.data);
+    
+        } catch(error) {
+          console.error('실패 error : ', error);
+        }
+      };
+
+      postBarcordInfo();
+      navigate('/ticket');
+    }
   
     // <S.StyledOptionsBox show={selected ? "true" : undefined}>
     /* 위 문장에서 selected로만 하면 boolean이 아닌 값으로 DOM에 접근할 수 없다는 에러가 발생했는데,
@@ -139,7 +188,7 @@ const imageData = [
         tileContent={({ date, view }) => {
       // 날짜에 해당하는 이미지 데이터를 찾는다.
       // moment로 date 내부 데이터에서 day만 빼옴.
-      const imageEntry = imageData.find(entry =>
+      const imageEntry = imageData.thumbnailInfoList.find(entry =>
         moment(date).isSame(entry.date, 'day')
       );
   
@@ -179,7 +228,9 @@ const imageData = [
   }}
   />
   
-  <S.AddBarcord>바코드 생성</S.AddBarcord>
+  <S.AddBarcord 
+  onClick={onClickBarcord}
+  >바코드 생성</S.AddBarcord>
   
   </S.BackImage>
         </S.Container>

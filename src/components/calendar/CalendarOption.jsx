@@ -1,15 +1,17 @@
 import { S } from '../../pages/calendar/CalendarStyle';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { setActiveStartDate, toggleSelected } from '../../redux/CalendarUI';
+import { updateDateRange } from '../../redux/dateRangeSlice';
 
+// 월 변경 선택 시 startDate와 endDate를 서버로 보낸다.
 export default function CalendarOption() {
-  const activeStartDateString = useSelector((state) => state.calendarUI.activeStartDate);
     const [selectedYear, setSelectedYear] = useState(moment().year());
     const [selectedMonth, setSelectedMonth] = useState(moment().month());
     const selected = useSelector((state) => state.calendarUI.selected);
+    const dateRange = useSelector(state => state.dateRange.dateRange);
 
   const dispatch = useDispatch();
 
@@ -28,6 +30,8 @@ const handleYearChange = (year) => {
 const handleMonthChange = (month) => {
   setSelectedMonth(month);
   updateActiveStartDate(selectedYear, month);
+
+  dispatch(updateDateRange({ year: selectedYear, month}));
 };
 
   // 날짜 변경 핸들러
