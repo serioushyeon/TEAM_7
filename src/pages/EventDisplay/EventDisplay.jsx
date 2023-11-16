@@ -8,75 +8,45 @@ import BarcodeLoading from "../../components/BarcodeLoading/BarcodeLoading";
 import { useDispatch, useSelector } from "react-redux";
 import { setEventList } from "../../redux/eventListSlice";
 import axios from "axios";
-import { io } from "socket.io-client";
-
+import SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
+import BG from "../../assets/images/Event/eventBG.jpg"
 const EventDisplay = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const users = useSelector((state) => state.eventList);
   const [buttonEnabled, setButtonEnabled] = useState(false);
+  let stompClient = null;
 
-  // 방장이 나가기 알림을 위한 소켓 설정
-  const leaveEventSocket = io("/ws-leave-event");
+  const connectWebSocket = () => {
+    const socket = new SockJS("/ws-button");
+    stompClient = Stomp.over(socket);
 
-  // API 요청 및 소켓 설정
-  const fetchEventListData = async () => {
-    try {
-      const response = await axios.get(`/api/v1/event/${id}`, {
-        headers: { Authorization: `Bearer [access_token]` },
-      });
-      const {
-        profileImgUrlList,
-        isRoomMaker,
-        eventName,
-        startDate,
-        endDate,
-        loginUserId,
-        userCount,
-        userInfo,
-      } = response.data;
-      dispatch(
-        setEventList({
-          profileImgUrlList,
-          isRoomMaker,
-          eventName,
-          startDate,
-          endDate,
-          loginUserId,
-          userCount,
-          userInfo,
-        })
-      );
-      setupSockets();
-    } catch (error) {
-      console.error("Error fetching data", error);
-    }
-  };
-
-  // 소켓 설정 함수
-  const setupSockets = () => {
-    const checkSocket = io("/ws-check");
-    const buttonSocket = io("/ws-button");
-    const leaveEventSocket = io("/ws-leave-event");
-
-    // 버튼 소켓 이벤트 리스너 설정
-    buttonSocket.on(`/subscribe/button/${id}`, (data) => {
-      if (data.eventId === id) {
-        setButtonEnabled(data.buttonStatus);
+    stompClient.connect(
+      {},
+      function (frame) {
+        console.log("Connected: " + frame);
+        stompClient.subscribe(`/subscribe/button/${id}`, function (message) {
+          const messageBody = JSON.parse(message.body);
+          setButtonEnabled(messageBody.buttonStatus);
+        });
+      },
+      function (error) {
+        console.error("WebSocket error:", error);
       }
-    });
-
-    // 컴포넌트 언마운트 시 소켓 연결 해제
-    return () => {
-      checkSocket.disconnect();
-      buttonSocket.disconnect();
-      leaveEventSocket.disconnect();
-    };
+    );
   };
 
   useEffect(() => {
-    fetchEventListData();
-  }, [id, dispatch]);
+    connectWebSocket();
+
+    return () => {
+      if (stompClient !== null) {
+        stompClient.disconnect();
+      }
+    };
+  }, [id]); // id가 변경될 때마다 연결을 재설정합니다.
+
 
   // 바코드 생성 핸들러
   const handleBarcodeGeneration = async () => {
@@ -92,25 +62,9 @@ const EventDisplay = () => {
     }
   };
 
-  // 소켓 이벤트 리스너 추가
-  useEffect(() => {
-    // 방장이 나갈 때 알림을 받음
-    leaveEventSocket.on(`/subscribe/leave-event/${id}`, (data) => {
-      if (data.eventStatus && data.eventId === id) {
-        // 방이 폭파되었다는 알림을 여기서 처리
-        alert("방이 폭파되었습니다.");
-      }
-    });
-
-    return () => {
-      // 컴포넌트 언마운트 시 소켓 연결 해제
-      leaveEventSocket.disconnect();
-    };
-  }, [id]);
-
   return (
     <>
-      <div className="eventDisplayWrap">
+      <div className="eventDisplayWrap" style={{backgroundImage:`url(${BG})`}}>
         <EventHeader />
         <EventParticipants />
         <EventUploadList

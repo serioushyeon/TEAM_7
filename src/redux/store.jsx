@@ -10,6 +10,8 @@ import eventListSlice from "./eventListSlice";
 import myEventSlice from "./myEventSlice";
 import dateDaySlice from "./dateDaySlice";
 import userInfoSlice from "./userInfoSlice";
+import barcodeListSlice from "./barcodeListSlice";
+import ticketSlice from "./ticketSlice";
 
 // 여기서 데이터 관리해주세요.
 export default configureStore({
@@ -24,6 +26,8 @@ export default configureStore({
     dateRange: dateRangeSlice,
     eventList: eventListSlice,
     myEvent: myEventSlice,
-    dateDay: dateDaySlice
+    dateDay: dateDaySlice,
+    barcodeList: barcodeListSlice,
+    ticket: ticketSlice
   },
 });
