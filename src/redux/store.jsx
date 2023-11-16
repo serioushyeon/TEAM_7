@@ -8,6 +8,8 @@ import CalendarPhotoBoard from "./CalendarPhotoBoard";
 import dateRangeSlice from "./dateRangeSlice";
 import eventListSlice from "./eventListSlice";
 import myEventSlice from "./myEventSlice";
+import dateDaySlice from "./dateDaySlice";
+import userInfoSlice from "./userInfoSlice";
 import barcodeListSlice from "./barcodeListSlice";
 import ticketSlice from "./ticketSlice";
 
@@ -15,6 +17,7 @@ import ticketSlice from "./ticketSlice";
 export default configureStore({
   reducer: {
     user: userReducer,
+    userdata: userInfoSlice,
     theme: themeReducer,
     event: eventSlice,
     date: dateSlice,
@@ -23,6 +26,7 @@ export default configureStore({
     dateRange: dateRangeSlice,
     eventList: eventListSlice,
     myEvent: myEventSlice,
+    dateDay: dateDaySlice,
     barcodeList: barcodeListSlice,
     ticket: ticketSlice
   },

@@ -164,9 +164,11 @@ scrollbar-width: none; /* 파이어폭스 */
 const DayImage = styled.img`
 max-width: 130%;  /* 부모 요소의 최대 너비 */
 height: auto;     /* 원본 비율 유지 */
-width: 100%;      /* 원본 비율 유지 */
+width: 130%;      /* 원본 비율 유지 */
 objectFit: 'cover';
+margin-left: -0.4rem;
 backgroundSize: 'contain';
+background-position: center center;
 `
 
 export const S = {

@@ -1,15 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
+import InfoBarcord from "../assets/images/userinfo/infoBarcord.svg";
+import Cloud from "../assets/images/userinfo/cloud.svg";
+import Profile from "../assets/images/userinfo/profile.svg";
 
+// 여권 페이지에 유저 정보 
 const userInfoState = {
-    nickName: "",
-    birth: "",
-    gender: "",
-    dateOfIssue: "",
+    nickName: "none",
+    birth: "0000-00-00",
+    gender: "none",
+    dateOfIssue: "0000-00-00",
     barcodeCount: 0,
-    profileImage: "",
-    recentBarcodeImg: "",
-    recentBarcodeTitleList: [],
-    modalActive: true,
+    profileImage: `${Profile}`,
+    recentBarcodeImg: `${InfoBarcord}`,
+    recentBarcodeTitleList: [`${Cloud}`, `${Cloud}`, `${Cloud}`],
+    modalActive: false,
 };
 
 export const userInfoSlice = createSlice({

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { apiClient } from '../../api/ApiClient';
+import { useCookies } from "react-cookie";
 
 import { selectDate } from '../../redux/dateSlice';
 import { setActiveStartDate } from '../../redux/CalendarUI';
@@ -43,6 +44,12 @@ const imageData = {
     // 리듀서들
     const activeStartDateString = useSelector((state) => state.calendarUI.activeStartDate);
     const dateRange = useSelector(state => state.dateRange.dateRange);
+    // 설정 해야함
+    console.log('startDate: ', dateRange.startDate, 'endDate: ', dateRange.endDate);
+    console.log('year:', dateRange.year, 'month: ', dateRange.month);
+
+    const [accessCookie] = useCookies(["accessCookie"]);
+    const [refreshCookie] = useCookies(["refreshCookie"]);
     
     const [calendarInfo, setCalendarInfo] = useState({
       thumbnailInfoList:
@@ -71,6 +78,8 @@ const imageData = {
 
       // 유저 정보 받아오기
   const getCalendarInfo = async () => {
+    console.log('startDate: ', dateRange.startDate, 'endDate: ', dateRange.endDate);
+    console.log('Rangeyear:', dateRange.year, 'Rangemonth: ', dateRange.month);
     try {
       // startDate, endDate 형식은 YYYY-MM-DD
       const response = await apiClient.get(`/api/v1/user/calender`, {
