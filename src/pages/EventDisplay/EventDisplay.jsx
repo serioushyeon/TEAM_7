@@ -16,14 +16,37 @@ const EventDisplay = () => {
   const users = useSelector((state) => state.eventList);
   const [buttonEnabled, setButtonEnabled] = useState(false);
 
+  // 방장이 나가기 알림을 위한 소켓 설정
+  const leaveEventSocket = io("/ws-leave-event");
+
   // API 요청 및 소켓 설정
   const fetchEventListData = async () => {
     try {
       const response = await axios.get(`/api/v1/event/${id}`, {
         headers: { Authorization: `Bearer [access_token]` },
       });
-      const {profileImgUrlList, isRoomMaker, eventName, startDate, endDate, loginUserId, userCount, userInfo} = response.data
-      dispatch(setEventList({profileImgUrlList, isRoomMaker, eventName, startDate, endDate, loginUserId, userCount, userInfo}));
+      const {
+        profileImgUrlList,
+        isRoomMaker,
+        eventName,
+        startDate,
+        endDate,
+        loginUserId,
+        userCount,
+        userInfo,
+      } = response.data;
+      dispatch(
+        setEventList({
+          profileImgUrlList,
+          isRoomMaker,
+          eventName,
+          startDate,
+          endDate,
+          loginUserId,
+          userCount,
+          userInfo,
+        })
+      );
       setupSockets();
     } catch (error) {
       console.error("Error fetching data", error);
@@ -68,6 +91,22 @@ const EventDisplay = () => {
       console.log("Barcode generation button is disabled.");
     }
   };
+
+  // 소켓 이벤트 리스너 추가
+  useEffect(() => {
+    // 방장이 나갈 때 알림을 받음
+    leaveEventSocket.on(`/subscribe/leave-event/${id}`, (data) => {
+      if (data.eventStatus && data.eventId === id) {
+        // 방이 폭파되었다는 알림을 여기서 처리
+        alert("방이 폭파되었습니다.");
+      }
+    });
+
+    return () => {
+      // 컴포넌트 언마운트 시 소켓 연결 해제
+      leaveEventSocket.disconnect();
+    };
+  }, [id]);
 
   return (
     <>
