@@ -12,7 +12,7 @@ import { TbDoorExit } from "react-icons/tb";
 import { useSelector } from 'react-redux';
 
 const EventHeader = () => {
-    const users = useSelector((state) => state.eventList.value);
+    const users = useSelector((state) => state.eventList);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [toast, setToast] = useState(false);
     const openModal = () => {
@@ -27,14 +27,13 @@ const EventHeader = () => {
         await navigator.clipboard.writeText(location.href); // 링크 복사 부분
         setToast(true);
       };
-      const {id} = useParams();
       const navigate = useNavigate();
 
       const goToEvent = () => {
           navigate("/event")
       }
       const goToSetting = () => {
-        navigate(`/eventsetting/${id}`);
+        navigate(`/eventsetting`);
       }
     return (
         <>

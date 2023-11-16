@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 //초대 링크 복사 및 노티스
 const EventParticipants = () => {
-    const users = useSelector((state) => state.eventList.value);
+    const users = useSelector((state) => state.eventList);
 
     const arr = [];
     const profile = () => {
