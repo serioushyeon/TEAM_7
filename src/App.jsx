@@ -1,10 +1,10 @@
-import { Route, Routes} from "react-router-dom";
-import TestPage from './pages/TestPage';
-import EmptyEvent from './pages/EmptyEvent/EmptyEvent';
-import EventSetting from './pages/EventSetting/EventSetting';
-import EventDisplay  from './pages/EventDisplay/EventDisplay';
-import MoodCloud from './pages/MoodCloud/MoodCloud';
-import BarcodeBoard from './pages/BarcodeBoard/BarcodeBoard';
+import { Route, Routes } from "react-router-dom";
+import TestPage from "./pages/TestPage";
+import EmptyEvent from "./pages/EmptyEvent/EmptyEvent";
+import EventSetting from "./pages/EventSetting/EventSetting";
+import EventDisplay from "./pages/EventDisplay/EventDisplay";
+import MoodCloud from "./pages/MoodCloud/MoodCloud";
+import BarcodeBoard from "./pages/BarcodeBoard/BarcodeBoard";
 import React from "react";
 import { styled } from "styled-components";
 import Login from "./pages/Login/Login";
@@ -56,7 +56,7 @@ function App() {
             <Route path="/calendar-photo" element={<CalendarPhoto />} />
             <Route path="/calendar-non-photo" element={<CCalendarGallery />} />
             <Route path="/test" element={<TestPage />} />
-            <Route path="/eventphoto" element={<EventPhoto />} />
+            <Route path="/eventphoto/:eventId" element={<EventPhoto />} />
             {/* <EmptyEvent /> */}
             <Route path="/event" element={<EmptyEvent />} />
             {/*<EventSetting>*/}
