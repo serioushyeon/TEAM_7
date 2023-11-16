@@ -28,10 +28,21 @@ const handleYearChange = (year) => {
 
 // 월 변경 핸들러
 const handleMonthChange = (month) => {
-  setSelectedMonth(month);
-  updateActiveStartDate(selectedYear, month);
+  let year = selectedYear;
 
-  dispatch(updateDateRange({ year: selectedYear, month}));
+  if (month > 11) {
+    month = 0; // 12월 다음은 1월
+    year = year + 1; // 다음 해로 변경
+  } else if (month <1) {
+    month = 11; // 1월 이전은 12월
+    year = year - 1; // 이전 해로 변경
+  }
+
+  setSelectedMonth(month);
+  setSelectedYear(year);
+  updateActiveStartDate(year, month);
+
+  dispatch(updateDateRange({ year, month}));
 };
 
   // 날짜 변경 핸들러
