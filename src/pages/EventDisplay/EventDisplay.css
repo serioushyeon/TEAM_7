@@ -1,5 +1,7 @@
 body{
     position: relative;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
 
 }
 .eventDisplayWrap{
@@ -28,7 +30,7 @@ body{
 .makeBarcode{
     display: flex;
     position: absolute;
-    top: 70%;
+    top: 60%;
     width: 100%;
     justify-content: center;
 }
