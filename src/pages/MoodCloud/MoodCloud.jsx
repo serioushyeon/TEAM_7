@@ -7,6 +7,7 @@ import { setBarcodeList } from '../../redux/barcodeListSlice';
 import { useSelector } from 'react-redux';
 
 const MoodCloudList = ({title, id}) => {
+    const getAccessCookie = localStorage.getItem("accessCookie");
     const navigate = useNavigate();
 
     const goToTicket= () => {
@@ -34,7 +35,7 @@ const MoodCloud = () => {
     const fetchBarcodeListData = async () => {
         try {
           const response = await axios.get(`/api/v1/barcode/list`,{
-            headers: { Authorization: `${Bearer [access_token]}` }
+            headers: { Authorization: `Bearer ${getAccessCookie}` }
           });
           //리덕스
           const { barcodeList } = response.data;

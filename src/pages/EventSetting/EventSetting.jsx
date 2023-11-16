@@ -14,6 +14,7 @@ const EventSetting = () => {
   const event = useSelector((state)=>state.eventList);
   const myEvent = useSelector((state)=>state.myEvent);
   const dispatch = useDispatch();
+  const getAccessCookie = localStorage.getItem("accessCookie");
 
   const title = event.eventName;
   const startD = event.startDate
@@ -68,7 +69,7 @@ const EventSetting = () => {
         endDate: endDate,
       }, {
         headers: {
-          Authorization: `${ Bearer [access_token]}`
+          Authorization: `Bearer ${getAccessCookie}`
       }
     });
       const { eventId } = response.data;
@@ -86,7 +87,7 @@ const EventSetting = () => {
         eventName: eventName
       }, {
         headers: {
-          Authorization: `${ Bearer [access_token]}`
+          Authorization: `Bearer ${getAccessCookie}`
       }
     });
       console.log(response.data);
@@ -104,7 +105,7 @@ const EventSetting = () => {
         endDate: endDate,
       }, {
         headers: {
-          Authorization: `${ Bearer [access_token]}`
+          Authorization: `Bearer ${getAccessCookie}`
       }
     });
       console.log(response.data);

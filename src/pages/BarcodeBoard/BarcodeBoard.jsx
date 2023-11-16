@@ -80,10 +80,22 @@ const BarcodeBoard = () => {
     const ticket = useSelector((state)=>state.ticket);
     const dispatch = useDispatch();
     const {id} = useParams();
+    const getAccessCookie = localStorage.getItem("accessCookie");
+    const navigate = useNavigate();
+
+    const goToBarcode = () => {
+        console.log(getAccessCookie);
+        if(!getAccessCookie){
+            navigate("/");
+        }
+        else{
+            navigate("/userinfo");
+        }
+    }
     const fetchTicketData = async () => {
         try {
           const response = await axios.get(`/api/v1/barcode/${id}/my-ticket`,{
-            headers: { Authorization: `${Bearer [access_token]}` }
+            headers: { Authorization: `Bearer ${getAccessCookie}` }
           });
           const {nickname, title, barcodeUrl, startDate, endDate, createdAt, memberCnt,imageInfoList} = response.data;
           dispatch(setTicket({nickname, title, barcodeUrl, startDate, endDate, createdAt, memberCnt,imageInfoList}));
@@ -118,15 +130,6 @@ const BarcodeBoard = () => {
 
         setToast(true);
     };
-      
-      const navigate = useNavigate();
-
-      const goToUser = () => {
-          navigate("/event")
-      }
-      const goToLogin = () => {
-        navigate("/event")
-    }
 
     const divRef = useRef(null);
 
@@ -280,7 +283,7 @@ const BarcodeBoard = () => {
                     </div>
                 </div>
                 <div className="myMooco">
-                        <button className="myMoocoBtn">나만의 바코드 만들기</button>
+                        <button className="myMoocoBtn" onClick={goToBarcode}>나만의 바코드 만들기</button>
                     </div>
                 <div className="boardTitle" style={{fontWeight:"bold"}}>
                     {ticket.nickname}님의 갤러리
