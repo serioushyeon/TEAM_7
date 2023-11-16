@@ -24,23 +24,17 @@ export const eventListSlice = createSlice({
 			state.loginUserId = action.payload.loginUserId;
 			state.userCount = action.payload.userCount;
 			state.userInfo = action.payload.userInfo;
-        }
-    },
-},
-{
-	name: "myEvent",
-	initialState: {
-		isExistEvent : false,
-		eventId: ""
-	},
-	reducers: {
-		setMyEvent: (state, action) => {
-			state.isExistEvent = action.payload.isExistEvent;
-			state.eventId = action.payload.eventId;
+        },
+		setEventName: (state, action) => {
+			state.eventName = action.payload.eventName;
+		},
+		setEventDate: (state, action) => {
+			state.startDate = action.payload.startDate;
+			state.endDate = action.payload.endDate;
 		}
-	}
+    },
 });
 
-export const { setEventList,setMyEvent } = eventListSlice.actions;
+export const { setEventList,setEventName, setEventDate } = eventListSlice.actions;
 
 export default eventListSlice.reducer;

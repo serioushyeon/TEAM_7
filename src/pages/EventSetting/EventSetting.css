@@ -132,6 +132,7 @@
 .react-datepicker__day{
     color: #001C30 !important;
 }
+
 .react-datepicker__day--in-selecting-range,
 .react-datepicker__day--in-range {
   background-color: skyblue !important;

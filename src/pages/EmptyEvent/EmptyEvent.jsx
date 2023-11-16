@@ -4,7 +4,7 @@ import './EmptyEvent.css';
 import { BsCalendar4Event } from "react-icons/bs"
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setMyEvent } from "../../redux/eventListSlice";
+import { setMyEvent } from "../../redux/myEventSlice";
 const EmptyEvent = () => {
     //참여하고 있는 이벤트가 있는 지 체크
     //참여하고 있다면
@@ -19,12 +19,12 @@ const EmptyEvent = () => {
     const fetchEventData = async () => {
         try {
           const response = await axios.get(`/api/v1/user/my-event`, {
-            headers: { Authorization: `Bearer [access_token]` },
+            headers: { Authorization: `${Bearer [access_token]}` },
           });
           const { isExistEvent, eventId } = response.data;
           dispatch(setMyEvent({ isExistEvent, eventId }));
           if (isExistEvent) {
-            navigate(`/eventdisplay${eventId}`)
+            navigate(`/eventdisplay/${eventId}`)
           } else {
             console.log("no event");
           }

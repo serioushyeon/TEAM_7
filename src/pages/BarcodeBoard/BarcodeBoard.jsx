@@ -3,14 +3,17 @@ import { MdOutlineFileDownload } from "react-icons/md";
 import { FaRegCircle } from "react-icons/fa";
 import QR from "qrcode.react";
 import './BarcodeBoard.css'
-import Icon from '../../assets/images/MoodCloud/cloud1.png'
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from 'react-modal';
 import Toast from '../../components/EventToast/EventToast'
 import html2canvas from 'html2canvas';
 import saveAs from "file-saver";
 import barcode from "../../assets/images/Barcode/barcodebg.jpg"
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setTicket } from "../../redux/ticketSlice";
+import axios from "axios";
 
 //   const navigate = useNavigate();
   //   // 로그인 상태와 사용자 정보를 저장할 스테이트
@@ -74,40 +77,24 @@ const EventG = ({imageInfoList}) => {
 }
 
 const BarcodeBoard = () => {
+    const ticket = useSelector((state)=>state.ticket);
+    const dispatch = useDispatch();
     const {id} = useParams();
-
-    const fetchticketData = async () => {
+    const fetchTicketData = async () => {
         try {
-          const response = await axios.get(`/api/v1/barcode/${id}/my-ticket`);
-          const ticket = response.data;
+          const response = await axios.get(`/api/v1/barcode/${id}/my-ticket`,{
+            headers: { Authorization: `${Bearer [access_token]}` }
+          });
+          const {nickname, title, barcodeUrl, startDate, endDate, createdAt, memberCnt,imageInfoList} = response.data;
+          dispatch(setTicket({nickname, title, barcodeUrl, startDate, endDate, createdAt, memberCnt,imageInfoList}));
         } catch (error) {
           console.error("Error fetching data", error);
         }
-      };//useEffect
+      };
+      useEffect(() => {
+        fetchTicketData();
+    })
 
-    const ticket = {
-    nickname:"String",
-	title:"String",
-	barcodeUrl:"String",
-	startDate:"2028-03-11", //2023-09-10  //////09-10,2023(보류)
-	endDate:"2028-03-11",   //2023-09-10  //////09-10,2023(보류)
-	createdAt:"2028-03-11", //2023.09.08
-	memberCnt: 0,
-    imageInfoList: [
-        {
-			date:"2023-09-12", // 2023-09-10
-			imageList: [Icon,Icon,Icon,Icon] 	//1~4개
-		},
-		{
-			date:"2023-09-12", 
-			imageList: [Icon,Icon]  	//1~4개
-		},
-		{
-			date:"2023-09-13", 
-			imageList: [Icon,Icon,Icon]  	//1~4개
-		}
-    ]
-    }
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [toast, setToast] = useState(false);
 
