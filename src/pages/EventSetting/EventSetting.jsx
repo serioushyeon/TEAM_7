@@ -143,8 +143,8 @@ const EventSetting = () => {
       }
     });
       console.log(response.data);
-      dispatch(setEventStartDate(startDate));
-      dispatch(setEventEndDate(endDate));
+      dispatch(setEventStartDate(`${format(startDate, "yyyy-MM-dd")}`));
+      dispatch(setEventEndDate(`${format(startDate, "yyyy-MM-dd")}`));
     } catch (error) {
       console.error("Error posting data", error);
       /*if(error.statusText === "NOT_ROOM_MAKER")
