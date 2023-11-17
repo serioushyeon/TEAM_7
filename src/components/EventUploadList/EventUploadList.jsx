@@ -83,17 +83,20 @@ const EventUploadBlock = ({
   };
   const deleteEventBlockData = async () => {
     try {
-      const response = await axios.delete(`/api/v1/event/${eventId}/${userId}/image-list}`, {
-        headers: {
-          Authorization: `Bearer ${getAccessCookie}`
-      }
-    });
-    dispatch(setUserInfo(response.data));
-    navigate(`/eventdisplay/${eventId}`);
+      const response = await axios.delete(
+        `/api/v1/event/${eventId}/${userId}/image-list}`,
+        {
+          headers: {
+            Authorization: `Bearer ${getAccessCookie}`,
+          },
+        }
+      );
+      dispatch(setUserInfo(response.data));
+      navigate(`/eventdisplay/${eventId}`);
     } catch (error) {
-        console.error(error);
+      console.error(error);
     }
-  }
+  };
 
   return (
     <div className="list">
@@ -156,7 +159,7 @@ const EventUploadList = ({ userInfo, loginUserId }) => {
   );
 
   const navigateToEventPhoto = () => {
-    navigate(`/eventphoto/${eventId}`); // EventPhoto 페이지의 경로로 변경하세요.
+    navigate(`/eventphoto/${eventId}`);
   };
 
   return (
