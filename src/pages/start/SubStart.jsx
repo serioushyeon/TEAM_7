@@ -9,12 +9,12 @@ export default function SubStart() {
    const [refreshCookie] = useCookies(["refreshCookie"]);
  
     // accessCookie를 로컬 스토리지에 저장
-   /* localStorage.setItem("accessCookie", accessCookie.accessCookie);
+    localStorage.setItem("accessCookie", accessCookie.accessCookie);
     localStorage.setItem("refreshCookie", refreshCookie.refreshCookie);
-*/
+
    // 웹 브라우저의 로컬 스토리지에 저장된 값을 읽어옴. (클라이언트만 확인)
-   /* const getAccessCookie = localStorage.getItem("accessCookie");
-   const getRefreshCookie = localStorage.getItem("refreshCookie"); */
+   const getAccessCookie = localStorage.getItem("accessCookie");
+   const getRefreshCookie = localStorage.getItem("refreshCookie"); 
 
   return (
     <S.Container>
