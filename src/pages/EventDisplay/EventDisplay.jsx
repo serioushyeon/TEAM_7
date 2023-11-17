@@ -18,14 +18,14 @@ const EventDisplay = () => {
   const getAccessCookie = localStorage.getItem("accessCookie");
   const navigate = useNavigate();
 const eventId = useSelector((state) => state.myEvent.value.eventId);
-const [eId, setEiD] = useState(eventId);
+var eid = eventId;
 const {id} = useParams();
 if(!eventId) 
-  setEiD(id)
+  eid = id;
 useLayoutEffect(() => {
   const fetchEventData = async () => {
     try {
-      const response = await apiClient.get(`/api/v1/event/${eId}`, {
+      const response = await apiClient.get(`/api/v1/event/${eid}`, {
         headers: {
           Authorization: `Bearer ${getAccessCookie}`,
         },
