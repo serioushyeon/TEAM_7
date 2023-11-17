@@ -29,12 +29,12 @@ const EmptyEvent = () => {
           console.log(response.data);
           setmyevent(response.data);
           console.log(myEvent);
-          console.log(myEvent.isExistEvent);
-          if (myEvent.isExistEvent) {
+          console.log(myEvent.existEvent);
+          if (myEvent.existEvent) {
             navigate(`/eventdisplay/${myEvent.eventId}`)
           } else {
             console.log("no event");
-            console.log(isExistEvent);
+            console.log(existEvent);
           }
         } catch (error) {
           console.error("Error fetching data", error);
