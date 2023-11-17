@@ -76,6 +76,7 @@ right: 0.9rem;
 width: 18px;
 height: 18px;
 background-image: url(${EditImoge});
+opacity: ${props => props.confirm ? '0.5;' : '1;'} 
 `
 
 const ProfileBox = styled.div`
@@ -111,19 +112,18 @@ font-size: 12px;
 font-style: normal;
 font-weight: 400;
 line-height: normal;
-background-color: transparent;
+color: #000;
+width: 115px;
 border: none;
+background-color: transparent;
+border-bottom: ${props => props.edit ? 'solid #DDD 1px;' : 'none;'}
 outline: none;
 
-/* value가 비어있지 않을 때 적용할 스타일
-속성을 css로 변경할 수는 없고, prop으로 전달해야하는 듯. */
-  ${({ value }) => value && `
-  color: #000;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  `}
+::placeholder {
+  color: #AAA; 
+  font-size: 10px; 
+}
+
 `
 
 const NickName = styled.div`
@@ -232,6 +232,20 @@ const ProfileLabel = styled.label`
 // 위 padding: 49px만 있을 땐 글자가 같이 축소해서 수직 일렬로 섰는데,
 // 아래 padding: 0을 추가하니 글자가 컨테이너 내부에서 완벽하게 중앙 정렬이 되었음.
 
+const SendUserInfo = styled.button`
+position: absolute;
+left: 6.2rem;
+top: 17.2rem;
+width: 10rem;
+height: 2.4rem;
+border-radius: 4px;
+border: 1px solid #CBCBCB;
+background: transparent;
+color: #CBCBCB;
+text-align: center;
+`;
+
+
 export const S = {
     BookContainer,
     CloudImage,
@@ -252,5 +266,6 @@ export const S = {
     NunberBarcord,
     UserBarcord,
     InputProfile,
-    ProfileLabel
+    ProfileLabel,
+    SendUserInfo
 }
