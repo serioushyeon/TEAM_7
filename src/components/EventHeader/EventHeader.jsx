@@ -11,6 +11,7 @@ import Toast from '../EventToast/EventToast';
 import { TbDoorExit } from "react-icons/tb";
 import { useSelector } from 'react-redux';
 import {setMyEvent} from "../../redux/myEventSlice";
+import { apiClient } from '../../api/ApiClient';
 
 const EventHeader = () => {
     const {id} = useParams();
@@ -47,6 +48,7 @@ const EventHeader = () => {
         navigate(`/eventsetting/edit`);
       }
 
+      //방나가기
       const exitEventData = async () => {
         try {
           const response = await apiClient.delete(`/api/v1/event/${id}}`, {
@@ -54,9 +56,9 @@ const EventHeader = () => {
               Authorization: `Bearer ${getAccessCookie}`
           }
         });
-        const mEvent  = { eventId: response.data ,existEvent: false};
+        const mEvent  = { existEvent: false, eventId: "" };
         dispatch(setMyEvent(mEvent));
-          goToEvent();
+        goToEvent();
         } catch (error) {
             console.error(error);
         }
