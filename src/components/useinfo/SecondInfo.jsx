@@ -45,8 +45,6 @@ export default function SecondInfo() {
   const [selectedFile, setSelectedFile] = useState(null);
   // file 저장
 
-
-
 // 로컬 상태 초기화
   const [user, setUser] = useState(userInfo);
 
@@ -79,6 +77,7 @@ export default function SecondInfo() {
       });
       console.log("성공, UserInfo : ", response.data);
       dispatch(userInfoSlice.actions.userData(response.data));
+
       // 데이터 재세팅
 
       if(response.data.modalActive === false) {
@@ -89,7 +88,6 @@ export default function SecondInfo() {
       console.log(error);
     }
   }
-
     getUserInfo();
     setUser(userInfo);
   }, []);
@@ -234,7 +232,7 @@ function handleEdit() {
             <S.Question
             readOnly
             >발급일/Date of issue</S.Question>
-            {userInfo.dateOfIssue}
+            {user.dateOfIssue}
             </S.DateOfIssue>
             <S.NunberBarcord>
             <S.Question
@@ -248,7 +246,7 @@ function handleEdit() {
                 </>
               ) :
               (
-                <S.Images src = {userInfo.recentBarcodeImg} />
+                <S.Images src = {user.recentBarcodeImg} />
               )}
             </S.UserBarcord>
             {edit ? (
