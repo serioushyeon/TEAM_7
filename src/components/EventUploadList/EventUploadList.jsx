@@ -12,9 +12,7 @@ import { Stomp } from "@stomp/stompjs";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { apiClient } from '../../api/ApiClient';
-import { setUserInfo } from "../../redux/eventListSlice";
-import { useDispatch } from "react-redux";
+import { setMyEvent } from "../../redux/myEventSlice";
 
 const EventUploadBlock = ({
   userId,
@@ -25,31 +23,31 @@ const EventUploadBlock = ({
 }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const dispatch = useDispatch();
-  const { id: eventId } = useParams();
+  const eventId = useSelector((state) => state.myEvent.value.eventId);
   const navigate = useNavigate();
   let stompClient = null;
+
+  useEffect(() => {
+    console.log("Event ID:", eventId);
+  }, [eventId]);
 
   // 체크박스 상태 변경 핸들러
   const handleCheckboxChange = (e) => {
     const newCheckStatus = e.target.checked;
     setIsChecked(newCheckStatus);
+
     // 체크 상태를 WebSocket을 통해 서버에 전송
-    sendCheckStatus(newCheckStatus);
+    sendCheckStatus(userId, newCheckStatus);
   };
 
-  // 체크 상태를 서버에 전송
-  const sendCheckStatus = (checkStatus) => {
+  // 체크 상태를 서버에 전송하는 함수
+  const sendCheckStatus = (userId, checkStatus) => {
     stompClient.send(
       `/topic/check/${eventId}`,
       {},
-      JSON.stringify({
-        userId: userId,
-        checkStatus: checkStatus,
-      })
+      JSON.stringify({ userId, checkStatus })
     );
   };
-
   useEffect(() => {
     const socket = new SockJS("/ws-check");
     stompClient = Stomp.over(socket);
@@ -78,33 +76,21 @@ const EventUploadBlock = ({
     setModalIsOpen(false);
   };
 
-  const deleteEventBlockData = async () => {
-    try {
-      const response = await apiClient.delete(`/api/v1/event/${eventId}/${userId}/image-list}`, {
-        headers: {
-          Authorization: `Bearer ${getAccessCookie}`
-      }
-    });
-    dispatch(setUserInfo(response.data));
-    navigate(`/eventdisplay/${eventId}`);
-    } catch (error) {
-        console.error(error);
-    }
+  const reloadPage = () => {
+    location.reload();
   };
 
   return (
     <div className="list">
       <div className="uploadlist">
         <div className="done">
-          {/* 현재 로그인한 사용자가 리스트 소유자일 경우에만 체크박스 활성화 */}
-          {userId === loginUserId && (
-            <input
-              type="checkbox"
-              id="check_btn"
-              checked={isChecked}
-              onChange={handleCheckboxChange}
-            />
-          )}
+          <input
+            type="checkbox"
+            id="check_btn"
+            checked={isChecked}
+            onChange={handleCheckboxChange}
+            disabled={userId !== loginUserId} // 다른 사용자의 리스트에서는 비활성화
+          />
         </div>
         <div className="nicknameBox">
           나는 <span className="nickname">{nickname}</span>이야!
@@ -127,7 +113,7 @@ const EventUploadBlock = ({
         highlight={"삭제"}
         end={"하시겠습니까?"}
         notice={"※ 한 번 삭제한 리스트는 되돌릴 수 없어요."}
-        action={deleteEventBlockData}
+        action={reloadPage}
       />
     </div>
   );
@@ -156,6 +142,7 @@ const EventUploadList = ({ userInfo, loginUserId }) => {
   const navigateToEventPhoto = () => {
     navigate("/eventphoto"); // EventPhoto 페이지의 경로로 변경하세요.
   };
+
   return (
     <div className="eventUploadList">
       {userInfo.map((user) => (
