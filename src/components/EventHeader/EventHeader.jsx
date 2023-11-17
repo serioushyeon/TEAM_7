@@ -1,17 +1,19 @@
 //확인 모달 추가
 //방폭파 기능
 //수정 기능 (세팅 모달)
-import { FiLink } from "react-icons/fi"
-import { FaRegEdit } from "react-icons/fa"
+import { FiLink } from "react-icons/fi";
+import { FaRegEdit } from "react-icons/fa";
 import './EventHeader.css';
 import { useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
-import EventModal from '../EventModal/EventModal'
-import Toast from '../EventToast/EventToast'
+import EventModal from '../EventModal/EventModal';
+import Toast from '../EventToast/EventToast';
 import { TbDoorExit } from "react-icons/tb";
 import { useSelector } from 'react-redux';
+import {setMyEvent} from "../../redux/myEventSlice";
 
 const EventHeader = () => {
+    const {id} = useParams();
     const users = useSelector((state) => state.eventList.value);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [toast, setToast] = useState(false);
@@ -42,8 +44,23 @@ const EventHeader = () => {
           navigate("/event")
       }
       const goToSetting = () => {
-        navigate(`/eventsetting`);
+        navigate(`/eventsetting/edit`);
       }
+
+      const exitEventData = async () => {
+        try {
+          const response = await apiClient.delete(`/api/v1/event/${id}}`, {
+            headers: {
+              Authorization: `Bearer ${getAccessCookie}`
+          }
+        });
+        const mEvent  = { eventId: response.data ,existEvent: false};
+        dispatch(setMyEvent(mEvent));
+          goToEvent();
+        } catch (error) {
+            console.error(error);
+        }
+      };
     return (
         <>
         <div>
@@ -72,7 +89,7 @@ const EventHeader = () => {
                 highlight={users.roomMaker? "폭파":"퇴장"}
                 end={users.roomMaker? "하시겠습니까?":"하시겠습니까?"}
                 notice={users.roomMaker? "※참여한 모든 인원이 자동으로 나가집니다." : "※지금까지 참여한 이벤트가 삭제됩니다."}
-                action={goToEvent}
+                action={exitEventData}
             />
         </div>
         </div>

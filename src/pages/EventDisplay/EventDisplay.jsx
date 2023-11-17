@@ -17,7 +17,6 @@ const EventDisplay = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.eventList.value);
   const [buttonEnabled, setButtonEnabled] = useState(false);
-  const [eventData, setEventData] = useState(null);
   let stompClient = null;
   const getAccessCookie = localStorage.getItem("accessCookie");
 
@@ -86,14 +85,16 @@ const EventDisplay = () => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const response = await axios.get(`/api/v1/event/${eventid}`, {
+        const response = await axios.get(`/api/v1/event/${id}`, {
           headers: {
             Authorization: `Bearer ${getAccessCookie}`
         }
       });
-        setEventData(response.data);
+      console.log(response.data);
+      dispatch(setEventList(response.data));
       } catch (error) {
-        if(error.response.statusText === "EVENT_NOT_FOUND")
+        console.error(error);
+        /*if(error.response.statusText === "EVENT_NOT_FOUND")
         {
 
         }
@@ -104,16 +105,12 @@ const EventDisplay = () => {
           navigate(`/`);
         }
         console.error("Error fetching event data:", error);
-      }
+      }*/
     };
+  }
 
     fetchEventData();
-  }, [id]);
-
-  // 이벤트 데이터가 없을 경우 기본 화면 또는 로딩 표시
-  if (!eventData) {
-    return <div>이벤트 정보를 불러오는 중...</div>; // 또는 기본 화면 구성
-  }
+  }, []);
 
   //여기까지!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 

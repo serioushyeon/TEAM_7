@@ -16,9 +16,6 @@ const EmptyEvent = () => {
     const getAccessCookie = localStorage.getItem("accessCookie");
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        fetchEventData();
-    },[])
     const fetchEventData = async () => {
         try {
           const response = await axios.get(`/api/v1/user/my-event`, {
@@ -39,7 +36,9 @@ const EmptyEvent = () => {
           }
         }
       };
-
+    useEffect(() => {
+        fetchEventData();
+    },[])
     const navigate = useNavigate();
     const goToEventSet = () => {
         navigate("/eventsetting");

@@ -62,7 +62,7 @@ const EventG = ({imageInfoList}) => {
 
 //바코드 게시판
 const BarcodeBoard = () => {
-    const ticket = useSelector((state)=>state.ticket);
+    const ticket = useSelector((state)=>state.ticket.value);
     const dispatch = useDispatch();
     const {id} = useParams();
 
@@ -86,8 +86,7 @@ const BarcodeBoard = () => {
           const response = await axios.get(`/api/v1/barcode/${id}/my-ticket`,{
             headers: { Authorization: `Bearer ${getAccessCookie}` }
           });
-          const {nickname, title, barcodeUrl, startDate, endDate, createdAt, memberCnt,imageInfoList} = response.data;
-          dispatch(setTicket({nickname, title, barcodeUrl, startDate, endDate, createdAt, memberCnt,imageInfoList}));
+          dispatch(setTicket(response.data));
         } catch (error) {
           console.error("Error fetching data", error);
           if(error.response.statusText === "NOT_OWNER_ACCESS"){
