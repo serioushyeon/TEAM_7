@@ -134,7 +134,7 @@ const EventSetting = () => {
   const putEventDate = async () => {
     console.log(myEvent);
     try {
-      const response = await axios.put(`/api/v1/event/${myEvent.eventId}/event-name`, {
+      const response = await axios.put(`/api/v1/event/${myEvent.eventId}/event-date`, {
         startDate : startDate,
         endDate: endDate,
       }, {
