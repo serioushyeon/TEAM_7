@@ -15,7 +15,7 @@ import { apiClient } from '../../api/ApiClient';
 import axios from "axios";
 
 const EventHeader = () => {
-    const {id} = useParams();
+    const eventId = useSelector((state) => state.myEvent.value.eventId);
     const users = useSelector((state) => state.eventList.value);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [toast, setToast] = useState(false);
@@ -53,7 +53,7 @@ const EventHeader = () => {
       //방나가기
       const exitEventData = async () => {
         try {
-          const response = await axios.delete(`/api/v1/event/${id}}`, {
+          const response = await axios.delete(`/api/v1/event/${eventId}`, {
             headers: {
               Authorization: `Bearer ${getAccessCookie}`
           }
