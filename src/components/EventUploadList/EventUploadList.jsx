@@ -82,12 +82,15 @@ const EventUploadBlock = ({
     <div className="list">
       <div className="uploadlist">
         <div className="done">
-          <input
-            type="checkbox"
-            id="check_btn"
-            checked={isChecked}
-            onChange={handleCheckboxChange}
-          />
+          {/* 현재 로그인한 사용자가 리스트 소유자일 경우에만 체크박스 활성화 */}
+          {userId === loginUserId && (
+            <input
+              type="checkbox"
+              id="check_btn"
+              checked={isChecked}
+              onChange={handleCheckboxChange}
+            />
+          )}
         </div>
         <div className="nicknameBox">
           나는 <span className="nickname">{nickname}</span>이야!
