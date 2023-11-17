@@ -11,9 +11,11 @@ import axios from "axios";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import BG from "../../assets/images/Event/eventBG.jpg";
+import { useNavigate } from "react-router-dom";
 
 const EventDisplay = () => {
   const getAccessCookie = localStorage.getItem("accessCookie");
+  const navigate = useNavigate();
   const fetchMyEventData = async () => {
     try {
       const response = await axios.get(`/api/v1/user/my-event`, {
