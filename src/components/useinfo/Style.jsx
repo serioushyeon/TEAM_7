@@ -74,6 +74,7 @@ right: 0.9rem;
 width: 18px;
 height: 18px;
 background-image: url(${EditImoge});
+opacity: ${props => props.confirm ? '0.5;' : '1;'} 
 `
 
 const ProfileBox = styled.div`
@@ -193,12 +194,11 @@ left: 0;
 
 const InputProfile = styled.input`
 position: absolute;
-width: 1px;
-height: 1px;
+width: 100px;
+height: 100px;
   padding: 0;
   margin: -1px;
-  overflow: hidden;
-  clip:rect(0,0,0,0);
+
   border: 0;
 `
 
@@ -243,17 +243,16 @@ text-align: center;
 
 const SendButton = styled.button`
 position: absolute;
-top: 18rem;
 left: 6.2rem;
-bottom: 5.2rem;
+top: 17.5rem;
 width: 10rem;
-height: 2.8rem;
+height: 2.5rem;
 border-radius: 4px;
 background: transparent;
 border: 1px solid #CBCBCB;
 color: #CBCBCB;
 text-align: center;
-`;
+`
 
 
 export const S = {

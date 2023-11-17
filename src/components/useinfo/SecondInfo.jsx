@@ -9,6 +9,7 @@ import { userData } from '../../redux/userInfoSlice';
 import InfoBarcord from "../../assets/images/userinfo/infoBarcord.svg";
 import Cloud from "../../assets/images/userinfo/cloud.svg";
 import Profile from "../../assets/images/userinfo/profile.svg";
+import { selectDate } from '../../redux/dateSlice';
 
 /*
 {
@@ -35,13 +36,15 @@ export default function SecondInfo() {
 
   const getAccessCookie = localStorage.getItem("accessCookie");
    const getRefreshCookie = localStorage.getItem("refreshCookie");
-
+   
   // 리덕스(userData 대신 사용)
   const userInfo = useSelector(state => state.userdata); 
   console.log('userInfo: ', userInfo);
 
   const [edit, setEdit] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  // file 저장
 
   const [user, setUser] = useState({
     nickName: "",
@@ -83,23 +86,26 @@ export default function SecondInfo() {
   const handleInfoChange = (e, field) => {
     setUser({ ...user, [field]: e.target.value });
   };
-  
-
-  // formData가 변경될 때마다 getUserInfo 함수 실행
-  useEffect(() => {
-
-getUserInfo();
-}, [formData]); 
+   
+  // 프로필 이미지 핸들러
+const handleProfileImageChange = (event) => {
+  if (event.target.files && event.target.files[0]) {
+    const file = event.target.files[0];
+    setSelectedFile(file); // 파일 상태 저장
+  }
+};
 
 // formData 전송, 편집 버튼 클릭 시
 const postUserInfo = async () => {
   const formData = new FormData();
 
 // 폼 데이터로 전송
-   formData.append('profileImage', user.profileImage);
+   formData.append('profileImage', selectedFile);
+
    formData.append('nickName', user.nickName);
    formData.append('birth', user.birth);
    formData.append('gender', user.gender);
+
    dispatch(userData(user));
 
    try {
@@ -107,6 +113,9 @@ const postUserInfo = async () => {
        headers: {
          // 쿠키 보냄, axios가 자동으로 Content-type 설정해줌.
          'Content-Type': 'multipart/form-data',
+         transformRequest: (data, headers) => {
+          return data;
+        },
          Authorization: `Bearer ${getAccessCookie}`
        },
      });
@@ -119,19 +128,19 @@ const postUserInfo = async () => {
    setEdit(!edit);
 };
 
-// 프로필 이미지 변경 핸들러
-// file의 경우 value 이용이 불가하기 때문에 미리보기로 대체해야함.
-const handleProfileImageChange = (event) => {
-  if (event.target.files && event.target.files[0]) {
-    const file = event.target.files[0];
-    const imageUrl = URL.createObjectURL(file);
-    setUser({ ...user, profileImage: imageUrl }); 
-    // 미리보기 URL을 user 상태에 저장
-  }
-};
+  // userData가 변경될 때마다 getUserInfo 함수 실행
+  useEffect(() => {
+
+    getUserInfo();
+    }, [user]);
+
 
 function handleEditUserInfo() {
   postUserInfo();
+}
+
+function handleEdit() {
+  setEdit(true);
 }
 
   return (
@@ -139,20 +148,14 @@ function handleEditUserInfo() {
       {!edit ? (
         <>
         <S.EditButton
-            onClick={handleEditUserInfo}/></>
+            onClick={handleEdit}/></>
       ) :
       (
         <>
         </>
       )}
             <S.ProfileBox>
-              {!user.profileImage ? (
-                <>
-                </>
-              ) :
-              (
-                <S.Images src = {user.profileImage} />
-              )}
+              {user.profileImage}
             </S.ProfileBox>
             {edit ? 
             (<>
