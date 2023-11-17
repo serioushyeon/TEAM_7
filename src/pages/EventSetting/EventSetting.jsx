@@ -113,6 +113,24 @@ const EventSetting = () => {
       dispatch(setEventName({eventName}));
     } catch (error) {
       console.error("Error posting data", error);
+      if(error.statusText === "NOT_ROOM_MAKER")
+      {
+
+      }
+      if(error.statusText === "EVENT_TITLE_EMPTY")
+      {
+        
+      }
+      if(error.statusText === "EVENT_NOT_FOUND")
+      {
+
+      }
+      if(error.statusText === "USER_NOT_FOUND")
+      {
+        alert("다시 로그인해주세요");
+        //로그아웃
+        navigate(`/`);
+      }
     }
   }
 
@@ -131,6 +149,20 @@ const EventSetting = () => {
       dispatch(setEventDate({startDate, endDate}));
     } catch (error) {
       console.error("Error posting data", error);
+      if(error.statusText === "NOT_ROOM_MAKER")
+      {
+
+      }
+      if(error.statusText === "EVENT_NOT_FOUND")
+      {
+
+      }
+      if(error.statusText === "USER_NOT_FOUND")
+      {
+        alert("다시 로그인해주세요");
+        //로그아웃
+        navigate(`/`);
+      }
     }
   }
   return (

@@ -45,6 +45,11 @@ const MoodCloud = () => {
           dispatch(setBarcodeList({barcodeList}));
         } catch (error) {
           console.error("Error fetching data", error);
+          if(error.response.statusText === "USER_NOT_FOUND"){
+            alert("다시 로그인해주세요");
+            //로그아웃
+            navigate(`/`);
+          }
         }
       };
 
