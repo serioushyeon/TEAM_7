@@ -23,20 +23,20 @@ const EventDisplay = () => {
       });
       if (response.data.existEvent) {
         dispatch(setMyEvent(response.data));
-        navigate(`/eventdisplay/${response.data.eventId}`)
+        navigate(`/eventdisplay/${response.data.eventId}`);
       } else {
         console.log("no event");
       }
     } catch (error) {
       console.error("Error fetching data", error);
-      if(error.statusText === "USER_NOT_FOUND")
-      {
+      if (error.statusText === "USER_NOT_FOUND") {
         alert("다시 로그인해주세요");
         //로그아웃
         navigate(`/`);
       }
     }
   };
+
   useLayoutEffect(() => {
   fetchMyEventData();
 },[])
@@ -65,11 +65,11 @@ useLayoutEffect(() => {
       }
       console.error("Error fetching event data:", error);
     }*/
-    }
-  };
+      }
+    };
 
-  fetchEventData();
-}, []);
+    fetchEventData();
+  }, []);
   const dispatch = useDispatch();
   const users = useSelector((state) => state.eventList.value);
   const [buttonEnabled, setButtonEnabled] = useState(false);
@@ -87,7 +87,7 @@ useLayoutEffect(() => {
     stompClient.connect({}, () => {
       stompClient.subscribe(`/subscribe/button/${eventId}`, (message) => {
         const messageBody = JSON.parse(message.body);
-        setButtonEnabled(messageBody.buttonStatus === "true");
+        setButtonEnabled(messageBody.buttonStatus);
       });
     });
 
@@ -109,7 +109,7 @@ useLayoutEffect(() => {
           `/subscribe/leave-event/${eventId}`,
           function (message) {
             const messageBody = JSON.parse(message.body);
-            if (messageBody.eventStatus === true) {
+            if (messageBody.eventStatus) {
               alert("이벤트가 폭파되었습니다!");
             }
           }
