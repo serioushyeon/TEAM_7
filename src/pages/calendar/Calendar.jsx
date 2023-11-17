@@ -96,7 +96,7 @@ import Background from "../../assets/images/calendar/Background.svg";
 
     getCalendarInfo();
 
-}, []);
+}, [thumbnailInfoList]);
 
     // 사진이 없는 경우, 사진 등록 창으로 이동
     function handleLocatePhoto(date) {
