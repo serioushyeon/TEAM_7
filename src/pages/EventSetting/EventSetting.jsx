@@ -7,7 +7,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setEventDate, setEventName } from "../../redux/eventListSlice";
+import { setEventStartDate,setEventEndDate, setEventName } from "../../redux/eventListSlice";
 import { apiClient } from '../../api/ApiClient';
 import { setMyEvent } from "../../redux/myEventSlice";
 const EventSetting = () => {
@@ -143,7 +143,8 @@ const EventSetting = () => {
       }
     });
       console.log(response.data);
-      dispatch(setEventDate({startDate, endDate}));
+      dispatch(setEventStartDate(startDate));
+      dispatch(setEventEndDate(endDate));
     } catch (error) {
       console.error("Error posting data", error);
       /*if(error.statusText === "NOT_ROOM_MAKER")
