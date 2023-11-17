@@ -18,7 +18,7 @@ const EventDisplay = () => {
   const getAccessCookie = localStorage.getItem("accessCookie");
   const navigate = useNavigate();
 const eventId = useSelector((state) => state.myEvent.value.eventId);
-const [eId, setEiD] = useState(eventId);
+const [eId, setEiD] = useState(null);
 const {id} = useParams();
 if(!eventId) 
   setEiD(id)
