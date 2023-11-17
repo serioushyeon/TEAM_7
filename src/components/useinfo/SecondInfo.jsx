@@ -29,7 +29,6 @@ import Profile from "../../assets/images/userinfo/profile.svg";
 export default function SecondInfo() {
   const dispatch = useDispatch();
   // formData 선언
-  var formData = new FormData();
 
   const [accessCookie] = useCookies(["accessCookie"]);
   const [refreshCookie] = useCookies(["refreshCookie"]);
@@ -79,29 +78,6 @@ export default function SecondInfo() {
     }
   }
 
-  useEffect(() => { 
-    getUserInfo();
-    // 쿠키가 없다면
-    if (user.modalActive === false) {
-    } else {
-      setConfirm(true);
-    }
-  }, []); 
-
-  // formData가 변경될 때마다 getUserInfo 함수 실행
-  useEffect(() => {
-    if(!isUserInfoComplete()) {
-      setEdit(true);
-    }
-    
-    getUserInfo();
-  }, [formData]); 
-
-   // 유저 정보 완전성 확인
-   const isUserInfoComplete = () => {
-    return user.nickName && user.birth && user.gender;
-  };
-
 
   // 유저 데이터 실시간 수정
   const handleInfoChange = (e, field) => {
@@ -109,32 +85,38 @@ export default function SecondInfo() {
   };
   
 
+  // formData가 변경될 때마다 getUserInfo 함수 실행
+  useEffect(() => {
+
+getUserInfo();
+}, [formData]); 
+
 // formData 전송, 편집 버튼 클릭 시
-const handleEditUserInfo = async (event) => {
-      
-    event.preventDefault();
+const postUserInfo = async () => {
+  const formData = new FormData();
+
 // 폼 데이터로 전송
-    formData.append('profileImage', user.profileImage);
-    formData.append('nickName', user.nickName);
-    formData.append('birth', user.birth);
-    formData.append('gender', user.gender);
-    dispatch(userData(user));
+   formData.append('profileImage', user.profileImage);
+   formData.append('nickName', user.nickName);
+   formData.append('birth', user.birth);
+   formData.append('gender', user.gender);
+   dispatch(userData(user));
 
-    try {
-      const response = await axios.post(`/api/v1/user/user-info`, formData, {
-        headers: {
-          // 쿠키 보냄, axios가 자동으로 Content-type 설정해줌.
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${getAccessCookie}`
-        },
-      });
-      console.log("성공 formData : ", response.data);
-    } catch (error) {
-      console.log("전송 data : ", formData);
-      console.error("실패 error : ", error);
-    }
+   try {
+     const response = await axios.post(`/api/v1/user/user-info`, formData, {
+       headers: {
+         // 쿠키 보냄, axios가 자동으로 Content-type 설정해줌.
+         'Content-Type': 'multipart/form-data',
+         Authorization: `Bearer ${getAccessCookie}`
+       },
+     });
+     console.log("성공 formData : ", response.data);
+   } catch (error) {
+     console.log("전송 data : ", formData);
+     console.error("실패 error : ", error);
+   }
 
-    setEdit(!edit);
+   setEdit(!edit);
 };
 
 // 프로필 이미지 변경 핸들러
@@ -147,6 +129,10 @@ const handleProfileImageChange = (event) => {
     // 미리보기 URL을 user 상태에 저장
   }
 };
+
+function handleEditUserInfo() {
+  postUserInfo();
+}
 
   return (
     <S.Book2Container>
