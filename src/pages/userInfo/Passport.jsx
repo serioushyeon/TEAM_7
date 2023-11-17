@@ -6,7 +6,7 @@ import Second from '../../components/useinfo/SecondInfo'
 
 export default function Passport() {
   return (
-    <S.Container>
+    <>
         <S.Bg>
         <S.TitleGoorm />
         <S.Title>MOOCO</S.Title>
@@ -16,6 +16,6 @@ export default function Passport() {
         <Second />
           </S.BookBg>
         </S.Bg>
-    </S.Container>
+    </>
   )
 }

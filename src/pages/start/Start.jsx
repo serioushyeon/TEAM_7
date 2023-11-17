@@ -76,7 +76,7 @@ export default function Start() {
       drawShadow={true}
       style={{
         position: 'absolute',
-        transform: 'rotate(90deg)',
+       transform: 'rotate(90deg)',
         width: '15rem',
         height: '22.5rem',
         top: '15.375rem',

@@ -7,7 +7,7 @@ import Profile from "../../assets/images/userinfo/profile.svg";
 const BookContainer = styled.div`
 display: flex;
 position: absolute;
-top: 12.5rem;
+top: 6.5rem;
 left: 0.9rem;
 width: 22.5rem;
 height: 15rem;
@@ -55,7 +55,7 @@ background-image: url(${props => props.url}});
 const Book2Container = styled.div`
 display: flex;
 position: absolute;
-top: 29.6rem;
+top: 23.6rem;
 left: 0.9rem;
 width: 22.5rem;
 height: 15rem;

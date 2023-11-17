@@ -6,9 +6,11 @@ import EarthImoge from '../../assets/images/Login/earthSymbol.svg';
 const BookContainer = styled.div`
 display: flex;
 position: absolute;
-left: 3.5rem;
+left: -14.5rem;
 height: 22.5rem; 
 width: 15rem;
+align-items: center;
+justify-content: center;
 border-radius: 4px;
 background-color: #BEEAFC;
 box-shadow: 8px 4px 4px 0px rgba(0, 0, 0, 0.50);
@@ -16,17 +18,10 @@ box-shadow: 8px 4px 4px 0px rgba(0, 0, 0, 0.50);
 
 const Earth = styled.div`
 position: absolute;
-top: 7.31rem;
-left: 3.75rem;
 width: 15.625rem;
 height: 15.625rem;
-scale : 0.666667;
-top: 1.3rem; 
-left: -0.5rem;
+scale : 0.8;
 transform: rotate(90deg);
-background-repeat: no-repeat;
-background-size: cover; 
-background-position: center; 
 background-image: url(${EarthImoge});
 background-repeat: no-repeat;
 `
