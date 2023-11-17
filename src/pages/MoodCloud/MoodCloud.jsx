@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setBarcodeList } from '../../redux/barcodeListSlice';
 import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const MoodCloudList = ({title, id}) => {
     const getAccessCookie = localStorage.getItem("accessCookie");
@@ -31,7 +32,8 @@ const MoodCloudList = ({title, id}) => {
 const MoodCloud = () => {
     const dispatch = useDispatch();
     const barcodeList = useSelector((state) => state.barcodeList.barcodeList);
-
+    const getAccessCookie = localStorage.getItem("accessCookie");
+    
     const fetchBarcodeListData = async () => {
         try {
           const response = await axios.get(`/api/v1/barcode/list`,{
@@ -39,6 +41,7 @@ const MoodCloud = () => {
           });
           //리덕스
           const { barcodeList } = response.data;
+          console.log(response.data);
           dispatch(setBarcodeList({barcodeList}));
         } catch (error) {
           console.error("Error fetching data", error);

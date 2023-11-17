@@ -4,8 +4,8 @@ export const myEventSlice = createSlice(
 {
 	name: "myEvent",
 	initialState: {
-		isExistEvent : true,
-		eventId: "123"
+		isExistEvent : false,
+		eventId: ""
 	},
 	reducers: {
 		setMyEvent: (state, action) => {

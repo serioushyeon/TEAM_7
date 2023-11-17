@@ -9,6 +9,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setEventId } from "../../redux/myEventSlice";
 import { setEventDate, setEventName } from "../../redux/eventListSlice";
+import { apiClient } from '../../api/ApiClient';
 
 const EventSetting = () => {
   const event = useSelector((state)=>state.eventList);
@@ -48,6 +49,7 @@ const EventSetting = () => {
 
   const navigate = useNavigate();
   const makeEvent = () => {
+    console.log("make");
     postEventData();
   }
   const goToEventDisplay = () => {
@@ -77,6 +79,23 @@ const EventSetting = () => {
       goToEventDisplay();
     } catch (error) {
       console.error("Error posting data", error);
+      console.log(error.response);
+      console.log(error.response.status);
+      console.log(error.response.statusText);
+      if(error.statusText === "USER_ALREADY_HAS_EVENT")
+      {
+
+      }
+      if(error.statusText === "EVENT_TITLE_EMPTY")
+      {
+        
+      }
+      if(error.statusText === "USER_NOT_FOUNR")
+      {
+        alert("다시 로그인해주세요");
+        //로그아웃
+        navigate(`/`);
+      }
     }
   };
 
@@ -188,7 +207,7 @@ const EventSetting = () => {
         </div>
         <div className="eventMake">{
           !myEvent.isExistEvent ? 
-          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? makeEvent : ()=>{}}}>
+          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? makeEvent() : ()=>{}}}>
             이벤트 생성
           </button> :
           <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? editEvent : ()=>{}}}>
