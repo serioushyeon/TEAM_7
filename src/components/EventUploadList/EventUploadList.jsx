@@ -12,6 +12,9 @@ import { Stomp } from "@stomp/stompjs";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { apiClient } from '../../api/ApiClient';
+import { setUserInfo } from "../../redux/eventListSlice";
+import { useDispatch } from "react-redux";
 
 const EventUploadBlock = ({
   userId,
@@ -22,7 +25,7 @@ const EventUploadBlock = ({
 }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
+  const dispatch = useDispatch();
   const { id: eventId } = useParams();
   const navigate = useNavigate();
   let stompClient = null;
@@ -75,9 +78,6 @@ const EventUploadBlock = ({
     setModalIsOpen(false);
   };
 
-  const reloadPage = () => {
-    location.reload();
-  };
   const deleteEventBlockData = async () => {
     try {
       const response = await apiClient.delete(`/api/v1/event/${eventId}/${userId}/image-list}`, {
@@ -85,9 +85,8 @@ const EventUploadBlock = ({
           Authorization: `Bearer ${getAccessCookie}`
       }
     });
-    //디스패치로 set하기
-      reloadPage();
-      goToEvent();
+    dispatch(setUserInfo(response.data));
+    navigate(`/eventdisplay/${eventId}`);
     } catch (error) {
         console.error(error);
     }
