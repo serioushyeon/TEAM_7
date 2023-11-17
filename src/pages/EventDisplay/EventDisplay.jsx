@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import EventHeader from "../../components/EventHeader/EventHeader";
 import EventParticipants from "../../components/EventParticipants/EventParticipants";
 import EventUploadList from "../../components/EventUploadList/EventUploadList";
@@ -14,7 +13,6 @@ import { Stomp } from "@stomp/stompjs";
 import BG from "../../assets/images/Event/eventBG.jpg";
 
 const EventDisplay = () => {
-  const { id } = useParams();
   const dispatch = useDispatch();
   const users = useSelector((state) => state.eventList.value);
   const eventId = useSelector((state) => state.myEvent.value.eventId);
@@ -26,35 +24,22 @@ const EventDisplay = () => {
     console.log("Event ID:", eventId);
   }, [eventId]);
 
-  // 무코 생성 버튼 활성화를 위한 WebSocket 연결
+  // 소켓을 통해 무코 생성 버튼 활성화 여부를 설정하는 코드
   useEffect(() => {
     const socket = new SockJS("/ws-button");
     stompClient = Stomp.over(socket);
 
-    stompClient.connect(
-      {},
-      function (frame) {
-        console.log("Connected: " + frame);
-        stompClient.subscribe(
-          `/subscribe/button/${eventId}`,
-          function (message) {
-            const messageBody = JSON.parse(message.body);
-            setButtonEnabled(messageBody.buttonStatus);
-          }
-        );
-      },
-      function (error) {
-        console.error("WebSocket error:", error);
-      }
-    );
+    stompClient.connect({}, () => {
+      stompClient.subscribe(`/subscribe/button/${eventId}`, (message) => {
+        const messageBody = JSON.parse(message.body);
+        setButtonEnabled(messageBody.buttonStatus === "true");
+      });
+    });
 
-    // 소켓 연결 해제
     return () => {
-      if (stompClient !== null) {
-        stompClient.disconnect();
-      }
+      if (stompClient) stompClient.disconnect();
     };
-  }, [id]);
+  }, [eventId]);
 
   // 방 폭파 알림을 위한 WebSocket 연결
   useEffect(() => {
@@ -85,7 +70,7 @@ const EventDisplay = () => {
         stompClient.disconnect();
       }
     };
-  }, [id]);
+  }, [eventId]);
 
   //여기부터!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -166,7 +151,7 @@ const EventDisplay = () => {
       {users.roomMaker && (
         <div className="makeBarcode">
           <button
-            className="makeBarcodeBtn"
+            className={`makeBarcodeBtn ${buttonEnabled ? "active" : ""}`} // 조건부 클래스 추가
             onClick={handleBarcodeGeneration}
             disabled={!buttonEnabled}
           >
