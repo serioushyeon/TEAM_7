@@ -66,6 +66,8 @@ const EventSetting = () => {
           Authorization: `Bearer ${getAccessCookie}`
       }
     });
+    console.log(response.data);
+    console.log(response.data.eventId);
     navigate(`/eventdisplay/${response.data.eventId}`)
     } catch (error) {
       console.error("Error posting data", error);
