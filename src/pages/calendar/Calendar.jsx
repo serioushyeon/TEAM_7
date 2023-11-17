@@ -115,7 +115,7 @@ export default function MyCalendar() {
     console.log(thumbnailInfoList);
     try {
       // startDate, endDate 형식은 YYYY-MM-DD
-      const response = await axios.get(`/api/v1/user/calender`, {
+      const response = await axios.get(`${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/calender`, {
         // 서버에서 params 기준으로 값 가져옴.
         params: {
           startDate: dateRange.startDate,
@@ -195,7 +195,7 @@ export default function MyCalendar() {
         try {
           // startDate, endDate 형식은 YYYY-MM-DD
           const response = await axios.post(
-            `/api/v1/user/new-barcode`,
+            `${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/new-barcode`,
             {
               year: dateRange.year,
               month: dateRange.month,
