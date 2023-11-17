@@ -27,14 +27,12 @@ const EmptyEvent = () => {
             headers: { Authorization: `Bearer ${getAccessCookie}` },
           });
           console.log(response.data);
-          setmyevent(response.data);
-          console.log(myEvent);
-          console.log(myEvent.existEvent);
-          if (myEvent.existEvent) {
-            navigate(`/eventdisplay/${myEvent.eventId}`)
+          console.log(response.data.existEvent);
+          if (response.data.existEvent) {
+            navigate(`/eventdisplay/${response.data.eventId}`)
           } else {
             console.log("no event");
-            console.log(existEvent);
+            console.log(response.data.existEvent);
           }
         } catch (error) {
           console.error("Error fetching data", error);
