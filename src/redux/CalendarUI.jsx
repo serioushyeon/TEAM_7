@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    activeStartDate: new Date().toISOString(),
+    // 현재 달의 첫 날짜를 표시한다.
+    activeStartDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString(),
     selected: false,
 };
 

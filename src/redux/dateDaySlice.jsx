@@ -23,7 +23,7 @@ export const dateDaySlice = createSlice({
         // 월 변경
     updateMonth: (state, action) => {
         const { month } = action.payload;
-            state.dateDay.month = month + 1; 
+            state.dateDay.month = month; 
       },
       // 년 변경
       updateYear: (state, action) => {

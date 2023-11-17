@@ -79,10 +79,7 @@ const imageData = {
     // Date 객체로 변환함.
     const activeStartDate = new Date(activeStartDateString);
 
-    // startDate, endDate가 변할 때마다..
-    useEffect(() => {
-
-      // 서버에서 사진 정보 받아오기
+         // 서버에서 사진 정보 받아오기
   const getCalendarInfo = async () => {
     console.log('startDate: ', dateRange.startDate, 'endDate: ', dateRange.endDate);
     console.log('Rangeyear:', dateRange.year, 'Rangemonth: ', dateRange.month);
@@ -107,11 +104,12 @@ const imageData = {
     }
   };
 
+    useEffect(() => {
+
   if(dateRange.startDate && dateRange.endDate) {
     getCalendarInfo();
   }
-  // 실제 시작일, 끝일이 업데이트 된 이후 서버에 요청한다.
-}, [dateRange.startDate, dateRange.endDate]);
+}, []);
 
 // 사진 추가 / 삭제 할 때도 계속 get 보내야하나?
 
