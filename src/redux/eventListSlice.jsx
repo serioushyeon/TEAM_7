@@ -8,11 +8,11 @@ const initialState = {
     "https://via.placeholder.com/150",
   ],
   roomMaker: true,
-  eventName: "이벤트 명",
+  eventName: "",
   startDate: `${format(new Date(), "yyyy-MM-dd")}`, //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
   endDate: `${format(new Date(), "yyyy-MM-dd")}`, //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
-  loginUserId: "123",
-  userCount: 2,
+  loginUserId: "",
+  userCount: 0,
   userInfo: [
     {
       userId: "123",

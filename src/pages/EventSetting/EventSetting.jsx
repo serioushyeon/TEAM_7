@@ -7,10 +7,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setEventId } from "../../redux/myEventSlice";
 import { setEventDate, setEventName } from "../../redux/eventListSlice";
 import { apiClient } from '../../api/ApiClient';
-import { setMyEvent } from "../../redux/myEventSlice";
 
 const EventSetting = () => {
   const event = useSelector((state)=>state.eventList.value);
@@ -24,6 +22,8 @@ const EventSetting = () => {
   const [endDate, setEndDate] = useState(new Date(endD));
   const [eventName, setEventTitle] = useState(title);
   const [flag, setFlag] = useState(true);
+  const [myevent, setMyEvent] = useState(null);
+
   const saveEventName = (e) => {
     setEventTitle(e.target.value);
   };
@@ -51,7 +51,7 @@ const EventSetting = () => {
     postEventData();
   }
   const goToEventDisplay = () => {
-    navigate(`/eventdisplay/${myEvent.eventId}`);
+    navigate(`/eventdisplay/${myevent.eventId}`);
   };
 
   const editEvent = () => {
@@ -72,15 +72,14 @@ const EventSetting = () => {
           Authorization: `Bearer ${getAccessCookie}`
       }
     });
-      const mEvent  = { eventId: response.data ,existEvent: false};
-      dispatch(setMyEvent(mEvent));
-      goToEventDisplay();
+    setMyEvent(response.data);
+    goToEventDisplay();
     } catch (error) {
       console.error("Error posting data", error);
       console.log(error.response);
       console.log(error.response.status);
       console.log(error.response.statusText);
-      if(error.statusText === "USER_ALREADY_HAS_EVENT")
+      /*if(error.statusText === "USER_ALREADY_HAS_EVENT")
       {
 
       }
@@ -93,7 +92,7 @@ const EventSetting = () => {
         alert("다시 로그인해주세요");
         //로그아웃
         navigate(`/`);
-      }
+      }*/
     }
   };
 
@@ -111,7 +110,7 @@ const EventSetting = () => {
       dispatch(setEventName({eventName}));
     } catch (error) {
       console.error("Error posting data", error);
-      if(error.statusText === "NOT_ROOM_MAKER")
+      /*if(error.statusText === "NOT_ROOM_MAKER")
       {
 
       }
@@ -128,7 +127,7 @@ const EventSetting = () => {
         alert("다시 로그인해주세요");
         //로그아웃
         navigate(`/`);
-      }
+      }*/
     }
   }
 
@@ -147,7 +146,7 @@ const EventSetting = () => {
       dispatch(setEventDate({startDate, endDate}));
     } catch (error) {
       console.error("Error posting data", error);
-      if(error.statusText === "NOT_ROOM_MAKER")
+      /*if(error.statusText === "NOT_ROOM_MAKER")
       {
 
       }
@@ -160,7 +159,7 @@ const EventSetting = () => {
         alert("다시 로그인해주세요");
         //로그아웃
         navigate(`/`);
-      }
+      }*/
     }
   }
   return (
@@ -240,11 +239,11 @@ const EventSetting = () => {
         </div>
         <div className="eventMake">{
           location.pathname === "/eventsetting/edit" ? 
-          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? editEvent : ()=>{}}}>
+          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? editEvent() : ()=>{}}}>
             이벤트 수정
           </button>
           :
-          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? makeEvent() : ()=>{}}}>
+          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? postEventData() : ()=>{}}}>
             이벤트 생성
           </button>
           }
