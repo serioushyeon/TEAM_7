@@ -14,7 +14,7 @@ const EmptyEvent = () => {
 
     // useCookie를 이용해서 웹 브라우저의 쿠키에서 데이터를 읽어옴
     const getAccessCookie = localStorage.getItem("accessCookie");
-
+    const [myEvent, setmyevent] = useState(null);
     console.log(getAccessCookie);
     const dispatch = useDispatch();
 
@@ -26,15 +26,24 @@ const EmptyEvent = () => {
           const response = await axios.get(`/api/v1/user/my-event`, {
             headers: { Authorization: `Bearer ${getAccessCookie}` },
           });
-          const { isExistEvent, eventId } = response.data;
-          dispatch(setMyEvent({ isExistEvent, eventId }));
-          if (isExistEvent) {
-            navigate(`/eventdisplay/${eventId}`)
+          console.log(response.data);
+          setmyevent(response.data);
+          console.log(myEvent);
+          console.log(myEvent.existEvent);
+          if (myEvent.existEvent) {
+            navigate(`/eventdisplay/${myEvent.eventId}`)
           } else {
             console.log("no event");
+            console.log(existEvent);
           }
         } catch (error) {
           console.error("Error fetching data", error);
+          if(error.statusText === "USER_NOT_FOUND")
+          {
+            alert("다시 로그인해주세요");
+            //로그아웃
+            navigate(`/`);
+          }
         }
       };
 
