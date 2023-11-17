@@ -8,12 +8,14 @@ import { selectDate } from '../../redux/dateSlice';
 import { setActiveStartDate, toggleSelected } from '../../redux/CalendarUI';
 import { updateDateRange } from '../../redux/dateRangeSlice';
 import dateDaySlice, { updateDay, updateMonth, updateYear } from '../../redux/dateDaySlice';
+import { useNavigate } from "react-router-dom";
 
 export default function PhotoOption() {
     const dateDay = useSelector((state) => state.dateDay.dateDay);
     const dateInfo = useSelector((state) => state.date);
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     
     // 일 변경 핸들러
 const handleDayChange = (day) => {
@@ -50,6 +52,9 @@ const handleDayChange = (day) => {
     const formattedDate = formatDate(newYear, newMonth, selectedDay);
     console.log('fomattedDate', formattedDate);
     dispatch(selectDate(formattedDate));
+    navigate(`/calendar-photo/${formattedDate}`);
+
+    
 
     console.log('일 변경 : year: ', dateDay.year, 'month: ', dateDay.month, 'day: ', dateDay.day);
   };

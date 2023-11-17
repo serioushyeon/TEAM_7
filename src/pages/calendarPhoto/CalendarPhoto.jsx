@@ -8,10 +8,12 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { setCalendarData } from "../../redux/CalendarPhotoBoard";
 import PhotoOption from "../../components/calendar/PhotoOption";
 import { setActiveStartDate, toggleSelected } from "../../redux/CalendarUI";
+import { useParams } from 'react-router-dom';
 
 export default function CalendarPhoto() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
+  const { date } = useParams();
 
   // 일자 데이터
   const dateInfo = useSelector((state) => state.date);
@@ -52,7 +54,7 @@ export default function CalendarPhoto() {
   useEffect(() => {
     const fetchDayData = async () => {
       try {
-        const response = await axios.get(`/api/v1/user/${dateInfo.date}`);
+        const response = await axios.get(`/api/v1/user/${date}`);
         const fetchedData = response.data;
 
         // 가져온 데이터로 상태 업데이트
@@ -69,7 +71,7 @@ export default function CalendarPhoto() {
     };
 
     fetchDayData();
-  }, [dateInfo.date]);
+  }, [date]);
 
   // 메모 실시간 변경
   const handleMemoChange = (e) => {
@@ -197,7 +199,7 @@ export default function CalendarPhoto() {
       <PhotoOption />
       <S.DayWeek>{dateInfo.dayOfWeek}</S.DayWeek>
       <S.SmallText>
-        <S.DateColor>{dateInfo.yearMonthDay}</S.DateColor>
+        <S.DateColor>{date}</S.DateColor>
       </S.SmallText>
       <S.SettingPhoto>
         <S.SettingText>사진 설정</S.SettingText>

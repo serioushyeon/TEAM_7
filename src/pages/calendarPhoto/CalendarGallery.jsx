@@ -5,10 +5,12 @@ import { S } from "./CGalleryStyle";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useParams } from 'react-router-dom';
 
 export default function CalendarBoard() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
+  const { date } = useParams();
 
   const dateInfo = useSelector((state) => state.date); // 한 번만 선언
   const dateDay = useSelector((state) => state.dateDay.dateDay);
@@ -24,11 +26,11 @@ export default function CalendarBoard() {
         setMemo(memo);
         dispatch(setCalendarData({ memo, images }));
       } else {
-        navigate("/calendar-photo");
+        navigate(`/calendar-photo/${date}`);
       }
     } catch (error) {
       console.error("Error fetching data", error);
-      navigate("/calendar-photo");
+      navigate(`/calendar-photo/${date}`);
     }
   };
 
