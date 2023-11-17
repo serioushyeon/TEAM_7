@@ -186,7 +186,7 @@ const BarcodeBoard = () => {
     
         try {
           const div = divRef.current;
-          const canvas = await html2canvas(div, { scale: 4 });
+          const canvas = await html2canvas(div, { useCORS:true, scale: 4 });
           canvas.toBlob((blob) => {
             if (blob !== null) {
               saveAs(blob, "ticket.png");
@@ -220,6 +220,7 @@ const BarcodeBoard = () => {
                 console.error('err: ', err);
             });
     };
+    const barcodeurl = ticket.barcodeUrl
     const customModalStyles = {
         overlay: {
             backgroundColor: " rgba(0, 0, 0, 0.4)",
