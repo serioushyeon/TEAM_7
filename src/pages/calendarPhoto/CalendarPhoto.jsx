@@ -67,7 +67,8 @@ export default function CalendarPhoto() {
     useState(null);
 
   // 받은 데이터확인
-  console.log(dateInfo);
+  console.log('dateInfo: ',dateInfo);
+  console.log('일 클릭(사진X) : year: ', dateDay.year, 'month: ', dateDay.month, 'day: ', dateDay.day);
 
   // 메모 실시간 변경
   const handleMemoChange = (e) => {

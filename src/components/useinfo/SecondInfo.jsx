@@ -45,6 +45,9 @@ export default function SecondInfo() {
   const [accessCookie] = useCookies(["accessCookie"]);
   const [refreshCookie] = useCookies(["refreshCookie"]);
 
+  const getAccessCookie = localStorage.getItem("accessCookie");
+   const getRefreshCookie = localStorage.getItem("refreshCookie");
+
   // 리덕스(userData 대신 사용)
   const userInfo = useSelector(state => state.userdata); 
   console.log('userInfo: ', userInfo);
@@ -68,7 +71,7 @@ export default function SecondInfo() {
       const response = await apiClient.get(`/api/v1/user/user-info`, {
         headers: {
           // 쿠키 보냄
-          Authorization: `${Bearer [accessCookie]}`
+          Authorization: `${Bearer [getAccessCookie]}`
         },
       });
       console.log("성공, UserInfo : ", response.data);

@@ -11,7 +11,9 @@ export default function CalendarBoard() {
   const dispatch = useDispatch();
 
   const dateInfo = useSelector((state) => state.date); // 한 번만 선언
+  const dateDay = useSelector((state) => state.dateDay.dateDay);
   console.log("Date Info:", dateInfo); // 현재 상태 출력
+  console.log('일 클릭(사진 O) : year: ', dateDay.year, 'month: ', dateDay.month, 'day: ', dateDay.day);
 
   // 데이터 불러오는 함수
   const fetchCalendarData = async () => {

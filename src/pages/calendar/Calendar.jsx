@@ -9,6 +9,7 @@ import { useCookies } from "react-cookie";
 
 import { selectDate } from '../../redux/dateSlice';
 import { setActiveStartDate } from '../../redux/CalendarUI';
+import dateDaySlice, { updateDay, updateMonth, updateYear } from '../../redux/dateDaySlice';
 
 import { S } from './CalendarStyle';
 import './Calendar.css';
@@ -40,16 +41,21 @@ const imageData = {
   // 서버에서 데이터를 받아와 사진을 배치한다.
   export default function MyCalendar() {
     const [value, onChange] = useState(new Date());
+    const dateDay = useSelector((state) => state.dateDay.dateDay);
+    const dateInfo = useSelector((state) => state.date);
 
     // 리듀서들
     const activeStartDateString = useSelector((state) => state.calendarUI.activeStartDate);
     const dateRange = useSelector(state => state.dateRange.dateRange);
-    // 설정 해야함
-    console.log('startDate: ', dateRange.startDate, 'endDate: ', dateRange.endDate);
-    console.log('year:', dateRange.year, 'month: ', dateRange.month);
 
     const [accessCookie] = useCookies(["accessCookie"]);
     const [refreshCookie] = useCookies(["refreshCookie"]);
+
+    const getAccessCookie = localStorage.getItem("accessCookie");
+   const getRefreshCookie = localStorage.getItem("refreshCookie");
+
+   console.log('startDate2: ', dateRange.startDate, 'endDate2: ', dateRange.endDate);
+   console.log('Rangeyear:', dateRange.year, 'Rangemonth: ', dateRange.month);
     
     const [calendarInfo, setCalendarInfo] = useState({
       thumbnailInfoList:
@@ -76,7 +82,7 @@ const imageData = {
     // startDate, endDate가 변할 때마다..
     useEffect(() => {
 
-      // 유저 정보 받아오기
+      // 서버에서 사진 정보 받아오기
   const getCalendarInfo = async () => {
     console.log('startDate: ', dateRange.startDate, 'endDate: ', dateRange.endDate);
     console.log('Rangeyear:', dateRange.year, 'Rangemonth: ', dateRange.month);
@@ -90,8 +96,7 @@ const imageData = {
             year: dateRange.year,
             month: dateRange.month
         }, headers: {
-          // 나중에 토큰 수정 필요
-          Authorization: `${Bearer [access_token]}`
+          Authorization: `${Bearer [getAccessCookie]}`
         },
       });
       setCalendarInfo(response.data);
@@ -119,15 +124,19 @@ const imageData = {
     function handleLocatePhoto(date) {
       navigate('/calendar-photo');
       dispatch(selectDate(moment(date).format('YYYY-MM-DD')));
-      console.log("캘린더에서 보냄 : ", date);
+      dispatch(updateDay({ day: moment(date).date() }));
+      dispatch(updateMonth({ month: moment(date).month() }));
+      dispatch(updateYear({ year: moment(date).year() }));
     }
 
     // 사진이 있는 경우, 사진 표시 창으로 이동
     // toISOString과 moment(date) 두 가지 방법이 가능하다.
     function handleLocateDay(date) {
       navigate('/calendar-non-photo');
-      dispatch(selectDate(date.toISOString().slice(0, 10)));
-      console.log("캘린더에서 보냄 : ", date);
+      dispatch(selectDate(moment(date).format('YYYY-MM-DD')));
+      dispatch(updateDay({ day: moment(date).date() }));
+      dispatch(updateMonth({ month: moment(date).month() }));
+      dispatch(updateYear({ year: moment(date).year() }));
     }
 
     // 일요일, 토요일 색상 변경
@@ -145,7 +154,7 @@ const imageData = {
     // 바코드 생성 시
     function onClickBarcord() {
 
-      // 서버로 연, 월 전송
+      // 서버로 바코드 연, 월 전송
       const postBarcordInfo = async () => {
         try {
           // startDate, endDate 형식은 YYYY-MM-DD
@@ -156,7 +165,7 @@ const imageData = {
               headers: {
               // 나중에 토큰 수정 필요
               // Bearer 토근 앞에 공백 필요..?
-              Authorization: `${ Bearer [access_token]}`
+              Authorization: `${Bearer [getAccessCookie]}`
             }
           });
           console.log("성공, response : ", response.data);

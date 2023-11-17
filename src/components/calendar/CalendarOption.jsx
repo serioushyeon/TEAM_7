@@ -15,6 +15,14 @@ export default function CalendarOption() {
     const selected = useSelector((state) => state.calendarUI.selected);
     const dateDay = useSelector((state) => state.dateDay.dateDay);
 
+    useEffect(() => {
+      // 들어올 때 new일자들을 변경한 dateDay 값으로 업데이트
+      setNewYear(dateDay.year);
+      setNewMonth(dateDay.month);
+      setNewDay(dateDay.day);
+  
+    }, []);
+
   const dispatch = useDispatch();
 
   // 월 버튼 클릭 핸들러
@@ -28,16 +36,18 @@ const handleYearChange = (year) => {
   setNewYear(year);
   updateActiveStartDate(year, newMonth);
   dispatch(updateDateRange({ year, newMonth}));
+
+  console.log('년 변경 : year: ', dateDay.year, 'month: ', dateDay.month, 'day: ', dateDay.day);
 };
 
 // 월 변경 핸들러
 const handleMonthChange = (month) => {
-  let year = newYear;
+  let year = newYear
 
   if (month > 11) {
     month = 0; // 12월 다음은 1월
     year = year + 1; // 다음 해로 변경
-  } else if (month <1) {
+  } else if (month <0) {
     month = 11; // 1월 이전은 12월
     year = year - 1; // 이전 해로 변경
   }
@@ -46,6 +56,10 @@ const handleMonthChange = (month) => {
   setNewYear(year);
   updateActiveStartDate(year, month);
   dispatch(updateDateRange({ year, month}));
+  dispatch(updateYear(year));
+  dispatch(updateMonth(month));
+
+  console.log('월 변경 : year: ', dateDay.year, 'month: ', dateDay.month, 'day: ', dateDay.day);
 };
 
   // 날짜 변경 핸들러
@@ -73,13 +87,14 @@ const handleMonthChange = (month) => {
   };
 
   useEffect(() => {
+    // 업데이트 후 dateDay 값에 새로 선택한 값 입력
     dispatch(updateYear({ year: newYear }));
     dispatch(updateMonth({ month: newMonth}));
     dispatch(updateDay({day: newDay}));
 
     console.log('year: ', newYear, 'month: ', newMonth, 'day: ', newDay);
-    console.log('year2: ', dateDay.year, 'month2: ', dateDay.month, 'day2: ', dateDay.day);
-  }, [dispatch]);
+    console.log('dateDay year: ', dateDay.year, 'month: ', dateDay.month, 'day: ', dateDay.day);
+  }, [dateDay]);
 
   return (
     <>

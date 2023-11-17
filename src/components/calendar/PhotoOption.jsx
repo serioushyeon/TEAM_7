@@ -11,11 +11,13 @@ import dateDaySlice, { updateDay, updateMonth, updateYear } from '../../redux/da
 
 export default function PhotoOption() {
     const dateDay = useSelector((state) => state.dateDay.dateDay);
+    const dateInfo = useSelector((state) => state.date);
 
     const dispatch = useDispatch();
     
     // 일 변경 핸들러
 const handleDayChange = (day) => {
+
     let newYear = dateDay.year;
     let newMonth = dateDay.month;
     let selectedDay = day;
@@ -47,12 +49,10 @@ const handleDayChange = (day) => {
 
     // 변환된 날짜를 다른 리덕스 액션에 dispatch
     const formattedDate = formatDate(newYear, newMonth, selectedDay);
+    console.log('fomattedDate', formattedDate);
     dispatch(selectDate(formattedDate));
 
-    console.log('Formatted Date: ', formattedDate);
-
-    console.log('year: ', newYear, 'month: ', newMonth, 'day: ', selectedDay);
-    console.log('year2: ', dateDay.year, 'month2: ', dateDay.month, 'day2: ', dateDay.day);
+    console.log('일 변경 : year: ', dateDay.year, 'month: ', dateDay.month, 'day: ', dateDay.day);
   };
 
   return (
