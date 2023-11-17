@@ -16,30 +16,6 @@ import { useNavigate } from "react-router-dom";
 const EventDisplay = () => {
   const getAccessCookie = localStorage.getItem("accessCookie");
   const navigate = useNavigate();
-  const fetchMyEventData = async () => {
-    try {
-      const response = await axios.get(`/api/v1/user/my-event`, {
-        headers: { Authorization: `Bearer ${getAccessCookie}` },
-      });
-      if (response.data.existEvent) {
-        dispatch(setMyEvent(response.data));
-        navigate(`/eventdisplay/${response.data.eventId}`)
-      } else {
-        console.log("no event");
-      }
-    } catch (error) {
-      console.error("Error fetching data", error);
-      if(error.statusText === "USER_NOT_FOUND")
-      {
-        alert("다시 로그인해주세요");
-        //로그아웃
-        navigate(`/`);
-      }
-    }
-  };
-  useLayoutEffect(() => {
-  fetchMyEventData();
-},[])
 const eventId = useSelector((state) => state.myEvent.value.eventId);
 useLayoutEffect(() => {
   const fetchEventData = async () => {
