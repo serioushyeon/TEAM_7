@@ -12,6 +12,7 @@ import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import BG from "../../assets/images/Event/eventBG.jpg";
 import { useNavigate } from "react-router-dom";
+import { apiClient } from '../../api/ApiClient';
 
 const EventDisplay = () => {
   const getAccessCookie = localStorage.getItem("accessCookie");
@@ -20,7 +21,7 @@ const eventId = useSelector((state) => state.myEvent.value.eventId);
 useLayoutEffect(() => {
   const fetchEventData = async () => {
     try {
-      const response = await axios.get(`/api/v1/event/${eventId}`, {
+      const response = await apiClient.get(`/api/v1/event/${eventId}`, {
         headers: {
           Authorization: `Bearer ${getAccessCookie}`,
         },
@@ -114,7 +115,7 @@ useLayoutEffect(() => {
   const handleBarcodeGeneration = async () => {
     if (buttonEnabled) {
       try {
-        const response = await axios.post(`/api/v1/event/${eventId}/result`, {
+        const response = await apiClient.post(`/api/v1/event/${eventId}/result`, {
           headers: {
             Authorization: `Bearer ${getAccessCookie}`,
           },

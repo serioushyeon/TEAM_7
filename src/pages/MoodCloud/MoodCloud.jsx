@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setBarcodeList } from '../../redux/barcodeListSlice';
 import { useSelector } from 'react-redux';
+import { apiClient } from '../../api/ApiClient';
 import axios from 'axios';
 
 const MoodCloudList = ({title, id}) => {
@@ -35,7 +36,7 @@ const MoodCloud = () => {
     console.log(barcodeList);
     const fetchBarcodeListData = async () => {
         try {
-          const response = await axios.get(`/api/v1/barcode/list`,{
+          const response = await apiClient.get(`/api/v1/barcode/list`,{
             headers: { Authorization: `Bearer ${getAccessCookie}` }
           });
           //리덕스

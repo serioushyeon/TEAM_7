@@ -55,7 +55,7 @@ const EventHeader = () => {
       //방나가기
       const exitEventData = async () => {
         try {
-          const response = await axios.delete(`/api/v1/event/${eventId}`, {
+          const response = await apiClient.delete(`/api/v1/event/${eventId}`, {
             headers: {
               Authorization: `Bearer ${getAccessCookie}`
           }
