@@ -57,7 +57,12 @@ const MoodCloud = () => {
       
     return (
         <>{
-            barcodeList.length === 0 ? <></> :
+            barcodeList.length === 0 ? 
+            <div className='mCWrapper'>
+            <div className='mCTitle'>
+                무드 클라우드
+            </div> 
+            </div>:
             <div className='mCWrapper'>
                 <div className='mCTitle'>
                     무드 클라우드

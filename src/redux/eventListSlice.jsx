@@ -8,11 +8,11 @@ const initialState = {
     "https://via.placeholder.com/150",
   ],
   roomMaker: true,
-  eventName: "이벤트 명",
+  eventName: "",
   startDate: `${format(new Date(), "yyyy-MM-dd")}`, //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
   endDate: `${format(new Date(), "yyyy-MM-dd")}`, //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
-  loginUserId: "123",
-  userCount: 2,
+  loginUserId: "",
+  userCount: 0,
   userInfo: [
     {
       userId: "123",
@@ -48,16 +48,18 @@ export const eventListSlice = createSlice({
       state.value = action.payload;
     },
     setEventName: (state, action) => {
-      state.value.eventName = action.payload.eventName;
+      state.value.eventName = action.payload;
     },
-    setEventDate: (state, action) => {
-      state.value.startDate = action.payload.startDate;
-      state.value.endDate = action.payload.endDate;
+    setEventStartDate: (state, action) => {
+      state.value.startDate = action.payload
+    },
+    setEventEndDate: (state, action) => {
+      state.value.endDate = action.payload
     },
   },
 });
 
-export const { setEventList, setEventName, setEventDate } =
+export const { setEventList, setEventName, setEventStartDate, setEventEndDate } =
   eventListSlice.actions;
 
 export default eventListSlice.reducer;
