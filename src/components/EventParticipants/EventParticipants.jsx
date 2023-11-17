@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import defaultImage from "../../assets/images/Event/EventDefaultImg.png"; // src 폴더 안의 이미지 경로
 
 const EventParticipants = () => {
-  const users = useSelector((state) => state.eventList);
+  const users = useSelector((state) => state.eventList.value);
   const actualUserCount = users.userInfo.length;
 
   // 실제 참여자의 프로필 이미지 목록 생성
