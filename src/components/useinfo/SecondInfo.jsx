@@ -235,7 +235,7 @@ function handleEdit() {
             <S.Question
             readOnly
             >발급일/Date of issue</S.Question>
-            {userInfo.dateOfIssue}
+            {user.dateOfIssue}
             </S.DateOfIssue>
             <S.NunberBarcord>
             <S.Question
@@ -244,12 +244,12 @@ function handleEdit() {
             {userInfo.barcodeCount}
             </S.NunberBarcord>
             <S.UserBarcord>
-            {!userInfo.recentBarcodeImg ? (
+            {!user.recentBarcodeImg ? (
                 <>
                 </>
               ) :
               (
-                <S.Images src = {userInfo.recentBarcodeImg} />
+                <S.Images src = {user.recentBarcodeImg} />
               )}
             </S.UserBarcord>
             {edit ? (
