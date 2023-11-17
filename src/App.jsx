@@ -48,9 +48,7 @@ function App() {
     <>
       <Background>
         <Wrapper>
-   
                 <NavBar />
-              
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/substart" element={<SubStart />} />
