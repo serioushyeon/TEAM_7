@@ -70,8 +70,7 @@ const EventSetting = () => {
     console.log(response.data.eventId);
     navigate(`/eventdisplay/${response.data.eventId}`)
     const data = { eventId: response.data.eventId, existEvent: true}
-    dispatch(setMyEvent(data))
-    dispatch()
+    dispatch(setMyEvent(data));
     } catch (error) {
       console.error("Error posting data", error);
       console.log(error.response);
@@ -144,7 +143,7 @@ const EventSetting = () => {
     });
       console.log(response.data);
       dispatch(setEventStartDate(`${format(startDate, "yyyy-MM-dd")}`));
-      dispatch(setEventEndDate(`${format(startDate, "yyyy-MM-dd")}`));
+      dispatch(setEventEndDate(`${format(endDate, "yyyy-MM-dd")}`));
     } catch (error) {
       console.error("Error posting data", error);
       /*if(error.statusText === "NOT_ROOM_MAKER")
