@@ -23,7 +23,14 @@ function EventPhoto() {
     const fetchEventImages = async () => {
       try {
         console.log(`Fetching images for event ID: ${eventId}`);
-        const response = await axios.get(`/api/v1/event/${eventId}/image-list`);
+        const response = await axios.get(
+          `/api/v1/event/${eventId}/image-list`,
+          {
+            headers: {
+              Authorization: `Bearer ${getAccessCookie}`,
+            },
+          }
+        );
         if (response.status === 200) {
           console.log("Fetched images:", response.data.imageUrlList);
           setImages(response.data.imageUrlList);
@@ -36,8 +43,7 @@ function EventPhoto() {
     };
 
     fetchEventImages();
-  }, [eventId]);
-
+  }, [eventId, getAccessCookie]);
   //드래그 이미지 선택 상태 관리 (삭제 드래그)
   const [isDragging, setIsDragging] = useState(false);
 
