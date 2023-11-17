@@ -13,12 +13,65 @@ import { Stomp } from "@stomp/stompjs";
 import BG from "../../assets/images/Event/eventBG.jpg";
 
 const EventDisplay = () => {
+  const getAccessCookie = localStorage.getItem("accessCookie");
+  const fetchMyEventData = async () => {
+    try {
+      const response = await axios.get(`/api/v1/user/my-event`, {
+        headers: { Authorization: `Bearer ${getAccessCookie}` },
+      });
+      if (response.data.existEvent) {
+        dispatch(setMyEvent(response.data));
+        navigate(`/eventdisplay/${response.data.eventId}`)
+      } else {
+        console.log("no event");
+      }
+    } catch (error) {
+      console.error("Error fetching data", error);
+      if(error.statusText === "USER_NOT_FOUND")
+      {
+        alert("다시 로그인해주세요");
+        //로그아웃
+        navigate(`/`);
+      }
+    }
+  };
+useEffect(() => {
+  fetchMyEventData();
+},[])
+const eventId = useSelector((state) => state.myEvent.value.eventId);
+useEffect(() => {
+  const fetchEventData = async () => {
+    try {
+      const response = await axios.get(`/api/v1/event/${eventId}`, {
+        headers: {
+          Authorization: `Bearer ${getAccessCookie}`,
+        },
+      });
+      console.log(response.data);
+      dispatch(setEventList(response.data));
+    } catch (error) {
+      console.error(error);
+      /*if(error.response.statusText === "EVENT_NOT_FOUND")
+      {
+
+      }
+      if(error.response.statusText === "USER_NOT_FOUND")
+      {
+        alert("다시 로그인해주세요");
+        //로그아웃
+        navigate(`/`);
+      }
+      console.error("Error fetching event data:", error);
+    }*/
+    }
+  };
+
+  fetchEventData();
+}, []);
   const dispatch = useDispatch();
   const users = useSelector((state) => state.eventList.value);
-  const eventId = useSelector((state) => state.myEvent.value.eventId);
   const [buttonEnabled, setButtonEnabled] = useState(false);
   let stompClient = null;
-  const getAccessCookie = localStorage.getItem("accessCookie");
 
   useEffect(() => {
     console.log("Event ID:", eventId);
@@ -76,36 +129,6 @@ const EventDisplay = () => {
 
   //그 여기 페이지 보고 싶으면 여기부터 저기 뒤에 "//여기까지!!" 까지 주석처리하면 됩니다. 지금 get해올게 없어서 로딩중 떠요 ㅠ
   // 이벤트 데이터 가져오기
-
-  useEffect(() => {
-    const fetchEventData = async () => {
-      try {
-        const response = await axios.get(`/api/v1/event/${eventId}`, {
-          headers: {
-            Authorization: `Bearer ${getAccessCookie}`,
-          },
-        });
-        console.log(response.data);
-        dispatch(setEventList(response.data));
-      } catch (error) {
-        console.error(error);
-        /*if(error.response.statusText === "EVENT_NOT_FOUND")
-        {
-
-        }
-        if(error.response.statusText === "USER_NOT_FOUND")
-        {
-          alert("다시 로그인해주세요");
-          //로그아웃
-          navigate(`/`);
-        }
-        console.error("Error fetching event data:", error);
-      }*/
-      }
-    };
-
-    fetchEventData();
-  }, []);
 
   //여기까지!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
