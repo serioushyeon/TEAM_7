@@ -163,7 +163,13 @@ const handleProfileImageChange = (event) => {
             confirm={!confirm}
             onClick={handleEditUserInfo}/>
             <S.ProfileBox>
-            <S.ProfileImage src = {user.profileImage} />
+              {!user.profileImage ? (
+                <>
+                </>
+              ) :
+              (
+                <S.Images src = {user.profileImage} />
+              )}
             </S.ProfileBox>
             {edit ? 
             (<>
@@ -242,7 +248,15 @@ const handleProfileImageChange = (event) => {
             >보유 바코드 수/Number</S.Question>
             {userInfo.barcodeCount}
             </S.NunberBarcord>
-            <S.UserBarcord />
+            <S.UserBarcord>
+            {!userInfo.recentBarcodeImg ? (
+                <>
+                </>
+              ) :
+              (
+                <S.Images src = {userInfo.recentBarcodeImg} />
+              )}
+            </S.UserBarcord>
           </S.Book2Container>
   )
               }

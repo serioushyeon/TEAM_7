@@ -11,17 +11,42 @@ export default function FirstInfo() {
     <S.BookContainer>
             <S.FirstCloud>
             <S.CloudImage>
-              <S.BarcordImage url={userInfo.recentBarcodeTitleList[1]}/>
+              <S.BarcordImage>
+              {!userInfo.recentBarcodeTitleList[0] ? (
+                <>
+                </>
+              ) :
+              (
+                <S.Images src = {userInfo.recentBarcodeTitleList[0]} />
+              )}
+              </S.BarcordImage>
+              
             </S.CloudImage>
             </S.FirstCloud>
             <S.SecondCloud>
             <S.CloudImage>
-              <S.BarcordImage url={userInfo.recentBarcodeTitleList[1]}/>
+              <S.BarcordImage>
+              {!userInfo.recentBarcodeTitleList[1] ? (
+                <>
+                </>
+              ) :
+              (
+                <S.Images src = {userInfo.recentBarcodeTitleList[1]} />
+              )}
+              </S.BarcordImage>
             </S.CloudImage>
             </S.SecondCloud>
             <S.ThirdCloud>
             <S.CloudImage>
-              <S.BarcordImage url={userInfo.recentBarcodeTitleList[2]}/>
+              <S.BarcordImage>
+              {!userInfo.recentBarcodeTitleList[2] ? (
+                <>
+                </>
+              ) :
+              (
+                <S.Images src = {userInfo.recentBarcodeTitleList[2]} />
+              )}
+              </S.BarcordImage>
             </S.CloudImage>
             </S.ThirdCloud>
           </S.BookContainer>

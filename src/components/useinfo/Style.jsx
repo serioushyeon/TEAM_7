@@ -28,8 +28,6 @@ const BarcordImage =styled.div`
 position: absolute;
 width: 120px;
 height: 100px;
-background-size: cover;
-background-position: center;
 `
 // BarcordImage가 CloudImage 내부에 위치하도록
 
@@ -90,7 +88,7 @@ background-image: url(${Profile});
 // ${props => props.left}
 // ${props => !props.editable && `display: none;`}
 
-const ProfileImage = styled.img`
+const Images = styled.img`
 position: absolute;
 height: 100%;    
 width: 100%;     
@@ -190,9 +188,8 @@ const UserBarcord = styled.div`
 position: absolute;
 width: 360px;
 height: 50px;
-top: 12.8rem;
+top: 11.8rem;
 left: 0;
-background-image: url(${props => props.url}});
 `
 
 const InputProfile = styled.input`
@@ -256,7 +253,7 @@ export const S = {
     Book2Container,
     EditButton,
     ProfileBox,
-    ProfileImage,
+    Images,
     Question,
     Answer,
     NickName,
