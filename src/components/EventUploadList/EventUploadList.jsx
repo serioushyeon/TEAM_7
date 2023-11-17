@@ -7,8 +7,10 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import { LiaTrashAltSolid } from "react-icons/lia";
 import { useState, useEffect } from "react";
 import EventModel from "../EventModal/EventModal";
-import { io } from "socket.io-client";
+import SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const EventUploadBlock = ({
   userId,
@@ -17,10 +19,42 @@ const EventUploadBlock = ({
   checkStatus,
   imageCount,
   loginUserId,
-  onCheckStatusChange,
 }) => {
+  const [isChecked, setIsChecked] = useState(imageCount >= 30);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+  const { id: eventId } = useParams(); // 이벤트 ID
+  const users = useSelector((state) => state.eventList);
+
+  // 체크 상태 업데이트를 위한 WebSocket 연결
+  useEffect(() => {
+    const socket = new SockJS("/ws-check");
+    const stompClient = Stomp.over(socket);
+
+    stompClient.connect(
+      {},
+      function (frame) {
+        console.log("Connected: " + frame);
+        stompClient.subscribe(
+          `/subscribe/check/${eventId}`,
+          function (message) {
+            const messageBody = JSON.parse(message.body);
+            if (messageBody.userId === userId) {
+              setIsChecked(messageBody.checkStatus === "true");
+            }
+          }
+        );
+      },
+      function (error) {
+        console.error("WebSocket error:", error);
+      }
+    );
+
+    return () => {
+      if (stompClient !== null) {
+        stompClient.disconnect();
+      }
+    };
+  }, [eventId, userId]);
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -33,18 +67,6 @@ const EventUploadBlock = ({
   const reloadPage = () => {
     location.reload();
   };
-
-  // 클라이언트에서 체크 소켓 연결
-  const socket = io("/ws-check");
-
-  // 이미지 개수가 30개 이상이면 checkbox를 활성화
-  useEffect(() => {
-    if (imageCount >= 30) {
-      setIsChecked(true);
-      console.log(`Sending check status for user ${userId}: true`);
-      socket.emit("checkStatusChanged", { userId, checkStatus: true });
-    }
-  }, [imageCount, socket, userId]);
 
   return (
     <div className="list">
@@ -89,30 +111,34 @@ const NoList = () => {
   );
 };
 
-const EventUploadList = () => {
-  const users = useSelector((state) => state.eventList);
-
+// EventDisplay로부터 props를 받아옵니다.
+const EventUploadList = ({ userInfo, loginUserId }) => {
   return (
-    <>
-      <div className="eventUploadList">
-        {users.userInfo.map((userInfo) => (
-          <EventUploadBlock
-            userId={userInfo.userId}
-            nickname={userInfo.nickname}
-            imageUrlList={userInfo.imageUrlList}
-            checkStatus={userInfo.checkStatus}
-            imageCount={userInfo.imageCount}
-            loginUserId={users.loginUserId}
-          />
-        ))}
-        {users.userInfo.length === 0 ? <NoList /> : <></>}
-        <div className="addList">
-          <button className="addListBtn">
-            <IoIosAddCircleOutline size="40" color="#F28B50" />
-          </button>
+    <div className="eventUploadList">
+      {userInfo.map((user) => (
+        <EventUploadBlock
+          key={user.userId}
+          userId={user.userId}
+          nickname={user.nickname}
+          imageUrlList={user.imageUrlList}
+          checkStatus={user.checkStatus}
+          imageCount={user.imageCount}
+          loginUserId={loginUserId}
+        />
+      ))}
+      {userInfo.length === 0 && (
+        <div className="list">
+          <div className="uploadlist">
+            <div className="noList">아직 생성된 리스트가 없습니다.</div>
+          </div>
         </div>
+      )}
+      <div className="addList">
+        <button className="addListBtn">
+          <IoIosAddCircleOutline size="40" color="#F28B50" />
+        </button>
       </div>
-    </>
+    </div>
   );
 };
 
