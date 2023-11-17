@@ -179,6 +179,7 @@ const BarcodeBoard = () => {
 
     //티켓 바코드 다운로드
     const divRef = useRef(null);
+
     const handleDownload = async () => {
         closeModal();
         if (!divRef.current) return;
@@ -195,6 +196,7 @@ const BarcodeBoard = () => {
           console.error("Error converting div to image:", error);
         }
       };
+
       const downloadFile = (url) => {
       
         fetch(url, { method: 'GET' })
@@ -302,7 +304,7 @@ const BarcodeBoard = () => {
                                 <div className="QRCode">
                                     <QR
                                     className="QRQR"
-                                    value={window.location.href}
+                                    value={`${location.href}/guest`}
                                     size={120}
                                     level={"L"}
                                     includeMargin={false}
@@ -311,7 +313,7 @@ const BarcodeBoard = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="barcodeContainer">
+                        <div className="barcodeContainer">
                             <div className="barcodeTitle">무코</div>
                             <div className="barcode">
                                 <div className="barcodeImage"style={{backgroundImage: "url("+(ticket.barcodeUrl)+")"}}>
@@ -337,7 +339,7 @@ const BarcodeBoard = () => {
                 <div className='notice'></div>
                 <div className='modalBtnWrapperB'>
                     <button className='modalBtnB' onClick={()=>{handleDownload();}}>티켓 저장</button>
-                    <button className='modalBtnB' onClick={()=>{downloadFile(barcode);}}>바코드 저장</button>
+                    <button className='modalBtnB' onClick={()=>{downloadFile(ticket.barcodeUrl);}}>바코드 저장</button>
                 </div>
             </div>
         </Modal>
