@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import EventHeader from "../../components/EventHeader/EventHeader";
 import EventParticipants from "../../components/EventParticipants/EventParticipants";
 import EventUploadList from "../../components/EventUploadList/EventUploadList";
