@@ -64,7 +64,6 @@ const EventDisplay = () => {
             const messageBody = JSON.parse(message.body);
             if (messageBody.eventStatus === true) {
               alert("이벤트가 폭파되었습니다!");
-              // 여기에 추가적인 처리 로직을 구현할 수 있습니다.
             }
           }
         );
@@ -110,6 +109,7 @@ const EventDisplay = () => {
         <EventHeader />
         <EventParticipants />
         <EventUploadList
+          // key={users.userId}
           userInfo={users.userInfo}
           loginUserId={users.loginUserId}
         />
