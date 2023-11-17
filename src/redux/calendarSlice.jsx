@@ -6,8 +6,8 @@ import Background from "../assets/images/calendar/Background.svg";
 // 31개의 빈 데이터를 포함하는 thumbnailInfoList 초기화
 // 임시 이미지만 우선 지정
 const initializeThumbnailInfoList = () => Array.from({ length: 31 }, () => ({
-  thumbnailUrl: "https://images.pexels.com/photos/12066797/pexels-photo-12066797.jpeg",
-  date: "2023-11-11"
+  thumbnailUrl: "",
+  date: ""
 }));
 
 // 초기 상태 정의
