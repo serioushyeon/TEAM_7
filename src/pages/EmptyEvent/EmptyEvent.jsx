@@ -27,7 +27,7 @@ const EmptyEvent = () => {
             headers: { Authorization: `Bearer ${getAccessCookie}` },
           });
           console.log(response.data);
-          setmyevent(response);
+          setmyevent(response.data);
           console.log(myEvent);
           console.log(myEvent.isExistEvent);
           if (myEvent.isExistEvent) {
