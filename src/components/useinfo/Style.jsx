@@ -21,35 +21,16 @@ const CloudImage = styled.div`
 position: absolute;
 width: 120px;
 height: 100px;
+top: ${props => props.top};
+left: ${props => props.left};
 background-image: url(${Cloud});
+overflow: hidden;
 `
 
 const BarcordImage =styled.div`
 position: absolute;
 width: 120px;
 height: 100px;
-`
-// BarcordImage가 CloudImage 내부에 위치하도록
-
-const FirstCloud = styled.div`
-position: absolute;
-top: 2.5rem;
-left: 0.625rem;
-background-image: url(${props => props.url}});
-`
-
-const SecondCloud = styled.div`
-position: absolute;
-top: 7.68rem;
-left: 8.125rem;
-background-image: url(${props => props.url}});
-`
-
-const ThirdCloud = styled.div`
-position: absolute;
-top: 1rem;
-left: 14.5rem;
-background-image: url(${props => props.url}});
 `
 
 const Book2Container = styled.div`
@@ -82,7 +63,6 @@ top: 2rem;
 left: 0.625rem;
 width: 100px;
 height: 140px;
-background-image: url(${Profile});
 `
 // ${props => props.left}
 // ${props => !props.editable && `display: none;`}
@@ -193,11 +173,12 @@ left: 0;
 
 const InputProfile = styled.input`
 position: absolute;
-width: 100px;
-height: 100px;
+width: 1px;
+height: 1px;
   padding: 0;
   margin: -1px;
-
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
   border: 0;
 `
 
