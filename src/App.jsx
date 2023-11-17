@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import TestPage from "./pages/TestPage";
 import EmptyEvent from "./pages/EmptyEvent/EmptyEvent";
 import EventSetting from "./pages/EventSetting/EventSetting";
@@ -38,6 +38,7 @@ const Wrapper = styled.div`
 
 // 여기서 경로 설정해주세요.
 function App() {
+  const location = useLocation();
   const [accessCookie] = useCookies(["accessCookie"]);
   const [refreshCookie] = useCookies(["refreshCookie"]);
 
@@ -52,24 +53,28 @@ function App() {
   }
   setScreenSize();
   window.addEventListener("resize", () => setScreenSize());
+
+  const showNavBar = () => {
+    // 특정 경로에서는 네브바를 숨김
+    const hideOnRoutes = ["/", "/substart"];
+    return getAccessCookie && !hideOnRoutes.includes(location.pathname);
+  };
+
   return (
     <>
       <Background>
         <Wrapper>
-          {getAccessCookie &&
-            getAccessCookie !== "undefined" &&
-            getAccessCookie !== undefined && (
-              <>
-                <NavBar />
-              </>
-            )}
+          {showNavBar() && <NavBar />} {/* 네브바 조건부 렌더링 */}
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/substart" element={<SubStart />} />
             <Route path="/userinfo" element={<Passport />} />
             <Route path="/calendar" element={<MyCalendar />} />
             <Route path="/calendar-photo/:date" element={<CalendarPhoto />} />
-            <Route path="/calendar-non-photo/:date" element={<CCalendarGallery />} />
+            <Route
+              path="/calendar-non-photo/:date"
+              element={<CCalendarGallery />}
+            />
             <Route path="/test" element={<TestPage />} />
             <Route path="/eventphoto/:eventId" element={<EventPhoto />} />
             {/* <EmptyEvent /> */}
