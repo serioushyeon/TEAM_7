@@ -178,7 +178,6 @@ function EventPhoto() {
 
   const handleMouseMove = (index) => {
     if (isDragging) {
-      // 드래그 중 이미지 선택 처리
       toggleImageSelection(index);
     }
   };
