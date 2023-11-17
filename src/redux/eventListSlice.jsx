@@ -8,17 +8,17 @@ export const eventListSlice = createSlice({
       "https://via.placeholder.com/150",
       "https://via.placeholder.com/150",
       "https://via.placeholder.com/150",
-      "https://via.placeholder.com/150",
-      "https://via.placeholder.com/150",
-      "https://via.placeholder.com/150",
-      "https://via.placeholder.com/150",
+      // "https://via.placeholder.com/150",
+      // "https://via.placeholder.com/150",
+      // "https://via.placeholder.com/150",
+      // "https://via.placeholder.com/150",
     ],
     isRoomMaker: true,
     eventName: "이벤트 명",
     startDate: `${format(new Date(), "yyyy-MM-dd")}`, //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
     endDate: `${format(new Date(), "yyyy-MM-dd")}`, //Date의 형식은 2023-10-09, 2023-09-07 이런형식!!
     loginUserId: "123",
-    userCount: 7,
+    userCount: 2,
     userInfo: [
       {
         userId: "123",
