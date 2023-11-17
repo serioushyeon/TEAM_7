@@ -13,6 +13,9 @@ function EventPhoto() {
   const [selectedImages, setSelectedImages] = useState(new Set());
   const [eventId, setEventId] = useState("이벤트 아이디");
 
+  const getAccessCookie = localStorage.getItem("accessCookie");
+  console.log("Access Cookie:", getAccessCookie); // 콘솔에서 accessCookie 값 확인
+
   useEffect(() => {
     const fetchEventImages = async () => {
       try {
@@ -83,7 +86,7 @@ function EventPhoto() {
       const response = await fetch(`/api/v1/event/${eventId}`, {
         method: "POST",
         headers: {
-          Authorization: "Bearer [access_token]", //토큰 이후 변경해야 함.
+          Authorization: `Bearer ${getAccessCookie}`,
         },
         body: formData,
       });
