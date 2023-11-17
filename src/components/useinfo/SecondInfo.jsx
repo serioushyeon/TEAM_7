@@ -5,6 +5,7 @@ import { apiClient } from '../../api/ApiClient';
 import { useSelector, useDispatch } from 'react-redux';
 import { useCookies } from "react-cookie";
 import { userData } from '../../redux/userInfoSlice';
+import Loading from '../../pages/loading/Loading';
 
 import InfoBarcord from "../../assets/images/userinfo/infoBarcord.svg";
 import Cloud from "../../assets/images/userinfo/cloud.svg";
@@ -49,6 +50,7 @@ export default function SecondInfo() {
 
 // 로컬 상태 초기화
   const [user, setUser] = useState(userInfo);
+  const [loading, serLoading] = useState(true);
   console.log('user', user);
 
   
@@ -92,7 +94,7 @@ export default function SecondInfo() {
     }
   }
     getUserInfo();
-  }, []);
+  }, [loading]);
 
   // 프로필 이미지 핸들러
 const handleProfileImageChange = (event) => {
@@ -157,6 +159,8 @@ function handleEdit() {
 }
 
   return (
+    <>
+    {loading ? <Loading /> : null}
     <S.Book2Container>
       {!edit ? (
         <>
@@ -266,5 +270,7 @@ function handleEdit() {
               </>
             )}
           </S.Book2Container>
+          </>
   )
+  
               }
