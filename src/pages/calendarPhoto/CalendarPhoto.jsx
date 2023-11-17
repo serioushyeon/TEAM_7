@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { S } from "./CPhtoStyle";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -18,28 +18,6 @@ export default function CalendarPhoto() {
   function handleLocateCalendar() {
     navigate("/calendar");
   }
-
-  useEffect(() => {
-    const fetchDayData = async () => {
-      try {
-        const response = await axios.get(`/api/v1/user/${dateInfo.date}`);
-        const fetchedData = response.data;
-
-        // 가져온 데이터로 상태 업데이트
-        setMemo(fetchedData.memo);
-        setImages(
-          fetchedData.dayImageList.map((imageUrl, index) => ({
-            id: index,
-            file: new File([], imageUrl), // File 객체 생성 (또는 다른 방식 사용)
-          }))
-        );
-      } catch (error) {
-        console.error("Error fetching day data", error);
-      }
-    };
-
-    fetchDayData();
-  }, [dateInfo.date]);
 
   // 일자 데이터
   const dateInfo = useSelector((state) => state.date);
@@ -69,6 +47,28 @@ export default function CalendarPhoto() {
   // 받은 데이터확인
   console.log('dateInfo: ',dateInfo);
   console.log('일 클릭(사진X) : year: ', dateDay.year, 'month: ', dateDay.month, 'day: ', dateDay.day);
+
+  useEffect(() => {
+    const fetchDayData = async () => {
+      try {
+        const response = await axios.get(`/api/v1/user/${dateInfo.date}`);
+        const fetchedData = response.data;
+
+        // 가져온 데이터로 상태 업데이트
+        setMemo(fetchedData.memo);
+        setImages(
+          fetchedData.dayImageList.map((imageUrl, index) => ({
+            id: index,
+            file: new File([], imageUrl), // File 객체 생성 (또는 다른 방식 사용)
+          }))
+        );
+      } catch (error) {
+        console.error("Error fetching day data", error);
+      }
+    };
+
+    fetchDayData();
+  }, [dateInfo.date]);
 
   // 메모 실시간 변경
   const handleMemoChange = (e) => {
