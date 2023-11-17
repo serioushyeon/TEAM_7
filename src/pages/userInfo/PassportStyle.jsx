@@ -13,7 +13,7 @@ background: linear-gradient(180deg, #FDFCFB 0%, rgba(226, 209, 195, 0.00) 100%);
 
 const BookBg = styled.div`
 display: flex;
-margin-top: 10.5rem;
+margin-top: 5.3rem;
 width: 390px;
 height: 34.5rem;
 border-radius: 4px;
