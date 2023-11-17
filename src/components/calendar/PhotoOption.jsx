@@ -24,15 +24,14 @@ const handleDayChange = (day) => {
 
     const lastDayOfMonth = new Date(newYear, newMonth + 1, 0).getDate();
 
+    // 날짜가 월의 범위를 벗어날 때만 월을 변경
     if (selectedDay > lastDayOfMonth) {
-        // 다음 달의 첫째 날로 설정
-        selectedDay = 1;
-        newMonth += 1;
-      } else if (selectedDay < 1) {
-        // 이전 달의 마지막 날로 설정
-        newMonth -= 1;
-        selectedDay = new Date(newYear, newMonth + 1, 0).getDate();
-      } 
+      selectedDay = 1;
+      newMonth += 1;
+    } else if (selectedDay < 1) {
+      newMonth -= 1;
+      selectedDay = new Date(newYear, newMonth + 1, 0).getDate();
+    }
 
       // 년도 및 월 업데이트
     if (newMonth > 11) {

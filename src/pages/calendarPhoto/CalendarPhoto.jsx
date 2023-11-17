@@ -2,10 +2,12 @@ import React, { useState, useRef, useEffect } from "react";
 import { S } from "./CPhtoStyle";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
 import { useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { setCalendarData } from "../../redux/CalendarPhotoBoard";
 import PhotoOption from "../../components/calendar/PhotoOption";
+import { setActiveStartDate, toggleSelected } from '../../redux/CalendarUI';
 import dateDaySlice, {
   updateDay,
   updateMonth,
@@ -14,10 +16,8 @@ import dateDaySlice, {
 
 export default function CalendarPhoto() {
   let navigate = useNavigate();
-  // 취소 버튼 클릭 시 캘린더로 이동
-  function handleLocateCalendar() {
-    navigate("/calendar");
-  }
+  const dispatch = useDispatch();
+
 
   // 일자 데이터
   const dateInfo = useSelector((state) => state.date);
@@ -145,6 +145,16 @@ export default function CalendarPhoto() {
       // 오류 처리
     }
   };
+
+    // 날짜 변경 핸들러
+    const updateActiveStartDate = (year, month) => {
+      dispatch(setActiveStartDate(new Date(year, month).toISOString()));
+    };
+
+   // 취소 버튼 클릭 시 캘린더로 이동
+   function handleLocateCalendar() {
+    navigate("/calendar");
+  }
 
   const handleSave = () => {
     postCalendarData();

@@ -20,7 +20,6 @@ export default function CalendarOption() {
       setNewYear(dateDay.year);
       setNewMonth(dateDay.month);
       setNewDay(dateDay.day);
-  
     }, []);
 
   const dispatch = useDispatch();
@@ -104,7 +103,7 @@ const handleMonthChange = (month) => {
             <S.YearText
             top="0.6rem"
             left="6.3rem"
-            >{newYear}</S.YearText>
+            >{dateDay.year}</S.YearText>
           <S.StyledLeftButton 
           onClick={() => handleYearChange(newYear - 1)}
           top="1rem"
@@ -121,7 +120,7 @@ const handleMonthChange = (month) => {
         <S.YearText
             top="8rem"
             left="18rem"
-            >{newYear}.{newMonth + 1}</S.YearText>
+            >{dateDay.year}.{dateDay.month + 1}</S.YearText>
         <S.StyledLeftButton 
         onClick={() => handleMonthChange(newMonth - 1)}
         top="8.5rem"
