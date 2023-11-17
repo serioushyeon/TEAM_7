@@ -2,17 +2,16 @@ import React, { useState, useRef, useEffect } from "react";
 import { S } from "./CPhtoStyle";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { setCalendarData } from "../../redux/CalendarPhotoBoard";
 import PhotoOption from "../../components/calendar/PhotoOption";
-import { setActiveStartDate, toggleSelected } from '../../redux/CalendarUI';
+import { setActiveStartDate, toggleSelected } from "../../redux/CalendarUI";
 
 export default function CalendarPhoto() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
-
 
   // 일자 데이터
   const dateInfo = useSelector((state) => state.date);
@@ -40,8 +39,15 @@ export default function CalendarPhoto() {
     useState(null);
 
   // 받은 데이터확인
-  console.log('dateInfo: ',dateInfo);
-  console.log('일 클릭(사진X) : year: ', dateDay.year, 'month: ', dateDay.month, 'day: ', dateDay.day);
+  console.log("dateInfo: ", dateInfo);
+  console.log(
+    "일 클릭(사진X) : year: ",
+    dateDay.year,
+    "month: ",
+    dateDay.month,
+    "day: ",
+    dateDay.day
+  );
 
   useEffect(() => {
     const fetchDayData = async () => {
@@ -125,35 +131,63 @@ export default function CalendarPhoto() {
     setImages(newImages);
   };
 
-  // API 요청 함수
   const postCalendarData = async () => {
     try {
-      const response = await axios.post(`/api/v1/user/${dateInfo.date}`, {
-        memo: memo,
-        images: images.map((image) => image.file), // 이미지 파일 데이터
-        // 필요한 추가 데이터
+      // FormData 객체 생성
+      const formData = new FormData();
+
+      // 메모 추가
+      formData.append("memo", memo);
+
+      // 이미지 추가
+      if (images.length > 0) {
+        // 첫 번째 이미지는 'thumbnail'로 추가
+        formData.append("thumbnail", images[0].file);
+      }
+      // 나머지 이미지들은 'photo1', 'photo2', 'photo3'로 추가
+      images.slice(1).forEach((image, index) => {
+        formData.append(`photo${index + 1}`, image.file);
       });
-      console.log(response.data);
-      // 성공 메시지 또는 다른 처리
+
+      // FormData 객체 내용 확인을 위한 콘솔 로그
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: `, value);
+      }
+
+      // API 요청
+      const response = await axios.post(
+        `/api/v1/user/${dateInfo.date}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${getAccessCookie}`,
+          },
+        }
+      );
+
+      console.log("Post successful. Response Data:", response.data);
     } catch (error) {
       console.error("Error posting data", error);
-      // 오류 처리
+      console.log(
+        "Data attempted to post:",
+        images.map((image) => image.file)
+      );
     }
   };
 
-    // 날짜 변경 핸들러
-    const updateActiveStartDate = (year, month) => {
-      dispatch(setActiveStartDate(new Date(year, month).toISOString()));
-    };
+  // 날짜 변경 핸들러
+  const updateActiveStartDate = (year, month) => {
+    dispatch(setActiveStartDate(new Date(year, month).toISOString()));
+  };
 
-   // 취소 버튼 클릭 시 캘린더로 이동
-   function handleLocateCalendar() {
+  // 취소 버튼 클릭 시 캘린더로 이동
+  function handleLocateCalendar() {
     navigate("/calendar");
   }
 
   const handleSave = () => {
     postCalendarData();
-    // Redux 스토어 업데이트
     dispatch(setCalendarData({ memo, images }));
     navigate("/calendar");
   };

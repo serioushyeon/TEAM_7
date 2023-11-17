@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import CameraImoge from "../../assets/images/calendarPhoto/camera.svg";
 
-const Container = styled.div`
-`;
+const Container = styled.div``;
 
 const DayWeek = styled.div`
   color: #022859;
