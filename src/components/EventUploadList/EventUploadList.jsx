@@ -68,6 +68,20 @@ const EventUploadBlock = ({
   const reloadPage = () => {
     location.reload();
   };
+  const deleteEventBlockData = async () => {
+    try {
+      const response = await apiClient.delete(`/api/v1/event/${eventId}/${userId}/image-list}`, {
+        headers: {
+          Authorization: `Bearer ${getAccessCookie}`
+      }
+    });
+    //디스패치로 set하기
+      reloadPage();
+      goToEvent();
+    } catch (error) {
+        console.error(error);
+    }
+  };
 
   return (
     <div className="list">
@@ -96,7 +110,7 @@ const EventUploadBlock = ({
         highlight={"삭제"}
         end={"하시겠습니까?"}
         notice={"※ 한 번 삭제한 리스트는 되돌릴 수 없어요."}
-        action={reloadPage}
+        action={deleteEventBlockData}
       />
     </div>
   );
@@ -125,7 +139,6 @@ const EventUploadList = ({ userInfo, loginUserId }) => {
   const navigateToEventPhoto = () => {
     navigate("/eventphoto"); // EventPhoto 페이지의 경로로 변경하세요.
   };
-
   return (
     <div className="eventUploadList">
       {userInfo.map((user) => (
