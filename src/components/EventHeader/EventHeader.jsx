@@ -63,7 +63,7 @@ const EventHeader = () => {
         const mEvent  = { existEvent: false, eventId: "" };
         dispatch(setMyEvent(mEvent));
         closeModal();
-        goToEvent();
+        goToHome();
         } catch (error) {
             console.error(error);
         }
