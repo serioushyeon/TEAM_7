@@ -32,7 +32,8 @@ const MoodCloudList = ({title, id}) => {
 const MoodCloud = () => {
     const dispatch = useDispatch();
     const barcodeList = useSelector((state) => state.barcodeList.barcodeList);
-
+    const getAccessCookie = localStorage.getItem("accessCookie");
+    
     const fetchBarcodeListData = async () => {
         try {
           const response = await axios.get(`/api/v1/barcode/list`,{
