@@ -45,8 +45,8 @@ const EventHeader = () => {
     };
       const navigate = useNavigate();
 
-      const goToEvent = () => {
-          navigate("/event")
+      const goToHome = () => {
+          navigate("/");
       }
       const goToSetting = () => {
         navigate(`/eventsetting/edit`);
