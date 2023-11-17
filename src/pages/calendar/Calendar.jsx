@@ -121,6 +121,7 @@ export default function MyCalendar() {
     dispatch(updateYear({ year: moment(date).year() }));
   }
 
+
   // 사진이 있는 경우, 사진 표시 창으로 이동
   // toISOString과 moment(date) 두 가지 방법이 가능하다.
   function handleLocateDay(date) {
