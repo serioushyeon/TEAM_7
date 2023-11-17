@@ -31,7 +31,7 @@ export default function StartPage() {
       <S.LoudSpeaker className={isAnimating ? "animate" : ""} />
       <S.ChatBox className={isAnimating ? "animate" : ""} />
       <S.Chatting
-        top="45.4rem"
+        top="23.4rem"
         left="4rem"
         className={isAnimating ? "animate" : ""}
       >
@@ -41,7 +41,7 @@ export default function StartPage() {
         </S.ChattingText>
       </S.Chatting>
       <S.Chatting
-        top="49.1rem"
+        top="27.1rem"
         left="6.5rem"
         className={isAnimating ? "animate" : ""}
       >
@@ -51,8 +51,8 @@ export default function StartPage() {
         </S.ChattingText>
       </S.Chatting>
       <S.Chatting
-        top="52rem"
-        left="1.65rem"
+        top="30rem"
+        left="2.8rem"
         className={isAnimating ? "animate" : ""}
       >
         <S.ChattingText>

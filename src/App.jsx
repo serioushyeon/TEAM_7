@@ -15,6 +15,7 @@ import Passport from "./pages/userInfo/Passport";
 import MyCalendar from "./pages/calendar/Calendar";
 import CalendarPhoto from "./pages/calendarPhoto/CalendarPhoto";
 import CCalendarGallery from "./pages/calendarPhoto/CalendarGallery";
+import { useCookies } from "react-cookie";
 
 const Background = styled.div`
   width: 100vw;
@@ -37,6 +38,14 @@ const Wrapper = styled.div`
 
 // 여기서 경로 설정해주세요.
 function App() {
+  const [accessCookie] = useCookies(["accessCookie"]);
+    const [refreshCookie] = useCookies(["refreshCookie"]);
+
+    const getAccessCookie = localStorage.getItem("accessCookie");
+   const getRefreshCookie = localStorage.getItem("refreshCookie");
+
+   console.log(getAccessCookie);
+
   function setScreenSize() {
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty("--vh", `${vh}px`); //"--vh"라는 속성으로 정의해준다.
@@ -47,7 +56,14 @@ function App() {
     <>
       <Background>
         <Wrapper>
-          <NavBar />
+        {getAccessCookie &&
+          getAccessCookie !== "undefined" && 
+          getAccessCookie !== undefined && (
+            <>
+              <NavBar />
+            </>
+          )
+        }
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/substart" element={<SubStart />} />

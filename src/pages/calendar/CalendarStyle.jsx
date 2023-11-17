@@ -7,15 +7,6 @@ import Delete from "../../assets/images/calendarPhoto/delete.svg";
 // 기존에 Calendar에 max 사이즈에 대한 css를 넣으면 계속 왼쪽 정렬이 되었는데,
 // 컨테이너에 relative 속성을 넣으니 중앙정렬이 되었음.(원인이 뭘까)
 const Container = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 390px;
-  max-height: 844px;
 `
 
 const BackImage = styled.div`

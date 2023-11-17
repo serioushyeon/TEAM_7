@@ -3,22 +3,10 @@ import EditImoge from "../../assets/images/calendarPhoto/edit.svg";
 
 // 기본 컨테이너
 const Container = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin: 0 auto;
-  max-width: 390px;
-  max-height: 844px;
-  height: 100%;
-  flex-direction: column;
 `;
 
 // 배경색
 const Bg = styled.div`
-  position: absolute;
-  width: 390px;
-  height: auto;
-  background-color: white;
 `;
 
 // 12px 글씨 템플릿

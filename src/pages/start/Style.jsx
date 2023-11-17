@@ -13,21 +13,10 @@ border-radius: 4px;
 `
 
 const Container = styled.div`
-position: relative;
-display: flex;
-align-items: center;
-margin: 0 auto;
-max-width: 390px;
-max-height: 1020px;
-width: 100%;
-height: 100vh;
+
 `
 
 const Bg = styled.div`
-display: flex;
-width: 390px;
-height: 1020px;
-background-color: #FDFCFB;
 `
 
 const Title = styled.div`
@@ -66,10 +55,10 @@ background-image: url(${Goorm});
 const FlipButton = styled.div`
  // border: 1px solid #000;
 position: absolute;
-top: 35.2rem;
+top: 10.2rem;
 left: 1rem;
 width: 22.5rem;
-height: 15rem;
+height: 20rem;
 `
 
 const Introduce = styled.div`

@@ -59,7 +59,7 @@ import Background from "../../assets/images/calendar/Background.svg";
     console.log(thumbnailInfoList);
     try {
       // startDate, endDate 형식은 YYYY-MM-DD
-      const response = await apiClient.get(`/api/v1/user/calender`, {
+      const response = await axios.get(`/api/v1/user/calender`, {
         // 서버에서 params 기준으로 값 가져옴.
         params: {
             startDate: dateRange.startDate,
@@ -67,7 +67,7 @@ import Background from "../../assets/images/calendar/Background.svg";
             year: dateRange.year,
             month: dateRange.month
         }, headers: {
-          Authorization: `${Bearer [getAccessCookie]}`
+          Authorization: `Bearer ${getAccessCookie}`
         },
       });
 
@@ -138,14 +138,14 @@ import Background from "../../assets/images/calendar/Background.svg";
       const postBarcordInfo = async () => {
         try {
           // startDate, endDate 형식은 YYYY-MM-DD
-          const response = await apiClient.post(`/api/v1/user/new-barcode`, {
+          const response = await axios.post(`/api/v1/user/new-barcode`, {
                 year: dateRange.year,
                 month: dateRange.month
             }, {
               headers: {
               // 나중에 토큰 수정 필요
               // Bearer 토근 앞에 공백 필요..?
-              Authorization: `${Bearer [getAccessCookie]}`
+              Authorization: `Bearer ${getAccessCookie}`
             }
           });
           console.log("성공, response : ", response.data);

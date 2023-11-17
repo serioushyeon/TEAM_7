@@ -2,13 +2,6 @@ import styled from 'styled-components';
 import Goorm from '../../assets/images/Login/TitleGoorm.svg';
 
 const Container = styled.div`
-position: relative;
-display: flex;
-align-items: center;
-margin: 0 auto;
-max-width: 390px;
-max-height: 1080px;
-width: 100%;
 `
 
 const Bg = styled.div`
@@ -20,7 +13,7 @@ background: linear-gradient(180deg, #FDFCFB 0%, rgba(226, 209, 195, 0.00) 100%);
 
 const BookBg = styled.div`
 display: flex;
-margin-top: 10.5rem;
+margin-top: 5.3rem;
 width: 390px;
 height: 34.5rem;
 border-radius: 4px;
@@ -32,7 +25,7 @@ border: 1px solid var(--gray-scale-gray-200-dividers, #DDD);
 const Title = styled.div`
 display: flex;
 position: absolute;
-top: 2.625rem;
+top: 0.625rem;
 right: 1rem;
 color: #191919;
 font-size: 28px;
@@ -44,7 +37,7 @@ line-height: normal;
 const Titletext = styled.div`
 display: block;
 position: absolute;
-top: 4.875rem;
+top: 2.875rem;
 right: 1rem;
 color: #001C30;
 font-size: 16px;
@@ -55,7 +48,7 @@ line-height: normal;
 
 const TitleGoorm = styled.div`
 position: absolute;
-top: 2.625rem;
+top: 0.625rem;
 right: 8rem;
 width: 40px;
 height: 32.239px;
