@@ -17,40 +17,13 @@ function EventPhoto() {
 
   console.log("Access Cookie:", getAccessCookie); // 콘솔에서 accessCookie 값 확인
 
-  //사진 get해오기
   useEffect(() => {
     const fetchEventImages = async () => {
       try {
         // API 요청을 통해 이미지 목록 가져오기
-        const response = await axios.get(
-          `/api/v1/event/${eventId}/image-list`,
-          {
-            headers: {
-              Authorization: `Bearer ${getAccessCookie}`, // 필요한 경우 인증 토큰 포함
-            },
-          }
-        );
-
-        if (response.status === 200) {
-          // 가져온 이미지 URL 목록을 상태에 저장
-          setImages(response.data.imageUrlList);
-        } else {
-          console.error("Failed to fetch images");
-        }
-      } catch (error) {
-        console.error("Error fetching images:", error);
-      }
-    };
-
-    fetchEventImages();
-  }, [eventId, getAccessCookie]);
-
-  //사진 등록하기
-  useEffect(() => {
-    const fetchEventImages = async () => {
-      try {
         const response = await axios.get(`/api/v1/event/${eventId}/image-list`);
         if (response.status === 200) {
+          // 가져온 이미지 URL 목록을 상태에 저장
           setImages(response.data.imageUrlList);
         } else {
           console.error("Failed to fetch images");
@@ -105,7 +78,6 @@ function EventPhoto() {
   const handleSubmit = async () => {
     const formData = new FormData();
 
-    // 이미지 파일을 FormData 객체에 추가
     for (const image of images) {
       const response = await fetch(image);
       const blob = await response.blob();
@@ -121,16 +93,11 @@ function EventPhoto() {
       console.log(`${pair[0]}: ${pair[1]}`);
     }
 
-    // JSON 데이터 생성
-    const jsonData = {
-      eventId: eventId,
-    };
-
     try {
       // 서버에 POST 요청
-      const response = await axios.post(`/api/v1/event/${eventId}`, jsonData, {
+      const response = await axios.post(`/api/v1/event/${eventId}`, formData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${getAccessCookie}`,
         },
       });
