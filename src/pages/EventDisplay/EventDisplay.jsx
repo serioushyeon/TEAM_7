@@ -82,33 +82,33 @@ const EventDisplay = () => {
 
   //그 여기 페이지 보고 싶으면 여기부터 저기 뒤에 "//여기까지!!" 까지 주석처리하면 됩니다. 지금 get해올게 없어서 로딩중 떠요 ㅠ
   // 이벤트 데이터 가져오기
-  useEffect(() => {
-    const fetchEventData = async () => {
-      try {
-        const response = await axios.get(`/api/v1/event/${eventid}`);
-        setEventData(response.data);
-      } catch (error) {
-        if(error.response.statusText === "EVENT_NOT_FOUND")
-        {
+  // useEffect(() => {
+  //   const fetchEventData = async () => {
+  //     try {
+  //       const response = await axios.get(`/api/v1/event/${eventid}`);
+  //       setEventData(response.data);
+  //     } catch (error) {
+  //       if(error.response.statusText === "EVENT_NOT_FOUND")
+  //       {
 
-        }
-        if(error.response.statusText === "USER_NOT_FOUND")
-        {
-          alert("다시 로그인해주세요");
-          //로그아웃
-          navigate(`/`);
-        }
-        console.error("Error fetching event data:", error);
-      }
-    };
+  //       }
+  //       if(error.response.statusText === "USER_NOT_FOUND")
+  //       {
+  //         alert("다시 로그인해주세요");
+  //         //로그아웃
+  //         navigate(`/`);
+  //       }
+  //       console.error("Error fetching event data:", error);
+  //     }
+  //   };
 
-    fetchEventData();
-  }, [id]);
+  //   fetchEventData();
+  // }, [id]);
 
   // 이벤트 데이터가 없을 경우 기본 화면 또는 로딩 표시
-  if (!eventData) {
-    return <div>이벤트 정보를 불러오는 중...</div>; // 또는 기본 화면 구성
-  }
+  // if (!eventData) {
+  //   return <div>이벤트 정보를 불러오는 중...</div>; // 또는 기본 화면 구성
+  // }
 
   //여기까지!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -120,24 +120,19 @@ const EventDisplay = () => {
         console.log("Barcode generated successfully:", response.data);
       } catch (error) {
         console.error("Error in generating barcode:", error);
-        if(error.response.statusText === "NOT_ROOM_MAKER"){
-
+        if (error.response.statusText === "NOT_ROOM_MAKER") {
         }
-        if(error.response.statusText === "EVENT_PHOTO_EXCEED"){
-          
+        if (error.response.statusText === "EVENT_PHOTO_EXCEED") {
         }
-        if(error.response.statusText === "EVENT_PHOTO_IS_LESS_THAN"){
-          
+        if (error.response.statusText === "EVENT_PHOTO_IS_LESS_THAN") {
         }
-        if(error.response.statusText === "EVENT_NOT_FOUND"){
-
+        if (error.response.statusText === "EVENT_NOT_FOUND") {
         }
-        if(error.response.statusText === "USER_NOT_FOUND"){
+        if (error.response.statusText === "USER_NOT_FOUND") {
           alert("다시 로그인해주세요");
           //로그아웃
           navigate(`/`);
         }
-        
       }
     } else {
       console.log("Barcode generation button is disabled.");
