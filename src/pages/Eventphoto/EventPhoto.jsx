@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as S from "./style";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 //사진 import
 import EventIconBefore from "../../assets/images/EventPhoto/EventIconBefore.png";
@@ -14,16 +15,17 @@ function EventPhoto() {
   const [selectedImages, setSelectedImages] = useState(new Set());
   const eventId = useSelector((state) => state.myEvent.value.eventId);
   const getAccessCookie = localStorage.getItem("accessCookie");
+  const navigate = useNavigate();
 
   console.log("Access Cookie:", getAccessCookie); // 콘솔에서 accessCookie 값 확인
 
   useEffect(() => {
     const fetchEventImages = async () => {
       try {
-        // API 요청을 통해 이미지 목록 가져오기
+        console.log(`Fetching images for event ID: ${eventId}`);
         const response = await axios.get(`/api/v1/event/${eventId}/image-list`);
         if (response.status === 200) {
-          // 가져온 이미지 URL 목록을 상태에 저장
+          console.log("Fetched images:", response.data.imageUrlList);
           setImages(response.data.imageUrlList);
         } else {
           console.error("Failed to fetch images");
@@ -34,7 +36,7 @@ function EventPhoto() {
     };
 
     fetchEventImages();
-  }, [eventId]); // eventId가 변경될 때마다 함수 실행
+  }, [eventId]);
 
   //드래그 이미지 선택 상태 관리 (삭제 드래그)
   const [isDragging, setIsDragging] = useState(false);
@@ -45,6 +47,8 @@ function EventPhoto() {
 
     // 이미 업로드된 이미지와 새로 업로드하려는 이미지의 총 개수
     const totalImages = images.length + files.length;
+
+    e.target.value = "";
 
     // 총 이미지 수가 130개를 넘지 않는 경우에만 이미지 처리
     if (totalImages <= 130) {
