@@ -11,7 +11,7 @@ function EventPhoto() {
   const [images, setImages] = useState([]);
   //이미지 선택 상태 관리 (삭제위한코드)
   const [selectedImages, setSelectedImages] = useState(new Set());
-  const [eventId, setEventId] = useState("이벤트 아이디");
+  const eventId = useSelector((state) => state.myEvent.value.eventId);
 
   const getAccessCookie = localStorage.getItem("accessCookie");
   console.log("Access Cookie:", getAccessCookie); // 콘솔에서 accessCookie 값 확인
