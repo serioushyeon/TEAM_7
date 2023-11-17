@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setEventId } from "../../redux/myEventSlice";
 import { setEventDate, setEventName } from "../../redux/eventListSlice";
 import { apiClient } from '../../api/ApiClient';
+import { setMyEvent } from "../../redux/myEventSlice";
 
 const EventSetting = () => {
   const event = useSelector((state)=>state.eventList.value);
@@ -75,7 +76,8 @@ const EventSetting = () => {
       }
     });
       const { eventId } = response.data;
-      dispatch(setEventId({eventId}));
+      const existEvent  = true; 
+      dispatch(setMyEvent({existEvent, eventId}));
       goToEventDisplay();
     } catch (error) {
       console.error("Error posting data", error);
