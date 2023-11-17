@@ -10,7 +10,7 @@ import { useCookies } from "react-cookie";
 import { selectDate } from "../../redux/dateSlice";
 import { setActiveStartDate } from "../../redux/CalendarUI";
 import { updateDay, updateMonth, updateYear } from "../../redux/dateDaySlice";
-import { setThumbnailInfoList } from "../../redux/calendarSlice";
+import { setThumbnailInfoList, setButtonStatus } from "../../redux/calendarSlice";
 
 import { S } from "./CalendarStyle";
 import "./Calendar.css";
@@ -23,6 +23,44 @@ import axios from "axios";
 
 // 서버에서 데이터를 받아와 사진을 배치한다.
 export default function MyCalendar() {
+  // 더미 데이터
+  const DummyData = {
+    "thumbnailInfoList": [
+      {"thumbnailUrl": "https://example.com/image_0.jpg", "date": "2023-10-20"},
+      {"thumbnailUrl": "https://example.com/image_1.jpg", "date": "2023-03-04"},
+      {"thumbnailUrl": "https://example.com/image_2.jpg", "date": "2023-06-12"},
+      {"thumbnailUrl": "https://example.com/image_3.jpg", "date": "2023-06-19"},
+      {"thumbnailUrl": "https://example.com/image_4.jpg", "date": "2023-06-27"},
+      {"thumbnailUrl": "https://item.kakaocdn.net/do/493188dee481260d5c89790036be0e668f324a0b9c48f77dbce3a43bd11ce785", "date": "2023-12-21"},
+      {"thumbnailUrl": "https://example.com/image_6.jpg", "date": "2023-06-23"},
+      {"thumbnailUrl": "https://example.com/image_7.jpg", "date": "2023-10-26"},
+      {"thumbnailUrl": "https://example.com/image_8.jpg", "date": "2023-12-01"},
+      {"thumbnailUrl": "https://example.com/image_9.jpg", "date": "2023-05-05"},
+      {"thumbnailUrl": "https://example.com/image_10.jpg", "date": "2023-10-29"},
+      {"thumbnailUrl": "https://example.com/image_11.jpg", "date": "2023-12-05"},
+      {"thumbnailUrl": "https://example.com/image_12.jpg", "date": "2023-01-04"},
+      {"thumbnailUrl": "https://example.com/image_13.jpg", "date": "2023-05-16"},
+      {"thumbnailUrl": "https://example.com/image_14.jpg", "date": "2023-02-06"},
+      {"thumbnailUrl": "https://example.com/image_15.jpg", "date": "2023-12-19"},
+      {"thumbnailUrl": "https://example.com/image_16.jpg", "date": "2023-02-21"},
+      {"thumbnailUrl": "https://example.com/image_17.jpg", "date": "2023-06-13"},
+      {"thumbnailUrl": "https://example.com/image_18.jpg", "date": "2023-06-02"},
+      {"thumbnailUrl": "https://example.com/image_19.jpg", "date": "2023-06-16"},
+      {"thumbnailUrl": "https://example.com/image_20.jpg", "date": "2023-03-20"},
+      {"thumbnailUrl": "https://example.com/image_21.jpg", "date": "2023-07-08"},
+      {"thumbnailUrl": "https://example.com/image_22.jpg", "date": "2023-08-13"},
+      {"thumbnailUrl": "https://example.com/image_23.jpg", "date": "2023-11-08"},
+      {"thumbnailUrl": "https://example.com/image_24.jpg", "date": "2023-07-28"},
+      {"thumbnailUrl": "https://example.com/image_25.jpg", "date": "2023-08-15"},
+      {"thumbnailUrl": "https://example.com/image_26.jpg", "date": "2023-07-07"},
+      {"thumbnailUrl": "https://example.com/image_27.jpg", "date": "2023-10-13"},
+      {"thumbnailUrl": "https://example.com/image_28.jpg", "date": "2023-04-11"},
+      {"thumbnailUrl": "https://example.com/image_29.jpg", "date": "2023-01-15"},
+      {"thumbnailUrl": "https://example.com/image_30.jpg", "date": "2023-08-13"}
+    ],
+    "buttonStatus": "active"
+  }
+  
   const [value, onChange] = useState(new Date());
   const [isDisabled, setIsDisabed] = useState(false);
   const dateDay = useSelector((state) => state.dateDay.dateDay);
@@ -40,6 +78,8 @@ export default function MyCalendar() {
   const thumbnailInfoList = useSelector(
     (state) => state.photoList.thumbnailInfoList
   );
+  
+  console.log('배열인가요? : ', thumbnailInfoList);
   const buttonStatus = useSelector((state) => state.photoList.buttonStatus);
 
   const [accessCookie] = useCookies(["accessCookie"]);
@@ -89,8 +129,8 @@ export default function MyCalendar() {
       });
 
       // 사진 리덕스에 저장
-      dispatch(setThumbnailInfoList(response.data));
-
+      dispatch(setThumbnailInfoList(response.data.thumbnailInfoList));
+      dispatch(setButtonStatus(response.data.buttonStatus));
       if (response.data.buttonStatus === "ACTIVE") {
         setIsDisabed(true);
       } else if (response.data.buttonStatus === "ACTIVE_WITH_MODAL") {
@@ -213,8 +253,8 @@ export default function MyCalendar() {
             // 날짜에 해당하는 이미지 데이터를 찾는다.
             // moment로 date 내부 데이터에서 day만 빼옴.
             const imageEntry = thumbnailInfoList.find((entry) =>
-              moment(date).isSame(entry.date, "day")
-            );
+  moment(date).isSame(entry.date, "day")
+);
 
             // width를 지정하고 height를 auto로 하면 안됌.
             // height를 지정하고 width를 auto로 해야함.
