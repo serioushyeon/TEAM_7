@@ -5,12 +5,32 @@ import * as S from "./style";
 import EventIconBefore from "../../assets/images/EventPhoto/EventIconBefore.png";
 import EventIconAfter from "../../assets/images/EventPhoto/EventIconAfter.png";
 
+import axios from "axios";
+
 function EventPhoto() {
   const [images, setImages] = useState([]);
   //이미지 선택 상태 관리 (삭제위한코드)
   const [selectedImages, setSelectedImages] = useState(new Set());
-
   const [eventId, setEventId] = useState("이벤트 아이디");
+
+  useEffect(() => {
+    const fetchEventImages = async () => {
+      try {
+        // API 요청을 통해 이미지 목록 가져오기
+        const response = await axios.get(`/api/v1/event/${eventId}/image-list`);
+        if (response.status === 200) {
+          // 가져온 이미지 URL 목록을 상태에 저장
+          setImages(response.data.imageUrlList);
+        } else {
+          console.error("Failed to fetch images");
+        }
+      } catch (error) {
+        console.error("Error fetching images:", error);
+      }
+    };
+
+    fetchEventImages();
+  }, [eventId]); // eventId가 변경될 때마다 함수 실행
 
   //드래그 이미지 선택 상태 관리 (삭제 드래그)
   const [isDragging, setIsDragging] = useState(false);

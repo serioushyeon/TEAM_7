@@ -6,7 +6,11 @@ import { useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { setCalendarData } from "../../redux/CalendarPhotoBoard";
 import PhotoOption from "../../components/calendar/PhotoOption";
-import dateDaySlice, { updateDay, updateMonth, updateYear } from '../../redux/dateDaySlice';
+import dateDaySlice, {
+  updateDay,
+  updateMonth,
+  updateYear,
+} from "../../redux/dateDaySlice";
 
 export default function CalendarPhoto() {
   let navigate = useNavigate();
@@ -14,6 +18,28 @@ export default function CalendarPhoto() {
   function handleLocateCalendar() {
     navigate("/calendar");
   }
+
+  useEffect(() => {
+    const fetchDayData = async () => {
+      try {
+        const response = await axios.get(`/api/v1/user/${dateInfo.date}`);
+        const fetchedData = response.data;
+
+        // 가져온 데이터로 상태 업데이트
+        setMemo(fetchedData.memo);
+        setImages(
+          fetchedData.dayImageList.map((imageUrl, index) => ({
+            id: index,
+            file: new File([], imageUrl), // File 객체 생성 (또는 다른 방식 사용)
+          }))
+        );
+      } catch (error) {
+        console.error("Error fetching day data", error);
+      }
+    };
+
+    fetchDayData();
+  }, [dateInfo.date]);
 
   // 일자 데이터
   const dateInfo = useSelector((state) => state.date);
