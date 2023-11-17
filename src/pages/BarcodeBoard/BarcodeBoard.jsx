@@ -108,8 +108,7 @@ const BarcodeBoard = () => {
       const fetchTicketGuestData = async () => {
         try {
           const response = await axios.get(`/api/v1/barcode/${id}/guest-ticket`);
-          const {nickname, title, barcodeUrl, startDate, endDate, createdAt, memberCnt,imageInfoList} = response.data;
-          dispatch(setTicket({nickname, title, barcodeUrl, startDate, endDate, createdAt, memberCnt,imageInfoList}));
+          dispatch(setTicket(response.data));
         } catch (error) {
           console.error("Error fetching data", error);
           if(error.response.statusText === "BARCODE_NOT_FOUND"){
@@ -129,7 +128,7 @@ const BarcodeBoard = () => {
         else {
             fetchTicketData();
         }
-    })
+    },[])
 
     //본인이면 링크, 저장 로드
     const isLoadBtn = () => {
@@ -315,8 +314,7 @@ const BarcodeBoard = () => {
                     <div className="barcodeContainer">
                             <div className="barcodeTitle">무코</div>
                             <div className="barcode">
-                                <div className="barcodeImage"style={{backgroundImage: "url("+(barcode)+")"}}>
-
+                                <div className="barcodeImage"style={{backgroundImage: "url("+(ticket.barcodeUrl)+")"}}>
                                 </div>
                             </div>
                         </div>

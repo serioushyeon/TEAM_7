@@ -18,6 +18,7 @@ const EventHeader = () => {
     const users = useSelector((state) => state.eventList.value);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [toast, setToast] = useState(false);
+    const getAccessCookie = localStorage.getItem("accessCookie");
     const openModal = () => {
         setModalIsOpen(true);
       };
@@ -58,6 +59,7 @@ const EventHeader = () => {
         });
         const mEvent  = { existEvent: false, eventId: "" };
         dispatch(setMyEvent(mEvent));
+        closeModal();
         goToEvent();
         } catch (error) {
             console.error(error);
