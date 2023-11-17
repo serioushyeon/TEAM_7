@@ -1,12 +1,7 @@
 import React, { useState } from "react";
-import * as S from "./LoginStyle";
+import { S } from "./LoginStyle";
 import { useNavigate } from "react-router-dom";
 import { apiClient } from "../../api/ApiClient";
-
-//photo import
-import bookImg from "../../assets/images/Login/LoginEarth.png";
-import kakaoImg from "../../assets/images/Login/Kakaoimg.png";
-import loginbottomImg from "../../assets/images/Login/LoginQImg.png";
 
 export default function Login() {
   const [isLogin, setIsLogin] = useState(false);
@@ -24,24 +19,15 @@ export default function Login() {
 
   return (
     <S.Container>
-      {/* <S.Bg /> */}
-      <S.TopLogoWrapper>
-        <S.TopLogoImg>
-          <S.TitleGoorm />
-          <S.Title>MOOCO</S.Title>
-        </S.TopLogoImg>
-        <S.Titletext>무드를 표현하는 새로운 방법, 무코</S.Titletext>
-      </S.TopLogoWrapper>
+      <S.Bg />
+      <S.TitleGoorm />
+      <S.Title>MOOCO</S.Title>
+      <S.Titletext>무드를 표현하는 새로운 방법, 무코</S.Titletext>
       <S.BookContainer>
-        <S.BookImg src={bookImg} />
+        <S.Earth />
+        <S.Kakao onClick={handleLogin} />
       </S.BookContainer>
-      <S.KakaoLoginContainer>
-        <S.Kakao src={kakaoImg} onClick={handleLogin} />
-      </S.KakaoLoginContainer>
-      <S.LoginBottom>
-        <S.LoginBottomImg src={loginbottomImg} />
-      </S.LoginBottom>
-      {/* <S.LoudSpeaker />
+      <S.LoudSpeaker />
       <S.Chatting top="45.4rem" left="4rem">
         <S.ChattingText>
           <S.Bold>무코</S.Bold>
@@ -62,7 +48,7 @@ export default function Login() {
             드립니다.
           </S.Normal>
         </S.ChattingText>
-      </S.Chatting> */}
+      </S.Chatting>
     </S.Container>
   );
 }
