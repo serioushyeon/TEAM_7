@@ -84,7 +84,7 @@ const EventDisplay = () => {
     stompClient.connect({}, () => {
       stompClient.subscribe(`/subscribe/button/${eventId}`, (message) => {
         const messageBody = JSON.parse(message.body);
-        setButtonEnabled(messageBody.buttonStatus === "true");
+        setButtonEnabled(messageBody.buttonStatus);
       });
     });
 
