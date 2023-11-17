@@ -4,10 +4,9 @@ import StartPage from "../../components/startpage/StartPage";
 import { useCookies } from "react-cookie";
 
 function SubStart() {
-  const [cookies] = useCookies(["access_cookie", "refresh_cookie"]);
+  const getAccessCookie = localStorage.getItem("accessCookie");
+   const getRefreshCookie = localStorage.getItem("refreshCookie");
 
-  localStorage.setItem("accessCookie", cookies.access_cookie);
-  localStorage.setItem("refreshCookie", cookies.refresh_cookie);
   return (
     <>
       <S.TitleGoorm />

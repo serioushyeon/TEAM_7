@@ -5,6 +5,7 @@ import { apiClient } from '../../api/ApiClient';
 import { useSelector, useDispatch } from 'react-redux';
 import { useCookies } from "react-cookie";
 import { userData } from '../../redux/userInfoSlice';
+import Loading from '../../pages/loading/Loading';
 
 import InfoBarcord from "../../assets/images/userinfo/infoBarcord.svg";
 import Cloud from "../../assets/images/userinfo/cloud.svg";
@@ -48,51 +49,62 @@ export default function SecondInfo() {
   // file 저장
 
 // 로컬 상태 초기화
-  const [user, setUser] = useState(userInfo);
+  const [user, setUser] = useState({
+    nickname :"",     // KangSeungJun
+	birth :"",        // 1999-09-01
+	gender :"",       // M or Y
+	dateOfIssue : "",// 1999-09-01
+	barcodeCount : "",   //4
+	profileImage : "",   //https://www.ahdsfadsfafd~~~~ (url로 넘어갑니다!)
+  recentBarcodeImg : "", // https://www.ahdsfadsfafd~~~~ (url로 넘어갑니다!)
+	recentBarcodeTitleList : [], // String의 List로 넘어갑니다. 없으면 null
+	modalActive : false
+  });
+
+  const [loading, serLoading] = useState(true);
   console.log('user', user);
 
   
   // 유저 데이터 실시간 수정
   const handleInfoChange = (e, field) => {
-    const updatedUser = { ...userInfo, [field]: e.target.value };
+    const updatedUser = { ...user, [field]: e.target.value };
   setUser(updatedUser);
   console.log(updatedUser);
 
+  // userinfo로
   dispatch(userData(updatedUser));
   };
-   
-  // redux와 user 동기화
-  useEffect(() => {
+
+     // 유저 정보 get 메서드
+     const getUserInfo = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/user-info`, {
+          headers: {
+            // 쿠키 보냄
+            Authorization: `Bearer ${getAccessCookie}`
+          },
+        });
+        console.log("성공, UserInfo : ", response.data);
+        dispatch(userInfoSlice.actions.userData(response.data));
+        setUser(response.data);
+  
+        // 데이터 재세팅
+  
+        if(response.data.modalActive === false) {
+          alert("정보를 입력해주세요 !");
+        }
+  
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+   // redux와 user 동기화
+   useEffect(() => {
+    getUserInfo();
     setUser(userInfo);
   }, [userInfo]);
 
-
-  useEffect(() => {
-
-    // 유저 정보 get 메서드
-  const getUserInfo = async () => {
-    try {
-      const response = await axios.get(`${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/user-info`, {
-        headers: {
-          // 쿠키 보냄
-          Authorization: `Bearer ${getAccessCookie}`
-        },
-      });
-      console.log("성공, UserInfo : ", response.data);
-      dispatch(userInfoSlice.actions.userData(response.data));
-
-      // 데이터 재세팅
-
-      if(response.data.modalActive === false) {
-        alert("정보를 입력해주세요 !");
-      }
-
-    } catch (error) {
-      console.log(error);
-    }
-  }
-    getUserInfo();
-  }, []);
 
   // 프로필 이미지 핸들러
 const handleProfileImageChange = (event) => {
@@ -111,13 +123,13 @@ const handleProfileImageChange = (event) => {
   }));
 
   console.log('image url: ', objectUrl);
-  console.log(userInfo.profileImage);
+  console.log(user.profileImage);
 
   }
 };
 
 // formData 전송, 편집 버튼 클릭 시
-const postUserInfo = async () => {
+  const postUserInfo = async () => {
   const formData = new FormData();
 
 // 파일을 formdata로 전송
@@ -157,6 +169,8 @@ function handleEdit() {
 }
 
   return (
+    <>
+    {loading ? <Loading /> : null}
     <S.Book2Container>
       {!edit ? (
         <>
@@ -169,7 +183,7 @@ function handleEdit() {
       )}
 
           <S.ProfileBox>
-                <S.Images src = {userInfo.profileImage} />
+                <S.Images src = {user.profileImage} />
             </S.ProfileBox>
             {edit ? 
             (<>
@@ -188,7 +202,7 @@ function handleEdit() {
             <S.Question>닉네임/Nick name</S.Question>
             <S.Answer 
             type="text" 
-            value={userInfo.nickname}
+            value={user.nickname}
             id="nickname"
             name="nickname"
             onChange={(e) => handleInfoChange(e, 'nickname')} 
@@ -233,7 +247,7 @@ function handleEdit() {
             <>
              <S.Answer 
              type="text" 
-             value={userInfo.gender === 'M' ? '남성' : (userInfo.gender === 'Y' ? '여성' : '')}
+             value={user.gender === 'M' ? '남성' : (user.gender === 'Y' ? '여성' : '')}
              readOnly
              edit = {edit}
            />
@@ -266,5 +280,7 @@ function handleEdit() {
               </>
             )}
           </S.Book2Container>
+          </>
   )
+  
               }

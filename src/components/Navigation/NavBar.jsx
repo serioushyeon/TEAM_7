@@ -61,7 +61,8 @@ line-height: normal;
 `
 export default function NavBar() {
 
-  const [cookies] = useCookies(["accessCookie", "refreshCookie"]);
+  const getAccessCookie = localStorage.getItem("accessCookie");
+   const getRefreshCookie = localStorage.getItem("refreshCookie");
 
   return (
     <Container>

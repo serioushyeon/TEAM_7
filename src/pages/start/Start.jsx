@@ -94,7 +94,7 @@ export default function Start() {
         position: 'absolute',
        transform: 'rotate(90deg)',
         width: '15rem',
-        height: '22.5rem',
+        height: '12.5rem',
         top: '15.375rem',
         left: '-10.2rem'
       }}>
