@@ -22,8 +22,6 @@ const EventSetting = () => {
   const [endDate, setEndDate] = useState(new Date(endD));
   const [eventName, setEventTitle] = useState(title);
   const [flag, setFlag] = useState(true);
-  const [myevent, setMyEvent] = useState(null);
-
   const saveEventName = (e) => {
     setEventTitle(e.target.value);
   };
@@ -46,12 +44,8 @@ const EventSetting = () => {
   }
 
   const navigate = useNavigate();
-  const makeEvent = () => {
-    console.log("make");
-    postEventData();
-  }
   const goToEventDisplay = () => {
-    navigate(`/eventdisplay/${myevent.eventId}`);
+    navigate(`/eventdisplay/${myEvent.eventId}`);
   };
 
   const editEvent = () => {
@@ -72,8 +66,7 @@ const EventSetting = () => {
           Authorization: `Bearer ${getAccessCookie}`
       }
     });
-    setMyEvent(response.data);
-    goToEventDisplay();
+    navigate(`/eventdisplay/${response.data.eventId}`)
     } catch (error) {
       console.error("Error posting data", error);
       console.log(error.response);
