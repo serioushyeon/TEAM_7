@@ -1,32 +1,35 @@
-import './EventParticipants.css'
-import { useSelector } from 'react-redux';
+import "./EventParticipants.css";
+import { useSelector } from "react-redux";
+import defaultImage from "../../assets/images/Event/EventDefaultImg.png"; // src 폴더 안의 이미지 경로
 
-//초대 링크 복사 및 노티스
 const EventParticipants = () => {
-    const users = useSelector((state) => state.eventList);
+  const users = useSelector((state) => state.eventList);
+  const actualUserCount = users.userInfo.length;
 
-    const arr = [];
-    const profile = () => {
-        const count = users.userCount < 6 ? users.userCount-1 : 5;
-        for(let i = 0; i <= count; i++){
-            console.log(users.profileImgUrlList[i]);
-            arr.push(
-            <div className="box">
-                <img className="profile" src = {users.profileImgUrlList[i]}/>
-            </div>)
-        }
-        return (arr);
-    }
+  // 실제 참여자의 프로필 이미지 목록 생성
+  const profileImages = users.userInfo
+    .slice(0, 5) // 첫 5명의 참여자 이미지만 표시
+    .map((user, index) => {
+      const imageUrl = user.profileImgUrl || defaultImage; // 이미지 URL이 없으면 디폴트 이미지 사용
+      return (
+        <div className="box" key={index}>
+          <img
+            className="profile"
+            src={imageUrl}
+            alt={`Profile ${user.nickname || "User"}`} // 닉네임이 없으면 "User" 표시
+          />
+        </div>
+      );
+    });
 
-    return (
-        <>
-            <div class="block">
-                {profile()}
-                <div className='countbox'>
-                    +{users.userCount}
-                </div>
-            </div>
-        </>
-    );
+  return (
+    <>
+      <div className="block">
+        {profileImages}
+        <div className="countbox">+{actualUserCount}</div>
+      </div>
+    </>
+  );
 };
+
 export default EventParticipants;
