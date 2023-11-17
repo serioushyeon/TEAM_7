@@ -38,7 +38,7 @@ export default function SecondInfo() {
    const getRefreshCookie = localStorage.getItem("refreshCookie");
    
   // 리덕스(userData 대신 사용)
-  const userInfo = useSelector(state => state.userdata); 
+  const userInfo = useSelector((state) => state.userdata); 
   console.log('userInfo: ', userInfo);
 
   const [edit, setEdit] = useState(false);
@@ -48,17 +48,19 @@ export default function SecondInfo() {
   // file 저장
 
 
-  const [user, setUser] = useState({
-    nickName: "",
-    birth: "",
-    gender: "",
-    dateOfIssue: "",
-    barcodeCount: 0,
-    profileImage: "",
-    recentBarcodeImg: "",
-    recentBarcodeTitleList: ["", "", ""],
-    modalActive: false,
-  })
+
+// 로컬 상태 초기화
+  const [user, setUser] = useState(userInfo);
+
+  
+  // 유저 데이터 실시간 수정
+  const handleInfoChange = (e, field) => {
+    const updatedUser = { ...user, [field]: e.target.value };
+  setUser(updatedUser);
+
+  dispatch(userInfoSlice.actions.userData(updatedUser));
+  };
+   
 
   // 유저 정보 get 메서드
   const getUserInfo = async () => {
@@ -70,7 +72,7 @@ export default function SecondInfo() {
         },
       });
       console.log("성공, UserInfo : ", response.data);
-      dispatch(userInfoSlice(response.data));
+      dispatch(userInfoSlice.actions.userData(response.data));
       setUser(response.data);
       // 데이터 재세팅
 
@@ -83,12 +85,10 @@ export default function SecondInfo() {
     }
   }
 
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
-  // 유저 데이터 실시간 수정
-  const handleInfoChange = (e, field) => {
-    setUser({ ...user, [field]: e.target.value });
-  };
-   
   // 프로필 이미지 핸들러
 const handleProfileImageChange = (event) => {
   if (event.target.files && event.target.files[0]) {
@@ -137,6 +137,7 @@ const postUserInfo = async () => {
     }, [user]);
 
 
+// 데이터 전송
 function handleEditUserInfo() {
   postUserInfo();
 }
@@ -234,7 +235,7 @@ function handleEdit() {
             <S.Question
             readOnly
             >발급일/Date of issue</S.Question>
-            {userInfo.dateOfIssue}
+            {user.dateOfIssue}
             </S.DateOfIssue>
             <S.NunberBarcord>
             <S.Question
@@ -243,12 +244,12 @@ function handleEdit() {
             {userInfo.barcodeCount}
             </S.NunberBarcord>
             <S.UserBarcord>
-            {!userInfo.recentBarcodeImg ? (
+            {!user.recentBarcodeImg ? (
                 <>
                 </>
               ) :
               (
-                <S.Images src = {userInfo.recentBarcodeImg} />
+                <S.Images src = {user.recentBarcodeImg} />
               )}
             </S.UserBarcord>
             {edit ? (
