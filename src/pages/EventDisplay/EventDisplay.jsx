@@ -25,7 +25,7 @@ if(!eventId)
 useLayoutEffect(() => {
   const fetchEventData = async () => {
     try {
-      const response = await apiClient.get(`/api/v1/event/${eventId}`, {
+      const response = await apiClient.get(`/api/v1/event/${eId}`, {
         headers: {
           Authorization: `Bearer ${getAccessCookie}`,
         },
