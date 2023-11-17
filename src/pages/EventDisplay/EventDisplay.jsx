@@ -66,7 +66,7 @@ useLayoutEffect(() => {
     stompClient = Stomp.over(socket);
 
     stompClient.connect({}, () => {
-      stompClient.subscribe(`/subscribe/button/${eventId}`, (message) => {
+      stompClient.subscribe(`/subscribe/button/${eid}`, (message) => {
         const messageBody = JSON.parse(message.body);
         setButtonEnabled(messageBody.buttonStatus);
       });
@@ -87,7 +87,7 @@ useLayoutEffect(() => {
       function (frame) {
         console.log("Connected: " + frame);
         stompClient.subscribe(
-          `/subscribe/leave-event/${eventId}`,
+          `/subscribe/leave-event/${eid}`,
           function (message) {
             const messageBody = JSON.parse(message.body);
             if (messageBody.eventStatus) {
@@ -119,7 +119,7 @@ useLayoutEffect(() => {
   const handleBarcodeGeneration = async () => {
     if (buttonEnabled) {
       try {
-        const response = await apiClient.post(`/api/v1/event/${eventId}/result`, {
+        const response = await apiClient.post(`/api/v1/event/${eid}/result`, {
           headers: {
             Authorization: `Bearer ${getAccessCookie}`,
           },
