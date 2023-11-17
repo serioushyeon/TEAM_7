@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 const MoodCloudList = ({title, id}) => {
-    const getAccessCookie = localStorage.getItem("accessCookie");
     const navigate = useNavigate();
 
     const goToTicket= () => {
@@ -58,7 +57,8 @@ const MoodCloud = () => {
       })
       
     return (
-        <>
+        <>{
+            barcodeList.length === 0 ? <></> :
             <div className='mCWrapper'>
                 <div className='mCTitle'>
                     무드 클라우드
@@ -69,6 +69,7 @@ const MoodCloud = () => {
                     <div className='marginB'></div>
                 </div>
             </div>
+            }
         </>
     )
 }
