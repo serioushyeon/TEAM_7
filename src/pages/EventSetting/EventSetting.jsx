@@ -12,8 +12,8 @@ import { setEventDate, setEventName } from "../../redux/eventListSlice";
 import { apiClient } from '../../api/ApiClient';
 
 const EventSetting = () => {
-  const event = useSelector((state)=>state.eventList);
-  const myEvent = useSelector((state)=>state.myEvent);
+  const event = useSelector((state)=>state.eventList.value);
+  const myEvent = useSelector((state)=>state.myEvent.value);
   const dispatch = useDispatch();
   const getAccessCookie = localStorage.getItem("accessCookie");
 

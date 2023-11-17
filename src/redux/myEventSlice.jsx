@@ -1,19 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const initialState = {
+	existEvent : false,
+	eventId: ""};
+	
 export const myEventSlice = createSlice(
 {
 	name: "myEvent",
 	initialState: {
-		isExistEvent : false,
-		eventId: ""
+		value: initialState
 	},
 	reducers: {
 		setMyEvent: (state, action) => {
-			state.isExistEvent = action.payload.isExistEvent;
-			state.eventId = action.payload.eventId;
+			state.value = action.payload;
 		},
 		setEventId: (state, action) => {
-			state.eventId = action.payload.eventId;
+			state.value.eventId = action.payload.eventId;
 		}
 
 	}
