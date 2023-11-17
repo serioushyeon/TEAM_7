@@ -115,20 +115,13 @@ export default function MyCalendar() {
     console.log("Rangeyear:", dateRange.year, "Rangemonth: ", dateRange.month);
     console.log(thumbnailInfoList);
     try {
-      
-      // JSON 데이터를 문자열로 변환
-    const jsonPayload = JSON.stringify({
-      startDate: dateRange.startDate,
-      endDate: dateRange.endDate,
-      year: dateRange.year,
-      month: dateRange.month,
-    });
-
       // startDate, endDate 형식은 YYYY-MM-DD
       const response = await axios.get(`${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/calender`, {
-        // 서버에서 params 기준으로 값 가져옴.
         params: {
-          data: jsonPayload,
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
+          year: dateRange.year,
+          month: dateRange.month,
         },
         headers: {
           Authorization: `Bearer ${getAccessCookie}`,

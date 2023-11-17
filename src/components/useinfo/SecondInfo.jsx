@@ -92,7 +92,6 @@ export default function SecondInfo() {
     }
   }
     getUserInfo();
-    setUser(userInfo);
   }, []);
 
   // 프로필 이미지 핸들러
@@ -170,13 +169,7 @@ function handleEdit() {
       )}
 
           <S.ProfileBox>
-              {!user.profileImage ? (
-                <>
-                </>
-              ) :
-              (
                 <S.Images src = {userInfo.profileImage} />
-              )}
             </S.ProfileBox>
             {edit ? 
             (<>
@@ -260,15 +253,9 @@ function handleEdit() {
             >보유 바코드 수/Number</S.Question>
             {userInfo.barcodeCount}
             </S.NunberBarcord>
-            {!userInfo.recentBarcodeImg ? (
-                <>
-                </>
-              ) :
-              (
                 <S.UserBarcord>
                 <S.Images src={userInfo.recentBarcodeImg} />
                 </S.UserBarcord>
-              )}
             {edit ? (
               <>
               <S.SendButton type="submit" onClick={handleEditUserInfo}>저장</S.SendButton>
