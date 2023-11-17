@@ -12,6 +12,7 @@ import { TbDoorExit } from "react-icons/tb";
 import { useSelector } from 'react-redux';
 import {setMyEvent} from "../../redux/myEventSlice";
 import { apiClient } from '../../api/ApiClient';
+import { useDispatch } from "react-redux";
 import axios from "axios";
 
 const EventHeader = () => {
@@ -19,6 +20,7 @@ const EventHeader = () => {
     const users = useSelector((state) => state.eventList.value);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [toast, setToast] = useState(false);
+    const dispatch = useDispatch();
     const getAccessCookie = localStorage.getItem("accessCookie");
     const openModal = () => {
         setModalIsOpen(true);
