@@ -28,8 +28,6 @@ const BarcordImage =styled.div`
 position: absolute;
 width: 120px;
 height: 100px;
-background-size: cover;
-background-position: center;
 `
 // BarcordImage가 CloudImage 내부에 위치하도록
 
@@ -76,18 +74,27 @@ right: 0.9rem;
 width: 18px;
 height: 18px;
 background-image: url(${EditImoge});
+opacity: ${props => props.confirm ? '0.5;' : '1;'} 
 `
 
-const ProfileImage = styled.div`
+const ProfileBox = styled.div`
 position: absolute;
 top: 2rem;
 left: 0.625rem;
 width: 100px;
 height: 140px;
-background-image: url(${props => props.url});
+background-image: url(${Profile});
 `
 // ${props => props.left}
 // ${props => !props.editable && `display: none;`}
+
+const Images = styled.img`
+position: absolute;
+height: 100%;    
+width: 100%;     
+objectFit: 'cover';
+backgroundSize: 'contain';
+`
 
 const Question = styled.div`
 color: #5E5E5E;
@@ -103,19 +110,18 @@ font-size: 12px;
 font-style: normal;
 font-weight: 400;
 line-height: normal;
-background-color: transparent;
+color: #000;
+width: 115px;
 border: none;
+background-color: transparent;
+border-bottom: ${props => props.edit ? 'solid #DDD 1px;' : 'none;'}
 outline: none;
 
-/* value가 비어있지 않을 때 적용할 스타일
-속성을 css로 변경할 수는 없고, prop으로 전달해야하는 듯. */
-  ${({ value }) => value && `
-  color: #000;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  `}
+::placeholder {
+  color: #AAA; 
+  font-size: 10px; 
+}
+
 `
 
 const NickName = styled.div`
@@ -182,9 +188,8 @@ const UserBarcord = styled.div`
 position: absolute;
 width: 360px;
 height: 50px;
-top: 12.8rem;
+top: 11.8rem;
 left: 0;
-background-image: url(${props => props.url}});
 `
 
 const InputProfile = styled.input`
@@ -224,6 +229,20 @@ const ProfileLabel = styled.label`
 // 위 padding: 49px만 있을 땐 글자가 같이 축소해서 수직 일렬로 섰는데,
 // 아래 padding: 0을 추가하니 글자가 컨테이너 내부에서 완벽하게 중앙 정렬이 되었음.
 
+const SendUserInfo = styled.button`
+position: absolute;
+left: 6.2rem;
+top: 17.2rem;
+width: 10rem;
+height: 2.4rem;
+border-radius: 4px;
+border: 1px solid #CBCBCB;
+background: transparent;
+color: #CBCBCB;
+text-align: center;
+`;
+
+
 export const S = {
     BookContainer,
     CloudImage,
@@ -233,7 +252,8 @@ export const S = {
     ThirdCloud,
     Book2Container,
     EditButton,
-    ProfileImage,
+    ProfileBox,
+    Images,
     Question,
     Answer,
     NickName,
@@ -243,5 +263,6 @@ export const S = {
     NunberBarcord,
     UserBarcord,
     InputProfile,
-    ProfileLabel
+    ProfileLabel,
+    SendUserInfo
 }

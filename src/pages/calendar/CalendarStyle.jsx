@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Background from "../../assets/images/calendar/Background.svg";
 import leftArrow from "../../assets/images/calendar/leftArrow.svg";
 import rightArrow from "../../assets/images/calendar/rightArrow.svg";
+import Delete from "../../assets/images/calendarPhoto/delete.svg";
 
 // 기존에 Calendar에 max 사이즈에 대한 css를 넣으면 계속 왼쪽 정렬이 되었는데,
 // 컨테이너에 relative 속성을 넣으니 중앙정렬이 되었음.(원인이 뭘까)
@@ -69,8 +70,9 @@ bottom: 5.2rem;
 width: 10rem;
 height: 2.8rem;
 border-radius: 4px;
-border: 1px solid #CBCBCB;
 background: transparent;
+border: 1px solid #CBCBCB;
+opacity: ${props => props.disabled ? '1;' : '0.5;'}
 color: #CBCBCB;
 text-align: center;
 `;
@@ -171,6 +173,16 @@ backgroundSize: 'contain';
 background-position: center center;
 `
 
+const DeleteButton = styled.div`
+position: absolute;
+top: 1rem;
+right: 1rem;
+width: 12px;
+height: 12px;
+background-image: url(${Delete});
+z-index: 500;
+`
+
 export const S = {
     Container,
     BackImage,
@@ -186,5 +198,6 @@ export const S = {
     DayImage,
     StyledYear,
     StyledMonth,
-    YearText
+    YearText,
+    DeleteButton
 }
