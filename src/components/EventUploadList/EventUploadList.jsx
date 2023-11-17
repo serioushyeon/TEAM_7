@@ -23,8 +23,9 @@ const EventUploadBlock = ({
 }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const eventId = useSelector((state) => state.myEvent.value.eventId);
   const navigate = useNavigate();
+  const eventId = useSelector((state) => state.myEvent.value.eventId);
+
   let stompClient = null;
 
   useEffect(() => {
@@ -133,14 +134,15 @@ const NoList = () => {
 const EventUploadList = ({ userInfo, loginUserId }) => {
   const navigate = useNavigate();
 
+  const eventId = useSelector((state) => state.myEvent.value.eventId);
+
   // 사용자가 이미지를 업로드했는지 확인
   const hasUserUploadedImages = userInfo.some(
     (user) => user.userId === loginUserId
   );
 
-  // EventPhoto 페이지로 이동하는 함수
   const navigateToEventPhoto = () => {
-    navigate("/eventphoto"); // EventPhoto 페이지의 경로로 변경하세요.
+    navigate(`/eventphoto/${eventId}`); // EventPhoto 페이지의 경로로 변경하세요.
   };
 
   return (

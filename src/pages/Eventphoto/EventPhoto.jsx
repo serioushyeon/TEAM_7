@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as S from "./style";
+import { useSelector } from "react-redux";
 
 //사진 import
 import EventIconBefore from "../../assets/images/EventPhoto/EventIconBefore.png";
@@ -12,17 +13,44 @@ function EventPhoto() {
   //이미지 선택 상태 관리 (삭제위한코드)
   const [selectedImages, setSelectedImages] = useState(new Set());
   const eventId = useSelector((state) => state.myEvent.value.eventId);
-
   const getAccessCookie = localStorage.getItem("accessCookie");
+
   console.log("Access Cookie:", getAccessCookie); // 콘솔에서 accessCookie 값 확인
 
+  //사진 get해오기
   useEffect(() => {
     const fetchEventImages = async () => {
       try {
         // API 요청을 통해 이미지 목록 가져오기
-        const response = await axios.get(`/api/v1/event/${eventId}/image-list`);
+        const response = await axios.get(
+          `/api/v1/event/${eventId}/image-list`,
+          {
+            headers: {
+              Authorization: `Bearer ${getAccessCookie}`, // 필요한 경우 인증 토큰 포함
+            },
+          }
+        );
+
         if (response.status === 200) {
           // 가져온 이미지 URL 목록을 상태에 저장
+          setImages(response.data.imageUrlList);
+        } else {
+          console.error("Failed to fetch images");
+        }
+      } catch (error) {
+        console.error("Error fetching images:", error);
+      }
+    };
+
+    fetchEventImages();
+  }, [eventId, getAccessCookie]);
+
+  //사진 등록하기
+  useEffect(() => {
+    const fetchEventImages = async () => {
+      try {
+        const response = await axios.get(`/api/v1/event/${eventId}/image-list`);
+        if (response.status === 200) {
           setImages(response.data.imageUrlList);
         } else {
           console.error("Failed to fetch images");
@@ -77,30 +105,47 @@ function EventPhoto() {
   const handleSubmit = async () => {
     const formData = new FormData();
 
-    // images 배열에 있는 각 파일에 대해 formData에 추가
-    images.forEach((image, index) => {
-      formData.append(`imageList[${index}]`, image);
-    });
+    // 이미지 파일을 FormData 객체에 추가
+    for (const image of images) {
+      const response = await fetch(image);
+      const blob = await response.blob();
+      const file = new File([blob], "image.jpg", { type: "image/jpeg" });
+      formData.append("imageList[]", file);
+
+      // 파일의 세부 정보 출력
+      console.log(`File: ${file.name}, Type: ${file.type}, Size: ${file.size}`);
+    }
+
+    // FormData 내용 콘솔에 출력 (디버깅 목적)
+    for (const pair of formData.entries()) {
+      console.log(`${pair[0]}: ${pair[1]}`);
+    }
+
+    // JSON 데이터 생성
+    const jsonData = {
+      eventId: eventId,
+    };
 
     try {
-      const response = await fetch(`/api/v1/event/${eventId}`, {
-        method: "POST",
+      // 서버에 POST 요청
+      const response = await axios.post(`/api/v1/event/${eventId}`, jsonData, {
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${getAccessCookie}`,
         },
-        body: formData,
       });
 
-      if (response.ok) {
+      if (response.status === 200) {
         alert("이미지가 저장되었습니다 :)");
+        navigate(`/eventdisplay/${eventId}`);
       } else {
         alert("업로드에 실패했습니다.");
       }
     } catch (error) {
+      console.error("Error uploading images:", error);
       alert("네트워크 오류가 발생했습니다.");
     }
   };
-
   // 이미지 처리 함수
   const processImages = (files) => {
     // 이미 업로드된 이미지와 새로 업로드하려는 이미지의 총 개수 계산
