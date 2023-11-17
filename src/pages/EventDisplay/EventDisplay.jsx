@@ -86,7 +86,7 @@ const EventDisplay = () => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const response = await axios.get(`/api/v1/event/${eventid}`, {
+        const response = await axios.get(`/api/v1/event/${id}`, {
           headers: {
             Authorization: `Bearer ${getAccessCookie}`
         }
