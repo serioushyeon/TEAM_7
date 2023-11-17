@@ -7,6 +7,7 @@ import "./EventDisplay.css";
 import BarcodeLoading from "../../components/BarcodeLoading/BarcodeLoading";
 import { useDispatch, useSelector } from "react-redux";
 import { setEventList } from "../../redux/eventListSlice";
+import { setMyEvent } from "../../redux/myEventSlice";
 import axios from "axios";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
@@ -16,9 +17,14 @@ const EventDisplay = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const users = useSelector((state) => state.eventList.value);
+  const eventId = useSelector((state) => state.myEvent.value.eventId);
   const [buttonEnabled, setButtonEnabled] = useState(false);
   let stompClient = null;
   const getAccessCookie = localStorage.getItem("accessCookie");
+
+  useEffect(() => {
+    console.log("Event ID:", eventId);
+  }, [eventId]);
 
   // 무코 생성 버튼 활성화를 위한 WebSocket 연결
   useEffect(() => {
@@ -29,10 +35,13 @@ const EventDisplay = () => {
       {},
       function (frame) {
         console.log("Connected: " + frame);
-        stompClient.subscribe(`/subscribe/button/${id}`, function (message) {
-          const messageBody = JSON.parse(message.body);
-          setButtonEnabled(messageBody.buttonStatus);
-        });
+        stompClient.subscribe(
+          `/subscribe/button/${eventId}`,
+          function (message) {
+            const messageBody = JSON.parse(message.body);
+            setButtonEnabled(messageBody.buttonStatus);
+          }
+        );
       },
       function (error) {
         console.error("WebSocket error:", error);
@@ -57,7 +66,7 @@ const EventDisplay = () => {
       function (frame) {
         console.log("Connected: " + frame);
         stompClient.subscribe(
-          `/subscribe/leave-event/${id}`,
+          `/subscribe/leave-event/${eventId}`,
           function (message) {
             const messageBody = JSON.parse(message.body);
             if (messageBody.eventStatus === true) {
@@ -86,13 +95,13 @@ const EventDisplay = () => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const response = await axios.get(`/api/v1/event/${id}`, {
+        const response = await axios.get(`/api/v1/event/${eventId}`, {
           headers: {
-            Authorization: `Bearer ${getAccessCookie}`
-        }
-      });
-      console.log(response.data);
-      dispatch(setEventList(response.data));
+            Authorization: `Bearer ${getAccessCookie}`,
+          },
+        });
+        console.log(response.data);
+        dispatch(setEventList(response.data));
       } catch (error) {
         console.error(error);
         /*if(error.response.statusText === "EVENT_NOT_FOUND")
@@ -107,8 +116,8 @@ const EventDisplay = () => {
         }
         console.error("Error fetching event data:", error);
       }*/
+      }
     };
-  }
 
     fetchEventData();
   }, []);
@@ -119,11 +128,11 @@ const EventDisplay = () => {
   const handleBarcodeGeneration = async () => {
     if (buttonEnabled) {
       try {
-        const response = await axios.post(`/api/v1/event/${id}/result`, {
+        const response = await axios.post(`/api/v1/event/${eventId}/result`, {
           headers: {
-            Authorization: `Bearer ${getAccessCookie}`
-        }
-      });
+            Authorization: `Bearer ${getAccessCookie}`,
+          },
+        });
         console.log("Barcode generated successfully:", response.data);
       } catch (error) {
         console.error("Error in generating barcode:", error);
