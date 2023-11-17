@@ -61,8 +61,15 @@ export default function SecondInfo() {
   dispatch(userInfoSlice.actions.userData(updatedUser));
   };
    
+  // resux와 user 동기화
+  useEffect(() => {
+    setUser(userInfo);
+  }, [userInfo]);
 
-  // 유저 정보 get 메서드
+
+  useEffect(() => {
+
+    // 유저 정보 get 메서드
   const getUserInfo = async () => {
     try {
       const response = await axios.get(`/api/v1/user/user-info`, {
@@ -73,7 +80,6 @@ export default function SecondInfo() {
       });
       console.log("성공, UserInfo : ", response.data);
       dispatch(userInfoSlice.actions.userData(response.data));
-      setUser(response.data);
       // 데이터 재세팅
 
       if(response.data.modalActive === false) {
@@ -85,7 +91,6 @@ export default function SecondInfo() {
     }
   }
 
-  useEffect(() => {
     getUserInfo();
   }, []);
 
@@ -129,12 +134,6 @@ const postUserInfo = async () => {
 
    setEdit(!edit);
 };
-
-  // userData가 변경될 때마다 getUserInfo 함수 실행
-  useEffect(() => {
-
-    getUserInfo();
-    }, [user]);
 
 
 // 데이터 전송
@@ -235,7 +234,7 @@ function handleEdit() {
             <S.Question
             readOnly
             >발급일/Date of issue</S.Question>
-            {user.dateOfIssue}
+            {userInfo.dateOfIssue}
             </S.DateOfIssue>
             <S.NunberBarcord>
             <S.Question
@@ -249,7 +248,7 @@ function handleEdit() {
                 </>
               ) :
               (
-                <S.Images src = {user.recentBarcodeImg} />
+                <S.Images src = {userInfo.recentBarcodeImg} />
               )}
             </S.UserBarcord>
             {edit ? (
