@@ -11,23 +11,21 @@ import Cloud from "../../assets/images/userinfo/cloud.svg";
 import Profile from "../../assets/images/userinfo/profile.svg";
 import { selectDate } from '../../redux/dateSlice';
 
-/*
-{
-	"nickname":"String",     // KangSeungJun
-	"birth":"String",        // 1999.09.01
-	"gender":"String",       // M or Y
-	"dateOfIssue" : "String",// 1999.09.01
-	"barcodeCount" : "int",   //4
-	"profileImage" : "String"   //https://www.ahdsfadsfafd~~~~ (url로 넘어갑니다!)
-  "recentBarcodeImg" : "String", // https://www.ahdsfadsfafd~~~~ (url로 넘어갑니다!)
-	"recentBarcodeTitleList" : "List<String>", // String의 List로 넘어갑니다. 없으면 null
-	"modalActive" : "boolean"
-//이값이 true 면 처음 회원가입하는 유저 -> 정보를 수정하라는 모달?? 알람?? 을 띄워야함
-//이값이 false면 이미 정보수정을 한 유저로 모달?? 알람?? 을 띄울필요가 없음!! 
-}
-*/
-
 export default function SecondInfo() {
+
+  // 더미데이터
+  const DummyDate = {
+    "nickname": "KangSeungJun",
+    "birth": "1999-09-01",
+    "gender": "Y",
+    "dateOfIssue": "1999-09-01",
+    "barcodeCount": 4,
+    "profileImage": "https://www.example.com/profile.jpg",
+    "recentBarcodeImg": "https://www.example.com/barcode.jpg",
+    "recentBarcodeTitleList": ["Title 1", "Title 2", "Title 3"],
+    "modalActive": false
+  }
+
   const dispatch = useDispatch();
  
 
@@ -55,6 +53,7 @@ export default function SecondInfo() {
   const handleInfoChange = (e, field) => {
     const updatedUser = { ...user, [field]: e.target.value };
   setUser(updatedUser);
+  console.log(user);
 
   dispatch(userInfoSlice.actions.userData(updatedUser));
   };
@@ -70,7 +69,7 @@ export default function SecondInfo() {
     // 유저 정보 get 메서드
   const getUserInfo = async () => {
     try {
-      const response = await axios.get(`/api/v1/user/user-info`, {
+      const response = await axios.get(`${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/user-info`, {
         headers: {
           // 쿠키 보냄
           Authorization: `Bearer ${getAccessCookie}`
@@ -90,6 +89,7 @@ export default function SecondInfo() {
     }
   }
     getUserInfo();
+    setUser(userInfo);
   }, []);
 
   // 프로필 이미지 핸들러
@@ -114,7 +114,7 @@ const postUserInfo = async () => {
    dispatch(userData(user));
 
    try {
-     const response = await axios.post(`/api/v1/user/user-info`, formData, {
+     const response = await axios.post(`${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/user-info`, formData, {
        headers: {
          // 쿠키 보냄, axios가 자동으로 Content-type 설정해줌.
          'Content-Type': 'multipart/form-data',

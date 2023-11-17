@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { setMyEvent } from "../../redux/myEventSlice";
+import axios from "axios";
 
 const EventUploadBlock = ({
   userId,
@@ -25,7 +26,7 @@ const EventUploadBlock = ({
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
   const eventId = useSelector((state) => state.myEvent.value.eventId);
-
+  const getAccessCookie = localStorage.getItem("accessCookie");
   let stompClient = null;
 
   useEffect(() => {
@@ -80,6 +81,19 @@ const EventUploadBlock = ({
   const reloadPage = () => {
     location.reload();
   };
+  const deleteEventBlockData = async () => {
+    try {
+      const response = await axios.delete(`/api/v1/event/${eventId}/${userId}/image-list}`, {
+        headers: {
+          Authorization: `Bearer ${getAccessCookie}`
+      }
+    });
+    dispatch(setUserInfo(response.data));
+    navigate(`/eventdisplay/${eventId}`);
+    } catch (error) {
+        console.error(error);
+    }
+  }
 
   return (
     <div className="list">
@@ -114,7 +128,7 @@ const EventUploadBlock = ({
         highlight={"삭제"}
         end={"하시겠습니까?"}
         notice={"※ 한 번 삭제한 리스트는 되돌릴 수 없어요."}
-        action={reloadPage}
+        action={deleteEventBlockData}
       />
     </div>
   );

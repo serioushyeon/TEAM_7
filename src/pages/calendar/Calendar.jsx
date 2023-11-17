@@ -115,7 +115,7 @@ export default function MyCalendar() {
     console.log(thumbnailInfoList);
     try {
       // startDate, endDate 형식은 YYYY-MM-DD
-      const response = await axios.get(`/api/v1/user/calender`, {
+      const response = await axios.get(`${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/calender`, {
         // 서버에서 params 기준으로 값 가져옴.
         params: {
           startDate: dateRange.startDate,
@@ -154,8 +154,12 @@ export default function MyCalendar() {
 
   // 사진이 없는 경우, 사진 등록 창으로 이동
   function handleLocatePhoto(date) {
-    navigate("/calendar-photo");
-    dispatch(selectDate(moment(date).format("YYYY-MM-DD")));
+    console.log(date);
+
+    // 위 데이터를 포맷합니다..
+    const formattedDate = moment(date).format("YYYY-MM-DD");
+    navigate(`/calendar-photo/${formattedDate}`);
+    dispatch(selectDate(formattedDate));
     dispatch(updateDay({ day: moment(date).date() }));
     dispatch(updateMonth({ month: moment(date).month() }));
     dispatch(updateYear({ year: moment(date).year() }));
@@ -165,8 +169,9 @@ export default function MyCalendar() {
   // 사진이 있는 경우, 사진 표시 창으로 이동
   // toISOString과 moment(date) 두 가지 방법이 가능하다.
   function handleLocateDay(date) {
-    navigate("/calendar-non-photo");
-    dispatch(selectDate(moment(date).format("YYYY-MM-DD")));
+    const formattedDate = moment(date).format("YYYY-MM-DD");
+    navigate(`/calendar-non-photo/${formattedDate}`);
+    dispatch(selectDate(formattedDate));
     dispatch(updateDay({ day: moment(date).date() }));
     dispatch(updateMonth({ month: moment(date).month() }));
     dispatch(updateYear({ year: moment(date).year() }));
@@ -195,7 +200,7 @@ export default function MyCalendar() {
         try {
           // startDate, endDate 형식은 YYYY-MM-DD
           const response = await axios.post(
-            `/api/v1/user/new-barcode`,
+            `${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/new-barcode`,
             {
               year: dateRange.year,
               month: dateRange.month,
