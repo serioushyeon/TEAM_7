@@ -41,11 +41,11 @@ useLayoutEffect(() => {
       }
       console.error("Error fetching event data:", error);
     }*/
-    }
-  };
+      }
+    };
 
-  fetchEventData();
-}, []);
+    fetchEventData();
+  }, []);
   const dispatch = useDispatch();
   const users = useSelector((state) => state.eventList.value);
   const [buttonEnabled, setButtonEnabled] = useState(false);
@@ -63,7 +63,7 @@ useLayoutEffect(() => {
     stompClient.connect({}, () => {
       stompClient.subscribe(`/subscribe/button/${eventId}`, (message) => {
         const messageBody = JSON.parse(message.body);
-        setButtonEnabled(messageBody.buttonStatus === "true");
+        setButtonEnabled(messageBody.buttonStatus);
       });
     });
 
@@ -85,7 +85,7 @@ useLayoutEffect(() => {
           `/subscribe/leave-event/${eventId}`,
           function (message) {
             const messageBody = JSON.parse(message.body);
-            if (messageBody.eventStatus === true) {
+            if (messageBody.eventStatus) {
               alert("이벤트가 폭파되었습니다!");
             }
           }

@@ -68,8 +68,8 @@ function App() {
             <Route path="/substart" element={<SubStart />} />
             <Route path="/userinfo" element={<Passport />} />
             <Route path="/calendar" element={<MyCalendar />} />
-            <Route path="/calendar-photo" element={<CalendarPhoto />} />
-            <Route path="/calendar-non-photo" element={<CCalendarGallery />} />
+            <Route path="/calendar-photo/:date" element={<CalendarPhoto />} />
+            <Route path="/calendar-non-photo/:date" element={<CCalendarGallery />} />
             <Route path="/test" element={<TestPage />} />
             <Route path="/eventphoto/:eventId" element={<EventPhoto />} />
             {/* <EmptyEvent /> */}
