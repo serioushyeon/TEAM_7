@@ -57,10 +57,10 @@ export default function SecondInfo() {
   // 유저 정보 get 메서드
   const getUserInfo = async () => {
     try {
-      const response = await apiClient.get(`/api/v1/user/user-info`, {
+      const response = await axios.get(`/api/v1/user/user-info`, {
         headers: {
           // 쿠키 보냄
-          Authorization: `${Bearer [getAccessCookie]}`
+          Authorization: `Bearer ${getAccessCookie}`
         },
       });
       console.log("성공, UserInfo : ", response.data);
@@ -81,7 +81,6 @@ export default function SecondInfo() {
     getUserInfo();
     // 쿠키가 없다면
     if (user.modalActive === false) {
-      alert("환영합니다! 정보를 입력해주세요. ");
     } else {
       setConfirm(true);
     }
@@ -131,7 +130,7 @@ const handleEditUserInfo = async (event) => {
         headers: {
           // 쿠키 보냄, axios가 자동으로 Content-type 설정해줌.
           // 'Content-Type': 'multipart/form-data' <= 미설정 시 이 코드 추가
-          Authorization: `${Bearer [accessCookie]}`
+          Authorization: `Bearer ${getAccessCookie}`
         },
       });
       console.log("성공 formData : ", response.data);

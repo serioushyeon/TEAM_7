@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import StartFlipPage from "../../components/startpage/StartFlipPage";
 import FirstInfoFlip from "../../components/startpage/FirstInfoFlip";
 import SecondInfoFlip from "../../components/startpage/SecondInfo";
+import { useCookies } from "react-cookie";
 
   // ref 없으면 페이지 전환이 불가함.
 // PageContainer에서 위치 지정하면 적용이 안됨. 
@@ -40,6 +41,12 @@ export default function Start() {
   const navigate = useNavigate();
   const [disableFlip, setDisableFlip] = useState(false);
 
+  const [accessCookie] = useCookies(["accessCookie"]);
+    const [refreshCookie] = useCookies(["refreshCookie"]);
+
+    const getAccessCookie = localStorage.getItem("accessCookie");
+   const getRefreshCookie = localStorage.getItem("refreshCookie");
+
   // 페이지 플립 컴포넌트에 대한 ref 생성 및 초기화
   const pageFlipRef = useRef(null);
 
@@ -52,6 +59,15 @@ export default function Start() {
         console.log('Navigating to /userinfo'); // 디버깅을 위한 콘솔 로그
         navigate('/userinfo');
       }, 700);
+
+      setTimeout(() => {
+        {getAccessCookie &&
+          getAccessCookie !== "undefined" && 
+          getAccessCookie !== undefined && (
+            alert("환영합니다 ! 유저정보를 입력해주세요. ")
+          )
+        }
+      }, 1000);
     }
   };
 
