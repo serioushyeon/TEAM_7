@@ -1,58 +1,59 @@
-body{
-    position: relative;
-    height: 100vh;
-    height: calc(var(--vh, 1vh) * 100);
-
+body {
+  position: relative;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
-.eventDisplayWrap{
-    height: calc(var(--vh, 1vh) * 100);
-    overflow-y: hidden;
-    background-size: cover;
+.eventDisplayWrap {
+  height: calc(var(--vh, 1vh) * 100);
+  overflow-y: hidden;
+  background-size: cover;
 }
-.header{
-    height: 30%;
-    padding-top: 20%;
-    padding-left: 5%;
-    padding-right: 5%;
+.header {
+  height: 30%;
+  padding-top: 20%;
+  padding-left: 5%;
+  padding-right: 5%;
 }
-.eventUploadList{
-    height: 60%;
-    overflow-y: scroll;
+.eventUploadList {
+  height: 60%;
+  overflow-y: scroll;
 }
 .eventUploadList::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
- 
-.block{
-    height: 10%;
+
+.block {
+  height: 10%;
 }
-.makeBarcode{
-    display: flex;
-    position: absolute;
-    top: 65%;
-    width: 100%;
-    justify-content: center;
-    z-index: 4;
+.makeBarcode {
+  display: flex;
+  position: absolute;
+  top: 65%;
+  width: 100%;
+  justify-content: center;
+  z-index: 4;
 }
-.makeBarcodeBtn{
-    font-size: 0.75rem;
-    height: 2.5rem;
-    width: 10rem;
-    border-radius: 4px;
-    border: 1px solid #FAFAFA;
+.makeBarcodeBtn {
+  font-size: 0.75rem;
+  height: 2.5rem;
+  width: 10rem;
+  border-radius: 4px;
+  border: 1px solid #fafafa;
 }
-.makeBarcodeBtn:enabled{
-    background-color: rgba(25, 25, 25, 0.1);
-    color: #DDDDDD;
+.makeBarcodeBtn:enabled {
+  background-color: rgba(25, 25, 25, 0.1);
+  color: #dddddd;
 }
-.makeBarcodeBtn:hover{
-    transition: 0.1s;
-    color: #DE684F;
-    border-color: #F28B50;
-    background-color: rgba(25, 25, 25, 0.5);
+.makeBarcodeBtn.active {
+  transition: 0.1s;
+  color: white;
+  border-color: #f28b50;
+  background-color: #f28b50;
+  box-shadow: 2px 4px 10px 0px rgba(72, 74, 100, 0.1);
+  cursor: pointer;
 }
-.makeBarcodeBtn:disabled{
-    color: #5E5E5E;
-    border-color: #5E5E5E;
-    background-color: rgba(25, 25, 25, 0.3);
+.makeBarcodeBtn:disabled {
+  color: #5e5e5e;
+  border-color: #5e5e5e;
+  background-color: rgba(25, 25, 25, 0.3);
 }
