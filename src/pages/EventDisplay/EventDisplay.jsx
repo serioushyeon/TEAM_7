@@ -19,6 +19,7 @@ const EventDisplay = () => {
   const [buttonEnabled, setButtonEnabled] = useState(false);
   const [eventData, setEventData] = useState(null);
   let stompClient = null;
+  const getAccessCookie = localStorage.getItem("accessCookie");
 
   // 무코 생성 버튼 활성화를 위한 WebSocket 연결
   useEffect(() => {
@@ -85,7 +86,11 @@ const EventDisplay = () => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const response = await axios.get(`/api/v1/event/${eventid}`);
+        const response = await axios.get(`/api/v1/event/${eventid}`, {
+          headers: {
+            Authorization: `Bearer ${getAccessCookie}`
+        }
+      });
         setEventData(response.data);
       } catch (error) {
         if(error.response.statusText === "EVENT_NOT_FOUND")
@@ -116,7 +121,11 @@ const EventDisplay = () => {
   const handleBarcodeGeneration = async () => {
     if (buttonEnabled) {
       try {
-        const response = await axios.post(`/api/v1/event/${id}/result`);
+        const response = await axios.post(`/api/v1/event/${id}/result`, {
+          headers: {
+            Authorization: `Bearer ${getAccessCookie}`
+        }
+      });
         console.log("Barcode generated successfully:", response.data);
       } catch (error) {
         console.error("Error in generating barcode:", error);
