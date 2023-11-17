@@ -9,7 +9,9 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setEventDate, setEventName } from "../../redux/eventListSlice";
 import { apiClient } from '../../api/ApiClient';
-
+import { setEventName } from "../../redux/eventListSlice";
+import { setEventDate } from "../../redux/eventListSlice";
+import { setMyEvent } from "../../redux/myEventSlice";
 const EventSetting = () => {
   const event = useSelector((state)=>state.eventList.value);
   const myEvent = useSelector((state)=>state.myEvent.value);
@@ -69,6 +71,8 @@ const EventSetting = () => {
     console.log(response.data);
     console.log(response.data.eventId);
     navigate(`/eventdisplay/${response.data.eventId}`)
+    const data = { eventId: response.data.eventId, existEvent: true}
+    dispatch(setMyEvent(data))
     } catch (error) {
       console.error("Error posting data", error);
       console.log(error.response);
@@ -94,7 +98,7 @@ const EventSetting = () => {
   //이벤트 이름 수정 API
   const putEventName = async () => {
     try {
-      const response = await axios.put(`/api/v1/event/${event.id}/event-name`, {
+      const response = await axios.put(`/api/v1/event/${myEvent.eventId}/event-name`, {
         eventName: eventName
       }, {
         headers: {
@@ -102,7 +106,7 @@ const EventSetting = () => {
       }
     });
       console.log(response.data);
-      dispatch(setEventName({eventName}));
+      dispatch(setEventName(eventName));
     } catch (error) {
       console.error("Error posting data", error);
       /*if(error.statusText === "NOT_ROOM_MAKER")
@@ -129,7 +133,7 @@ const EventSetting = () => {
   //이벤트 기간 수정 API
   const putEventDate = async () => {
     try {
-      const response = await axios.put(`/api/v1/event/${id}/event-name`, {
+      const response = await axios.put(`/api/v1/event/${myEvent.eventId}/event-name`, {
         startDate : startDate,
         endDate: endDate,
       }, {
