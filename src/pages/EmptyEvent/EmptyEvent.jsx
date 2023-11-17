@@ -26,7 +26,7 @@ const EmptyEvent = () => {
           const response = await axios.get(`/api/v1/user/my-event`, {
             headers: { Authorization: `Bearer ${getAccessCookie}` },
           });
-          const { isExistEvent, eventId } = response.data;
+          const { eventId, isExistEvent } = response.data;
           dispatch(setMyEvent({ isExistEvent, eventId }));
           if (isExistEvent) {
             navigate(`/eventdisplay/${eventId}`)
