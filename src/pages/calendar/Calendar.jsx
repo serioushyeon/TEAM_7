@@ -79,7 +79,7 @@ import Background from "../../assets/images/calendar/Background.svg";
       }else if(response.data.buttonStatus === "ACTIVE_WITH_MODAL") {
         setIsDisabed(true);
         alert("바코드 생성 가능");
-      } else if(response.date.buttonStatus === "INACTIVE") {
+      } else if(response.data.buttonStatus === "INACTIVE") {
         setIsDisabed(false);
       } else {
         console.log("이상한 값이 들어왔습니다. ");

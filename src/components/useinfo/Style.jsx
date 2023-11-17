@@ -74,7 +74,6 @@ right: 0.9rem;
 width: 18px;
 height: 18px;
 background-image: url(${EditImoge});
-opacity: ${props => props.confirm ? '0.5;' : '1;'} 
 `
 
 const ProfileBox = styled.div`
@@ -242,6 +241,20 @@ color: #CBCBCB;
 text-align: center;
 `;
 
+const SendButton = styled.button`
+position: absolute;
+top: 18rem;
+left: 6.2rem;
+bottom: 5.2rem;
+width: 10rem;
+height: 2.8rem;
+border-radius: 4px;
+background: transparent;
+border: 1px solid #CBCBCB;
+color: #CBCBCB;
+text-align: center;
+`;
+
 
 export const S = {
     BookContainer,
@@ -264,5 +277,6 @@ export const S = {
     UserBarcord,
     InputProfile,
     ProfileLabel,
-    SendUserInfo
+    SendUserInfo,
+    SendButton
 }
