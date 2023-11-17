@@ -22,6 +22,7 @@ const EmptyEvent = () => {
             headers: { Authorization: `Bearer ${getAccessCookie}` },
           });
           if (response.data.existEvent) {
+            dispatch(setMyEvent(response.data));
             navigate(`/eventdisplay/${response.data.eventId}`)
           } else {
             console.log("no event");
