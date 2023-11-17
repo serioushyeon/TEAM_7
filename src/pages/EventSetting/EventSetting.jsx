@@ -80,8 +80,8 @@ const EventSetting = () => {
     } catch (error) {
       console.error("Error posting data", error);
       console.log(error.response);
-      console.log(error.status);
-      console.log(error.statusText);
+      console.log(error.response.status);
+      console.log(error.response.statusText);
       if(error.statusText === "USER_ALREADY_HAS_EVENT")
       {
 
