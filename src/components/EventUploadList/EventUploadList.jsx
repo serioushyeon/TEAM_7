@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { setMyEvent } from "../../redux/myEventSlice";
+import axios from "axios";
 
 const EventUploadBlock = ({
   userId,
@@ -23,8 +24,9 @@ const EventUploadBlock = ({
 }) => {
   const [isChecked, setIsChecked] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const eventId = useSelector((state) => state.myEvent.value.eventId);
   const navigate = useNavigate();
+  const eventId = useSelector((state) => state.myEvent.value.eventId);
+  const getAccessCookie = localStorage.getItem("accessCookie");
   let stompClient = null;
 
   useEffect(() => {
@@ -79,6 +81,22 @@ const EventUploadBlock = ({
   const reloadPage = () => {
     location.reload();
   };
+  const deleteEventBlockData = async () => {
+    try {
+      const response = await axios.delete(
+        `/api/v1/event/${eventId}/${userId}/image-list}`,
+        {
+          headers: {
+            Authorization: `Bearer ${getAccessCookie}`,
+          },
+        }
+      );
+      dispatch(setUserInfo(response.data));
+      navigate(`/eventdisplay/${eventId}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="list">
@@ -113,7 +131,7 @@ const EventUploadBlock = ({
         highlight={"삭제"}
         end={"하시겠습니까?"}
         notice={"※ 한 번 삭제한 리스트는 되돌릴 수 없어요."}
-        action={reloadPage}
+        action={deleteEventBlockData}
       />
     </div>
   );
@@ -133,14 +151,15 @@ const NoList = () => {
 const EventUploadList = ({ userInfo, loginUserId }) => {
   const navigate = useNavigate();
 
+  const eventId = useSelector((state) => state.myEvent.value.eventId);
+
   // 사용자가 이미지를 업로드했는지 확인
   const hasUserUploadedImages = userInfo.some(
     (user) => user.userId === loginUserId
   );
 
-  // EventPhoto 페이지로 이동하는 함수
   const navigateToEventPhoto = () => {
-    navigate("/eventphoto"); // EventPhoto 페이지의 경로로 변경하세요.
+    navigate(`/eventphoto/${eventId}`);
   };
 
   return (
