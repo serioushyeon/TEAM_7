@@ -70,6 +70,7 @@ function App() {
             {/* <BarcodeBoard /> */}
             <Route path="/ticket" element={<BarcodeBoard />} />
             <Route path="/ticket/:id" element={<BarcodeBoard />} />
+            <Route path="/ticket/:id/guest" element={<BarcodeBoard />} />
           </Routes>
         </Wrapper>
       </Background>

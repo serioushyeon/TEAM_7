@@ -15,25 +15,7 @@ import { useDispatch } from "react-redux";
 import { setTicket } from "../../redux/ticketSlice";
 import axios from "axios";
 
-//   const navigate = useNavigate();
-  //   // 로그인 상태와 사용자 정보를 저장할 스테이트
-  //   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  //   const [userInfo, setUserInfo] = useState(null);
-
-  //   useEffect(() => {
-  //     // 여기에 로그인 상태를 확인하는 로직을 구현
-  //     // 예를 들어, 로컬 스토리지나 세션 스토리지에서 토큰을 확인
-  //     const token = localStorage.getItem("kakaoToken");
-  //     if (!token) {
-  //       // 토큰이 없으면 로그인 페이지로 리디렉션
-  //       navigate("/");
-  //     } else {
-  //       // 토큰이 있으면 유저정보 페이지로 
-  //       navigate("/userinfo");  
-  //       });
-  //     }
-  //   }, []);
-
+//일상일 때 갤러리
 const DayG = ({imageInfoList}) => {
     console.log(imageInfoList[0].imageList)
     return (
@@ -57,6 +39,8 @@ const DayG = ({imageInfoList}) => {
         </>
     )
 }
+
+//이벤트일 때 갤러리
 const EventG = ({imageInfoList}) => {
     return (
         <>
@@ -76,13 +60,16 @@ const EventG = ({imageInfoList}) => {
     )
 }
 
+//바코드 게시판
 const BarcodeBoard = () => {
     const ticket = useSelector((state)=>state.ticket);
     const dispatch = useDispatch();
     const {id} = useParams();
+
     const getAccessCookie = localStorage.getItem("accessCookie");
     const navigate = useNavigate();
 
+    //나만의 무코 만들기 버튼 액션
     const goToBarcode = () => {
         console.log(getAccessCookie);
         if(!getAccessCookie){
@@ -92,6 +79,8 @@ const BarcodeBoard = () => {
             navigate("/userinfo");
         }
     }
+
+    //본인의 티켓 불러오기
     const fetchTicketData = async () => {
         try {
           const response = await axios.get(`/api/v1/barcode/${id}/my-ticket`,{
@@ -101,15 +90,72 @@ const BarcodeBoard = () => {
           dispatch(setTicket({nickname, title, barcodeUrl, startDate, endDate, createdAt, memberCnt,imageInfoList}));
         } catch (error) {
           console.error("Error fetching data", error);
+          if(error.response.statusText === "NOT_OWNER_ACCESS"){
+            alert("권한이 없습니다.");
+            navigate(`/`);
+          }
+          if(error.response.statusText === "BARCODE_NOT_FOUND"){
+            alert("해당 바코드가 없습니다.");
+            navigate(`/`);
+          }
+          if(error.response.statusText === "USER_NOT_FOUND"){
+            alert("다시 로그인 해주세요");
+            //로그아웃
+            navigate(`/`);
+          }
         }
       };
+      //게스트가 티켓 불러오기
+      const fetchTicketGuestData = async () => {
+        try {
+          const response = await axios.get(`/api/v1/barcode/${id}/guest-ticket`);
+          const {nickname, title, barcodeUrl, startDate, endDate, createdAt, memberCnt,imageInfoList} = response.data;
+          dispatch(setTicket({nickname, title, barcodeUrl, startDate, endDate, createdAt, memberCnt,imageInfoList}));
+        } catch (error) {
+          console.error("Error fetching data", error);
+          if(error.response.statusText === "BARCODE_NOT_FOUND"){
+            alert("해당 바코드가 없습니다.");
+            navigate(`/`);
+          }
+        }
+      };
+
       useEffect(() => {
-        fetchTicketData();
+        console.log(location.pathname);
+        //게스트이면
+        if(location.pathname === `/ticket/${id}/guest`){
+            fetchTicketGuestData();
+        }
+        //본인이면
+        else {
+            fetchTicketData();
+        }
     })
+
+    //본인이면 링크, 저장 로드
+    const isLoadBtn = () => {
+        if(location.pathname === `/ticket/${id}/guest`){
+            console.log("guest");
+            return (<></>)
+        }
+        else {
+            console.log("my");
+            return (
+            <div className="ticketBtnWrapper">
+            <div>
+                <GrCopy onClick={copyUrl} className="ticketIcon" size="24"/>
+            </div>
+            <div>
+                <MdOutlineFileDownload  onClick={openModal}className="ticketIcon" size="28"/>
+            </div>
+        </div>)
+        }
+    }
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [toast, setToast] = useState(false);
 
+    //바코드 or 티켓 저장 모달 
     const openModal = () => {
         setModalIsOpen(true);
       };
@@ -117,9 +163,11 @@ const BarcodeBoard = () => {
       const closeModal = () => {
         setModalIsOpen(false);
       };
+
+      //링크 복사
       const copyUrl = async () => {
         var textarea = document.createElement('textarea');
-        textarea.value = location.href;
+        textarea.value = `${location.href}/guest`;
 
         document.body.appendChild(textarea);
         textarea.select();
@@ -131,8 +179,8 @@ const BarcodeBoard = () => {
         setToast(true);
     };
 
+    //티켓 바코드 다운로드
     const divRef = useRef(null);
-
     const handleDownload = async () => {
         closeModal();
         if (!divRef.current) return;
@@ -209,14 +257,7 @@ const BarcodeBoard = () => {
                 <div className="boardTitle">
                     {ticket.nickname}&nbsp;님의&nbsp;<span style={{fontWeight:"bold"}}>티켓</span>
                 </div>
-                <div className="ticketBtnWrapper">
-                    <div>
-                        <GrCopy onClick={copyUrl} className="ticketIcon" size="24"/>
-                    </div>
-                    <div>
-                        <MdOutlineFileDownload  onClick={openModal}className="ticketIcon" size="28"/>
-                    </div>
-                </div>
+                {isLoadBtn()}
                 <div className="tickerContainerWrapper" ref = {divRef}>
                 <div className="ticketContainer">
                     <div className="ticketTitle">
