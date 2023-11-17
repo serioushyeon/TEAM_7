@@ -28,6 +28,7 @@ import Profile from "../../assets/images/userinfo/profile.svg";
 
 export default function SecondInfo() {
   const dispatch = useDispatch();
+  // formData 선언
   var formData = new FormData();
 
   const [accessCookie] = useCookies(["accessCookie"]);
@@ -42,6 +43,7 @@ export default function SecondInfo() {
 
   const [edit, setEdit] = useState(false);
   const [confirm, setConfirm] = useState(false);
+
   const [user, setUser] = useState({
     nickName: "",
     birth: "",
@@ -109,13 +111,6 @@ export default function SecondInfo() {
 
 // formData 전송, 편집 버튼 클릭 시
 const handleEditUserInfo = async (event) => {
-  if(edit === false) {
-    setEdit(!edit); // 편집 모드 토글
-  // 편집 후 다시 버튼 클릭 시
-  }
-  else {
-    if(isUserInfoComplete()) {
-      setConfirm(true);
       
     event.preventDefault();
 // 폼 데이터로 전송
@@ -129,20 +124,17 @@ const handleEditUserInfo = async (event) => {
       const response = await axios.post(`/api/v1/user/user-info`, formData, {
         headers: {
           // 쿠키 보냄, axios가 자동으로 Content-type 설정해줌.
-          // 'Content-Type': 'multipart/form-data' <= 미설정 시 이 코드 추가
+          'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${getAccessCookie}`
         },
       });
       console.log("성공 formData : ", response.data);
     } catch (error) {
+      console.log("전송 data : ", formData);
       console.error("실패 error : ", error);
     }
 
     setEdit(!edit);
-  } else {
-    alert("닉네임, 성별, 생일을 입력해주세요. ");
-  }
-}
 };
 
 // 프로필 이미지 변경 핸들러
@@ -158,9 +150,15 @@ const handleProfileImageChange = (event) => {
 
   return (
     <S.Book2Container>
-            <S.EditButton
-            confirm={!confirm}
-            onClick={handleEditUserInfo}/>
+      {!edit ? (
+        <>
+        <S.EditButton
+            onClick={handleEditUserInfo}/></>
+      ) :
+      (
+        <>
+        </>
+      )}
             <S.ProfileBox>
               {!user.profileImage ? (
                 <>
@@ -178,7 +176,8 @@ const handleProfileImageChange = (event) => {
             </>)}
             <S.InputProfile 
             type="file" 
-            id="profile"
+            id="profileImage"
+            name="profileImage"
             onChange={handleProfileImageChange}
             disabled={!edit}
             />
@@ -187,6 +186,8 @@ const handleProfileImageChange = (event) => {
             <S.Answer 
             type="text" 
             value={user.nickName}
+            id="nickname"
+            name="nickname"
             onChange={(e) => handleInfoChange(e, 'nickName')} 
             readOnly={!edit}
             edit = {edit}
@@ -197,7 +198,8 @@ const handleProfileImageChange = (event) => {
               <S.Question>생일/Date of birth</S.Question>  
             <S.Answer 
             type="date" 
-            name="birthday"
+            id="birth"
+            name="birth"
             min="1900-01-01"
             max="2024-01-01"
             value={user.birth}
@@ -213,11 +215,13 @@ const handleProfileImageChange = (event) => {
                 <input
                 type="radio" 
                 value="M"
+                id="gender"
                 name="gender"
                 onChange={(e) => handleInfoChange(e, 'gender')} 
                 />M
                 <input
             type="radio" 
+            id="gender"
             value="Y"
             name="gender"
             onChange={(e) => handleInfoChange(e, 'gender')} 
@@ -256,6 +260,15 @@ const handleProfileImageChange = (event) => {
                 <S.Images src = {userInfo.recentBarcodeImg} />
               )}
             </S.UserBarcord>
+            {edit ? (
+              <>
+              <S.SendButton type="submit" onClick={handleEditUserInfo}>저장</S.SendButton>
+              </>
+            ) :
+            (
+              <>
+              </>
+            )}
           </S.Book2Container>
   )
               }
