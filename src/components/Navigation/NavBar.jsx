@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components';
+
+import { useCookies } from "react-cookie";
+import { useNavigate } from 'react-router-dom';
+
 import Home from "../../assets/images/Navigation/homeImoge.svg";
 import Calendar from "../../assets/images/Navigation/calendarImoge.svg";
 import Event from "../../assets/images/Navigation/eventImoge.svg";
@@ -56,10 +60,17 @@ font-weight: 700;
 line-height: normal;
 `
 export default function NavBar() {
+
+  const [cookies] = useCookies(["accessCookie", "refreshCookie"]);
+
+  // 쿠키 존재 여부에 따라 경로 설정
+  const homePath = (cookies.accessCookie || cookies.refreshCookie != undefined) || (cookies.accessCookie || cookies.refreshCookie != null) ? "/substart" : "/";
+  console.log('cookie: ', cookies.accessCookie);
+
   return (
     <Container>
       <Navigation>
-<NavigationButton to = "/"><ButtonImoge src={Home}/><ButtonText>홈</ButtonText></NavigationButton>
+<NavigationButton to = {homePath}><ButtonImoge src={Home}/><ButtonText>홈</ButtonText></NavigationButton>
 <NavigationButton to = "/calendar"><ButtonImoge src={Calendar}/><ButtonText>일상</ButtonText></NavigationButton>
 <NavigationButton to = "/event"><ButtonImoge src={Event}/><ButtonText>이벤트</ButtonText></NavigationButton>
 <NavigationButton to = "/bcstore"><ButtonImoge src={Barcord}/><ButtonText>무코 보관함</ButtonText></NavigationButton>

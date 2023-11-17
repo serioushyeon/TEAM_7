@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { S } from "./CPhtoStyle";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
