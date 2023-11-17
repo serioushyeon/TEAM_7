@@ -13,7 +13,7 @@ const initializeThumbnailInfoList = () => Array.from({ length: 31 }, () => ({
 // 초기 상태 정의
 const initialState = {
   thumbnailInfoList: initializeThumbnailInfoList(),
-  buttonStatus: false
+  buttonStatus: ""
 };
 
 // 슬라이스 생성

@@ -114,6 +114,7 @@ const handleMonthChange = (month) => {
           top="1rem"
           left="9.8rem" />
           </S.StyledYear>
+          <S.DeleteButton onClick={handleButtonClick}/>
           <S.StyledMonth>
         {getMonthOptions()}
         </S.StyledMonth>

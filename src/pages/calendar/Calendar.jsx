@@ -22,6 +22,7 @@ import Background from "../../assets/images/calendar/Background.svg";
   // 서버에서 데이터를 받아와 사진을 배치한다.
   export default function MyCalendar() {
     const [value, onChange] = useState(new Date());
+    const [isDisabled, setIsDisabed] = useState(false); 
     const dateDay = useSelector((state) => state.dateDay.dateDay);
     const dateInfo = useSelector((state) => state.date);
 
@@ -33,6 +34,7 @@ import Background from "../../assets/images/calendar/Background.svg";
 
     // 달력 내 사진
     const thumbnailInfoList = useSelector(state => state.photoList.thumbnailInfoList);
+    const buttonStatus = useSelector(state => state.photoList.buttonStatus);
 
     const [accessCookie] = useCookies(["accessCookie"]);
     const [refreshCookie] = useCookies(["refreshCookie"]);
@@ -42,6 +44,7 @@ import Background from "../../assets/images/calendar/Background.svg";
 
    console.log('startDate2: ', dateRange.startDate, 'endDate2: ', dateRange.endDate);
    console.log('Rangeyear:', dateRange.year, 'Rangemonth: ', dateRange.month);
+   console.log('disabled', isDisabled);
     
     // navigate 선언
     let navigate = useNavigate();
@@ -70,7 +73,19 @@ import Background from "../../assets/images/calendar/Background.svg";
 
       // 사진 리덕스에 저장
       dispatch(setThumbnailInfoList(response.data));
+
+      if(response.data.buttonStatus === "ACTIVE") {
+        setIsDisabed(true);
+      }else if(response.data.buttonStatus === "ACTIVE_WITH_MODAL") {
+        setIsDisabed(true);
+        alert("바코드 생성 가능");
+      } else if(response.date.buttonStatus === "INACTIVE") {
+        setIsDisabed(false);
+      } else {
+        console.log("이상한 값이 들어왔습니다. ");
+      }
       console.log("성공, UserInfo : ", response.data);
+      console.log("바코드 생성 : ", response.data.buttonStatus);
 
     } catch(error) {
       console.error('전송 실패 : ', error);
@@ -117,7 +132,9 @@ import Background from "../../assets/images/calendar/Background.svg";
     // 바코드 생성 시
     function onClickBarcord() {
 
-      // 서버로 바코드 연, 월 전송
+      // 사진 개수가 30 ~ 130개라면
+      if(isDisabled != false) {
+          // 서버로 바코드 연, 월 전송
       const postBarcordInfo = async () => {
         try {
           // startDate, endDate 형식은 YYYY-MM-DD
@@ -140,6 +157,12 @@ import Background from "../../assets/images/calendar/Background.svg";
 
       postBarcordInfo();
       navigate('/ticket');
+      }
+      // 아니라면
+      else {
+        alert("30개와 130개 사이의 사진만 가능합니다. ");
+      }
+
     }
   
     // <S.StyledOptionsBox show={selected ? "true" : undefined}>
@@ -212,6 +235,7 @@ import Background from "../../assets/images/calendar/Background.svg";
   
   <S.AddBarcord 
   onClick={onClickBarcord}
+  disabled = {isDisabled}
   >바코드 생성</S.AddBarcord>
   
   </S.BackImage>
