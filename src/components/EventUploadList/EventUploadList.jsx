@@ -17,38 +17,48 @@ const EventUploadBlock = ({
   userId,
   nickname,
   imageUrlList,
-  checkStatus,
   imageCount,
   loginUserId,
 }) => {
-  const [isChecked, setIsChecked] = useState(imageCount >= 30);
+  const [isChecked, setIsChecked] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const { id: eventId } = useParams(); // 이벤트 ID
-  const users = useSelector((state) => state.eventList.value);
 
-  // 체크 상태 업데이트를 위한 WebSocket 연결
+  const { id: eventId } = useParams();
+  const navigate = useNavigate();
+  let stompClient = null;
+
+  // 체크박스 상태 변경 핸들러
+  const handleCheckboxChange = (e) => {
+    const newCheckStatus = e.target.checked;
+    setIsChecked(newCheckStatus);
+    // 체크 상태를 WebSocket을 통해 서버에 전송
+    sendCheckStatus(newCheckStatus);
+  };
+
+  // 체크 상태를 서버에 전송
+  const sendCheckStatus = (checkStatus) => {
+    stompClient.send(
+      `/topic/check/${eventId}`,
+      {},
+      JSON.stringify({
+        userId: userId,
+        checkStatus: checkStatus,
+      })
+    );
+  };
+
   useEffect(() => {
     const socket = new SockJS("/ws-check");
-    const stompClient = Stomp.over(socket);
+    stompClient = Stomp.over(socket);
 
-    stompClient.connect(
-      {},
-      function (frame) {
-        console.log("Connected: " + frame);
-        stompClient.subscribe(
-          `/subscribe/check/${eventId}`,
-          function (message) {
-            const messageBody = JSON.parse(message.body);
-            if (messageBody.userId === userId) {
-              setIsChecked(messageBody.checkStatus === "true");
-            }
-          }
-        );
-      },
-      function (error) {
-        console.error("WebSocket error:", error);
-      }
-    );
+    stompClient.connect({}, () => {
+      stompClient.subscribe(`/subscribe/check/${eventId}`, (message) => {
+        const messageBody = JSON.parse(message.body);
+        if (messageBody.userId === userId) {
+          setIsChecked(messageBody.checkStatus === "true");
+        }
+      });
+    });
 
     return () => {
       if (stompClient !== null) {
@@ -87,7 +97,15 @@ const EventUploadBlock = ({
     <div className="list">
       <div className="uploadlist">
         <div className="done">
-          <input type="checkbox" id="check_btn" checked={isChecked} readOnly />
+          {/* 현재 로그인한 사용자가 리스트 소유자일 경우에만 체크박스 활성화 */}
+          {userId === loginUserId && (
+            <input
+              type="checkbox"
+              id="check_btn"
+              checked={isChecked}
+              onChange={handleCheckboxChange}
+            />
+          )}
         </div>
         <div className="nicknameBox">
           나는 <span className="nickname">{nickname}</span>이야!
