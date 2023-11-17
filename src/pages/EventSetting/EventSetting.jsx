@@ -9,6 +9,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setEventId } from "../../redux/myEventSlice";
 import { setEventDate, setEventName } from "../../redux/eventListSlice";
+import { apiClient } from '../../api/ApiClient';
 
 const EventSetting = () => {
   const event = useSelector((state)=>state.eventList);
@@ -48,6 +49,7 @@ const EventSetting = () => {
 
   const navigate = useNavigate();
   const makeEvent = () => {
+    console.log("make");
     postEventData();
   }
   const goToEventDisplay = () => {
@@ -188,7 +190,7 @@ const EventSetting = () => {
         </div>
         <div className="eventMake">{
           !myEvent.isExistEvent ? 
-          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? makeEvent : ()=>{}}}>
+          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? makeEvent() : ()=>{}}}>
             이벤트 생성
           </button> :
           <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? editEvent : ()=>{}}}>
