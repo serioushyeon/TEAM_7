@@ -2,44 +2,17 @@ import React, { useState, useRef, useEffect } from "react";
 import { S } from "./CPhtoStyle";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
 import { useSelector } from "react-redux";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { setCalendarData } from "../../redux/CalendarPhotoBoard";
 import PhotoOption from "../../components/calendar/PhotoOption";
-import dateDaySlice, {
-  updateDay,
-  updateMonth,
-  updateYear,
-} from "../../redux/dateDaySlice";
+import { setActiveStartDate, toggleSelected } from '../../redux/CalendarUI';
 
 export default function CalendarPhoto() {
   let navigate = useNavigate();
-  // 취소 버튼 클릭 시 캘린더로 이동
-  function handleLocateCalendar() {
-    navigate("/calendar");
-  }
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchDayData = async () => {
-      try {
-        const response = await axios.get(`/api/v1/user/${dateInfo.date}`);
-        const fetchedData = response.data;
-
-        // 가져온 데이터로 상태 업데이트
-        setMemo(fetchedData.memo);
-        setImages(
-          fetchedData.dayImageList.map((imageUrl, index) => ({
-            id: index,
-            file: new File([], imageUrl), // File 객체 생성 (또는 다른 방식 사용)
-          }))
-        );
-      } catch (error) {
-        console.error("Error fetching day data", error);
-      }
-    };
-
-    fetchDayData();
-  }, [dateInfo.date]);
 
   // 일자 데이터
   const dateInfo = useSelector((state) => state.date);
@@ -69,6 +42,28 @@ export default function CalendarPhoto() {
   // 받은 데이터확인
   console.log('dateInfo: ',dateInfo);
   console.log('일 클릭(사진X) : year: ', dateDay.year, 'month: ', dateDay.month, 'day: ', dateDay.day);
+
+  useEffect(() => {
+    const fetchDayData = async () => {
+      try {
+        const response = await axios.get(`/api/v1/user/${dateInfo.date}`);
+        const fetchedData = response.data;
+
+        // 가져온 데이터로 상태 업데이트
+        setMemo(fetchedData.memo);
+        setImages(
+          fetchedData.dayImageList.map((imageUrl, index) => ({
+            id: index,
+            file: new File([], imageUrl), // File 객체 생성 (또는 다른 방식 사용)
+          }))
+        );
+      } catch (error) {
+        console.error("Error fetching day data", error);
+      }
+    };
+
+    fetchDayData();
+  }, [dateInfo.date]);
 
   // 메모 실시간 변경
   const handleMemoChange = (e) => {
@@ -146,10 +141,21 @@ export default function CalendarPhoto() {
     }
   };
 
+    // 날짜 변경 핸들러
+    const updateActiveStartDate = (year, month) => {
+      dispatch(setActiveStartDate(new Date(year, month).toISOString()));
+    };
+
+   // 취소 버튼 클릭 시 캘린더로 이동
+   function handleLocateCalendar() {
+    navigate("/calendar");
+  }
+
   const handleSave = () => {
     postCalendarData();
     // Redux 스토어 업데이트
     dispatch(setCalendarData({ memo, images }));
+    navigate("/calendar");
   };
 
   return (

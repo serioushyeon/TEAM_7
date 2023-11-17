@@ -20,7 +20,6 @@ export default function CalendarOption() {
       setNewYear(dateDay.year);
       setNewMonth(dateDay.month);
       setNewDay(dateDay.day);
-  
     }, []);
 
   const dispatch = useDispatch();
@@ -34,6 +33,7 @@ export default function CalendarOption() {
 const handleYearChange = (year) => {
   console.log('year', year);
   setNewYear(year);
+  dispatch(updateYear(year));
   updateActiveStartDate(year, newMonth);
   dispatch(updateDateRange({ year, newMonth}));
 
@@ -104,7 +104,7 @@ const handleMonthChange = (month) => {
             <S.YearText
             top="0.6rem"
             left="6.3rem"
-            >{newYear}</S.YearText>
+            >{dateDay.year}</S.YearText>
           <S.StyledLeftButton 
           onClick={() => handleYearChange(newYear - 1)}
           top="1rem"
@@ -114,6 +114,7 @@ const handleMonthChange = (month) => {
           top="1rem"
           left="9.8rem" />
           </S.StyledYear>
+          <S.DeleteButton onClick={handleButtonClick}/>
           <S.StyledMonth>
         {getMonthOptions()}
         </S.StyledMonth>
@@ -121,7 +122,7 @@ const handleMonthChange = (month) => {
         <S.YearText
             top="8rem"
             left="18rem"
-            >{newYear}.{newMonth + 1}</S.YearText>
+            >{dateDay.year}.{dateDay.month + 1}</S.YearText>
         <S.StyledLeftButton 
         onClick={() => handleMonthChange(newMonth - 1)}
         top="8.5rem"

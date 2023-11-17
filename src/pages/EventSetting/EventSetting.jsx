@@ -7,25 +7,23 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setEventId } from "../../redux/myEventSlice";
 import { setEventDate, setEventName } from "../../redux/eventListSlice";
 import { apiClient } from '../../api/ApiClient';
-
+import { setEventName } from "../../redux/eventListSlice";
+import { setEventDate } from "../../redux/eventListSlice";
+import { setMyEvent } from "../../redux/myEventSlice";
 const EventSetting = () => {
-  const event = useSelector((state)=>state.eventList);
-  const myEvent = useSelector((state)=>state.myEvent);
+  const event = useSelector((state)=>state.eventList.value);
+  const myEvent = useSelector((state)=>state.myEvent.value);
   const dispatch = useDispatch();
   const getAccessCookie = localStorage.getItem("accessCookie");
-
   const title = event.eventName;
   const startD = event.startDate
   const endD = event.endDate;
-
   const [startDate, setStartDate] = useState(new Date(startD));
   const [endDate, setEndDate] = useState(new Date(endD));
   const [eventName, setEventTitle] = useState(title);
   const [flag, setFlag] = useState(true);
-  
   const saveEventName = (e) => {
     setEventTitle(e.target.value);
   };
@@ -48,10 +46,6 @@ const EventSetting = () => {
   }
 
   const navigate = useNavigate();
-  const makeEvent = () => {
-    console.log("make");
-    postEventData();
-  }
   const goToEventDisplay = () => {
     navigate(`/eventdisplay/${myEvent.eventId}`);
   };
@@ -74,15 +68,17 @@ const EventSetting = () => {
           Authorization: `Bearer ${getAccessCookie}`
       }
     });
-      const { eventId } = response.data;
-      dispatch(setEventId({eventId}));
-      goToEventDisplay();
+    console.log(response.data);
+    console.log(response.data.eventId);
+    navigate(`/eventdisplay/${response.data.eventId}`)
+    const data = { eventId: response.data.eventId, existEvent: true}
+    dispatch(setMyEvent(data))
     } catch (error) {
       console.error("Error posting data", error);
       console.log(error.response);
       console.log(error.response.status);
       console.log(error.response.statusText);
-      if(error.statusText === "USER_ALREADY_HAS_EVENT")
+      /*if(error.statusText === "USER_ALREADY_HAS_EVENT")
       {
 
       }
@@ -95,14 +91,14 @@ const EventSetting = () => {
         alert("다시 로그인해주세요");
         //로그아웃
         navigate(`/`);
-      }
+      }*/
     }
   };
 
   //이벤트 이름 수정 API
   const putEventName = async () => {
     try {
-      const response = await axios.put(`/api/v1/event/${event.id}/event-name`, {
+      const response = await axios.put(`/api/v1/event/${myEvent.eventId}/event-name`, {
         eventName: eventName
       }, {
         headers: {
@@ -110,10 +106,10 @@ const EventSetting = () => {
       }
     });
       console.log(response.data);
-      dispatch(setEventName({eventName}));
+      dispatch(setEventName(eventName));
     } catch (error) {
       console.error("Error posting data", error);
-      if(error.statusText === "NOT_ROOM_MAKER")
+      /*if(error.statusText === "NOT_ROOM_MAKER")
       {
 
       }
@@ -130,14 +126,14 @@ const EventSetting = () => {
         alert("다시 로그인해주세요");
         //로그아웃
         navigate(`/`);
-      }
+      }*/
     }
   }
 
   //이벤트 기간 수정 API
   const putEventDate = async () => {
     try {
-      const response = await axios.put(`/api/v1/event/${id}/event-name`, {
+      const response = await axios.put(`/api/v1/event/${myEvent.eventId}/event-name`, {
         startDate : startDate,
         endDate: endDate,
       }, {
@@ -149,7 +145,7 @@ const EventSetting = () => {
       dispatch(setEventDate({startDate, endDate}));
     } catch (error) {
       console.error("Error posting data", error);
-      if(error.statusText === "NOT_ROOM_MAKER")
+      /*if(error.statusText === "NOT_ROOM_MAKER")
       {
 
       }
@@ -162,13 +158,16 @@ const EventSetting = () => {
         alert("다시 로그인해주세요");
         //로그아웃
         navigate(`/`);
-      }
+      }*/
     }
   }
   return (
     <>
       <div className="eventSetting">
-        <div className="eventTitle">함께 할 이벤트 생성하기</div>
+        <div className="eventTitle">
+          {location.pathname === "/eventsetting/edit"?
+          "이벤트 수정"
+        :"함께 할 이벤트 생성하기"}</div>
         <div className="formWrap">
           <form className="eventForm">
             <div className="wrapper">
@@ -238,12 +237,13 @@ const EventSetting = () => {
           </form>
         </div>
         <div className="eventMake">{
-          !myEvent.isExistEvent ? 
-          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? makeEvent() : ()=>{}}}>
-            이벤트 생성
-          </button> :
-          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? editEvent : ()=>{}}}>
+          location.pathname === "/eventsetting/edit" ? 
+          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? editEvent() : ()=>{}}}>
             이벤트 수정
+          </button>
+          :
+          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? postEventData() : ()=>{}}}>
+            이벤트 생성
           </button>
           }
         </div>

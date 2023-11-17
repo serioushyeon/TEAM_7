@@ -9,7 +9,8 @@ import { useCookies } from "react-cookie";
 
 import { selectDate } from '../../redux/dateSlice';
 import { setActiveStartDate } from '../../redux/CalendarUI';
-import dateDaySlice, { updateDay, updateMonth, updateYear } from '../../redux/dateDaySlice';
+import { updateDay, updateMonth, updateYear } from '../../redux/dateDaySlice';
+import {setThumbnailInfoList} from '../../redux/calendarSlice';
 
 import { S } from './CalendarStyle';
 import './Calendar.css';
@@ -17,36 +18,23 @@ import CalendarOption from '../../components/calendar/CalendarOption';
 import Lion from '../../assets/images/calendar/lion.png';
 import Calendar1 from "../../assets/images/calendar/Calendar1.svg";
 import Background from "../../assets/images/calendar/Background.svg";
-
-// 서버에서 받은 images Data
-const imageData = {
-  thumbnailInfoList: [
-    { date: "2023-11-01", url: Lion },
-    { date: "2023-11-15", url: Lion },
-    { date: "2023-11-03", url: Background },
-    { date: "2023-11-13", url: Background },
-    { date: "2023-11-02", url: Lion },
-    { date: "2023-11-05", url: Lion },
-    { date: "2023-11-06", url: Background },
-    { date: "2023-11-07", url: Background },
-    { date: "2023-11-08", url: Lion },
-    { date: "2023-11-09", url: Lion },
-    { date: "2023-11-10", url: Background },
-    { date: "2023-11-11", url: Background },
-  ],
-  buttonStatus: false
-}
-
   
   // 서버에서 데이터를 받아와 사진을 배치한다.
   export default function MyCalendar() {
     const [value, onChange] = useState(new Date());
+    const [isDisabled, setIsDisabed] = useState(false); 
     const dateDay = useSelector((state) => state.dateDay.dateDay);
     const dateInfo = useSelector((state) => state.date);
 
-    // 리듀서들
+    // 시작 페이지 날짜 지정
     const activeStartDateString = useSelector((state) => state.calendarUI.activeStartDate);
+
+    // 날짜 범위(시작일, 끝일, 월, 년)
     const dateRange = useSelector(state => state.dateRange.dateRange);
+
+    // 달력 내 사진
+    const thumbnailInfoList = useSelector(state => state.photoList.thumbnailInfoList);
+    const buttonStatus = useSelector(state => state.photoList.buttonStatus);
 
     const [accessCookie] = useCookies(["accessCookie"]);
     const [refreshCookie] = useCookies(["refreshCookie"]);
@@ -56,36 +44,19 @@ const imageData = {
 
    console.log('startDate2: ', dateRange.startDate, 'endDate2: ', dateRange.endDate);
    console.log('Rangeyear:', dateRange.year, 'Rangemonth: ', dateRange.month);
+   console.log('disabled', isDisabled);
     
-    const [calendarInfo, setCalendarInfo] = useState({
-      thumbnailInfoList:
-	[
-		{
-			thumbnailUrl: "",
-			date: ""
-		},
-		{
-			thumbnailUrl: "",
-			date: ""
-		}
-    // 위 데이터를 startDate - endDate까지 반복한다.
-	],
-	buttonStatus: false 
-    });
-
     // navigate 선언
     let navigate = useNavigate();
     const dispatch = useDispatch();
     // Date 객체로 변환함.
     const activeStartDate = new Date(activeStartDateString);
 
-    // startDate, endDate가 변할 때마다..
-    useEffect(() => {
-
-      // 서버에서 사진 정보 받아오기
+         // 서버에서 사진 정보 받아오기
   const getCalendarInfo = async () => {
     console.log('startDate: ', dateRange.startDate, 'endDate: ', dateRange.endDate);
     console.log('Rangeyear:', dateRange.year, 'Rangemonth: ', dateRange.month);
+    console.log(thumbnailInfoList);
     try {
       // startDate, endDate 형식은 YYYY-MM-DD
       const response = await apiClient.get(`/api/v1/user/calender`, {
@@ -99,27 +70,34 @@ const imageData = {
           Authorization: `${Bearer [getAccessCookie]}`
         },
       });
-      setCalendarInfo(response.data);
+
+      // 사진 리덕스에 저장
+      dispatch(setThumbnailInfoList(response.data));
+
+      if(response.data.buttonStatus === "ACTIVE") {
+        setIsDisabed(true);
+      }else if(response.data.buttonStatus === "ACTIVE_WITH_MODAL") {
+        setIsDisabed(true);
+        alert("바코드 생성 가능");
+      } else if(response.date.buttonStatus === "INACTIVE") {
+        setIsDisabed(false);
+      } else {
+        console.log("이상한 값이 들어왔습니다. ");
+      }
       console.log("성공, UserInfo : ", response.data);
+      console.log("바코드 생성 : ", response.data.buttonStatus);
 
     } catch(error) {
       console.error('전송 실패 : ', error);
     }
   };
 
-  if(dateRange.startDate && dateRange.endDate) {
+    useEffect(() => {
+
     getCalendarInfo();
-  }
-  // 실제 시작일, 끝일이 업데이트 된 이후 서버에 요청한다.
-}, [dateRange.startDate, dateRange.endDate]);
 
-// 사진 추가 / 삭제 할 때도 계속 get 보내야하나?
+}, []);
 
-    const userinfo = {
-      id: "",
-      pw: ""
-    }
-  
     // 사진이 없는 경우, 사진 등록 창으로 이동
     function handleLocatePhoto(date) {
       navigate('/calendar-photo');
@@ -154,7 +132,9 @@ const imageData = {
     // 바코드 생성 시
     function onClickBarcord() {
 
-      // 서버로 바코드 연, 월 전송
+      // 사진 개수가 30 ~ 130개라면
+      if(isDisabled != false) {
+          // 서버로 바코드 연, 월 전송
       const postBarcordInfo = async () => {
         try {
           // startDate, endDate 형식은 YYYY-MM-DD
@@ -177,6 +157,12 @@ const imageData = {
 
       postBarcordInfo();
       navigate('/ticket');
+      }
+      // 아니라면
+      else {
+        alert("30개와 130개 사이의 사진만 가능합니다. ");
+      }
+
     }
   
     // <S.StyledOptionsBox show={selected ? "true" : undefined}>
@@ -207,7 +193,7 @@ const imageData = {
         tileContent={({ date, view }) => {
       // 날짜에 해당하는 이미지 데이터를 찾는다.
       // moment로 date 내부 데이터에서 day만 빼옴.
-      const imageEntry = imageData.thumbnailInfoList.find(entry =>
+      const imageEntry = thumbnailInfoList.find(entry =>
         moment(date).isSame(entry.date, 'day')
       );
   
@@ -226,7 +212,7 @@ const imageData = {
         className="report-image" 
         style={style} 
         onClick={() => handleLocateDay(date)}
-        ><S.DayImage src={imageEntry.url}/>
+        ><S.DayImage src={imageEntry.thumbnailUrl}/>
         </div>
       );
     }
@@ -249,6 +235,7 @@ const imageData = {
   
   <S.AddBarcord 
   onClick={onClickBarcord}
+  disabled = {isDisabled}
   >바코드 생성</S.AddBarcord>
   
   </S.BackImage>

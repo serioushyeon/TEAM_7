@@ -5,14 +5,14 @@ import Profile from "../assets/images/userinfo/profile.svg";
 
 // 여권 페이지에 유저 정보 
 const userInfoState = {
-    nickName: "none",
-    birth: "0000-00-00",
-    gender: "none",
-    dateOfIssue: "0000-00-00",
+    nickName: "",
+    birth: "",
+    gender: "",
+    dateOfIssue: "",
     barcodeCount: 0,
-    profileImage: `${Profile}`,
-    recentBarcodeImg: `${InfoBarcord}`,
-    recentBarcodeTitleList: [`${Cloud}`, `${Cloud}`, `${Cloud}`],
+    profileImage: "",
+    recentBarcodeImg: "",
+    recentBarcodeTitleList: ["", "", ""],
     modalActive: false,
 };
 

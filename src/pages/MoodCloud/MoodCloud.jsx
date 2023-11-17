@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 
 const MoodCloudList = ({title, id}) => {
-    const getAccessCookie = localStorage.getItem("accessCookie");
     const navigate = useNavigate();
 
     const goToTicket= () => {
@@ -31,18 +30,17 @@ const MoodCloudList = ({title, id}) => {
 
 const MoodCloud = () => {
     const dispatch = useDispatch();
-    const barcodeList = useSelector((state) => state.barcodeList.barcodeList);
+    const barcodeList = useSelector((state) => state.barcodeList.value);
     const getAccessCookie = localStorage.getItem("accessCookie");
-    
+    console.log(barcodeList);
     const fetchBarcodeListData = async () => {
         try {
           const response = await axios.get(`/api/v1/barcode/list`,{
             headers: { Authorization: `Bearer ${getAccessCookie}` }
           });
           //리덕스
-          const { barcodeList } = response.data;
           console.log(response.data);
-          dispatch(setBarcodeList({barcodeList}));
+          dispatch(setBarcodeList(response.data));
         } catch (error) {
           console.error("Error fetching data", error);
           if(error.response.statusText === "USER_NOT_FOUND"){
@@ -55,20 +53,27 @@ const MoodCloud = () => {
 
       useEffect(()=>{
         fetchBarcodeListData();
-      })
+      },[]);
       
     return (
-        <>
+        <>{
+            barcodeList.length === 0 ? 
+            <div className='mCWrapper'>
+            <div className='mCTitle'>
+                무드 클라우드
+            </div> 
+            </div>:
             <div className='mCWrapper'>
                 <div className='mCTitle'>
                     무드 클라우드
                 </div>
                 <div className="cloudList">
-                    {barcodeList.map((item) => <MoodCloudList title={item.title} id = {item.id}></MoodCloudList> )}
+                    {barcodeList.barcodeList.map((item) => <MoodCloudList title={item.title} id = {item.id}></MoodCloudList> )}
                     <div className='marginB'></div>
                     <div className='marginB'></div>
                 </div>
             </div>
+            }
         </>
     )
 }

@@ -26,18 +26,6 @@ import Profile from "../../assets/images/userinfo/profile.svg";
 }
 */
 
-const DUMMY_USERINFO = {
-  nickName: "Eunji",
-    birth: "2002.08.27",
-    gender: "Y",
-    dateOfIssue: "2023-11-15",
-    barcodeCount: 4,
-    profileImage: `${Profile}`,
-    recentBarcodeImg: `${InfoBarcord}`,
-    recentBarcodeTitleList: [`${Cloud}`, `${Cloud}`, `${Cloud}`],
-    modalActive: false,
-}
-
 export default function SecondInfo() {
   const dispatch = useDispatch();
   var formData = new FormData();
@@ -53,15 +41,16 @@ export default function SecondInfo() {
   console.log('userInfo: ', userInfo);
 
   const [edit, setEdit] = useState(false);
+  const [confirm, setConfirm] = useState(false);
   const [user, setUser] = useState({
-    nickName: "none",
-    birth: "0000-00-00",
-    gender: "none",
-    dateOfIssue: "0000-00-00",
+    nickName: "",
+    birth: "",
+    gender: "",
+    dateOfIssue: "",
     barcodeCount: 0,
-    profileImage: `${Profile}`,
-    recentBarcodeImg: `${InfoBarcord}`,
-    recentBarcodeTitleList: [`${Cloud}`, `${Cloud}`, `${Cloud}`],
+    profileImage: "",
+    recentBarcodeImg: "",
+    recentBarcodeTitleList: ["", "", ""],
     modalActive: false,
   })
 
@@ -88,10 +77,29 @@ export default function SecondInfo() {
     }
   }
 
+  useEffect(() => { 
+    getUserInfo();
+    // 쿠키가 없다면
+    if (user.modalActive === false) {
+      alert("환영합니다! 정보를 입력해주세요. ");
+    } else {
+      setConfirm(true);
+    }
+  }, []); 
+
   // formData가 변경될 때마다 getUserInfo 함수 실행
   useEffect(() => {
+    if(!isUserInfoComplete()) {
+      setEdit(true);
+    }
+    
     getUserInfo();
   }, [formData]); 
+
+   // 유저 정보 완전성 확인
+   const isUserInfoComplete = () => {
+    return user.nickName && user.birth && user.gender;
+  };
 
 
   // 유저 데이터 실시간 수정
@@ -104,9 +112,12 @@ export default function SecondInfo() {
 const handleEditUserInfo = async (event) => {
   if(edit === false) {
     setEdit(!edit); // 편집 모드 토글
-  }
   // 편집 후 다시 버튼 클릭 시
+  }
   else {
+    if(isUserInfoComplete()) {
+      setConfirm(true);
+      
     event.preventDefault();
 // 폼 데이터로 전송
     formData.append('profileImage', user.profileImage);
@@ -127,17 +138,51 @@ const handleEditUserInfo = async (event) => {
     } catch (error) {
       console.error("실패 error : ", error);
     }
-  }
 
-  setEdit(!edit);
+    setEdit(!edit);
+  } else {
+    alert("닉네임, 성별, 생일을 입력해주세요. ");
+  }
+}
+};
+
+// 프로필 이미지 변경 핸들러
+// file의 경우 value 이용이 불가하기 때문에 미리보기로 대체해야함.
+const handleProfileImageChange = (event) => {
+  if (event.target.files && event.target.files[0]) {
+    const file = event.target.files[0];
+    const imageUrl = URL.createObjectURL(file);
+    setUser({ ...user, profileImage: imageUrl }); 
+    // 미리보기 URL을 user 상태에 저장
+  }
 };
 
   return (
     <S.Book2Container>
-            <S.EditButton onClick={handleEditUserInfo}/>
-            <S.ProfileImage url = {user.profileImage}/>
-            <S.ProfileLabel htmlFor="profile">프로필 사진<br />변경</S.ProfileLabel>
-            <S.InputProfile type="file" id="profile"/>
+            <S.EditButton
+            confirm={!confirm}
+            onClick={handleEditUserInfo}/>
+            <S.ProfileBox>
+              {!user.profileImage ? (
+                <>
+                </>
+              ) :
+              (
+                <S.Images src = {user.profileImage} />
+              )}
+            </S.ProfileBox>
+            {edit ? 
+            (<>
+             <S.ProfileLabel htmlFor="profile">프로필 사진<br />변경</S.ProfileLabel>
+            </>) : (<>
+            
+            </>)}
+            <S.InputProfile 
+            type="file" 
+            id="profile"
+            onChange={handleProfileImageChange}
+            disabled={!edit}
+            />
             <S.NickName>
             <S.Question>닉네임/Nick name</S.Question>
             <S.Answer 
@@ -145,7 +190,9 @@ const handleEditUserInfo = async (event) => {
             value={user.nickName}
             onChange={(e) => handleInfoChange(e, 'nickName')} 
             readOnly={!edit}
-            maxLength={8} />
+            edit = {edit}
+            maxLength={8} 
+            placeholder="이름을 입력해주세요."/>
             </S.NickName>
             <S.Date>
               <S.Question>생일/Date of birth</S.Question>  
@@ -155,8 +202,10 @@ const handleEditUserInfo = async (event) => {
             min="1900-01-01"
             max="2024-01-01"
             value={user.birth}
+            placeholder='0000-00-00'
             onChange={(e) => handleInfoChange(e, 'birth')} 
-            readOnly={!edit} />
+            readOnly={!edit}
+            edit = {edit} />
             </S.Date>
             <S.Sex>
             <S.Question>성별</S.Question>
@@ -179,8 +228,9 @@ const handleEditUserInfo = async (event) => {
             <>
              <S.Answer 
              type="text" 
-             value={user.gender === 'M' ? '남성' : '여성'}
+             value={user.gender === 'M' ? '남성' : (user.gender === 'Y' ? '여성' : '')}
              readOnly
+             edit = {edit}
            />
            </>
               )}
@@ -188,7 +238,6 @@ const handleEditUserInfo = async (event) => {
             </S.Sex>
             <S.DateOfIssue>
             <S.Question
-            placeholder="1999.09.30"
             readOnly
             >발급일/Date of issue</S.Question>
             {userInfo.dateOfIssue}
@@ -199,7 +248,15 @@ const handleEditUserInfo = async (event) => {
             >보유 바코드 수/Number</S.Question>
             {userInfo.barcodeCount}
             </S.NunberBarcord>
-            <S.UserBarcord />
+            <S.UserBarcord>
+            {!userInfo.recentBarcodeImg ? (
+                <>
+                </>
+              ) :
+              (
+                <S.Images src = {userInfo.recentBarcodeImg} />
+              )}
+            </S.UserBarcord>
           </S.Book2Container>
   )
-}
+              }
