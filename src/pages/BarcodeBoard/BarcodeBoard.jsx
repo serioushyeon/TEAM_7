@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setTicket } from "../../redux/ticketSlice";
 import axios from "axios";
+import { apiClient } from '../../api/ApiClient';
 
 //일상일 때 갤러리
 const DayG = ({imageInfoList}) => {
@@ -83,7 +84,7 @@ const BarcodeBoard = () => {
     //본인의 티켓 불러오기
     const fetchTicketData = async () => {
         try {
-          const response = await axios.get(`/api/v1/barcode/${id}/my-ticket`,{
+          const response = await apiClient.get(`/api/v1/barcode/${id}/my-ticket`,{
             headers: { Authorization: `Bearer ${getAccessCookie}` }
           });
           dispatch(setTicket(response.data));
@@ -107,7 +108,7 @@ const BarcodeBoard = () => {
       //게스트가 티켓 불러오기
       const fetchTicketGuestData = async () => {
         try {
-          const response = await axios.get(`/api/v1/barcode/${id}/guest-ticket`);
+          const response = await apiClient.get(`/api/v1/barcode/${id}/guest-ticket`);
           dispatch(setTicket(response.data));
         } catch (error) {
           console.error("Error fetching data", error);

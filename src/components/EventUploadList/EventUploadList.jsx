@@ -14,7 +14,7 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { setMyEvent } from "../../redux/myEventSlice";
 import axios from "axios";
-
+import { apiClient } from '../../api/ApiClient';
 const EventUploadBlock = ({
   userId,
   nickname,
@@ -83,7 +83,7 @@ const EventUploadBlock = ({
   };
   const deleteEventBlockData = async () => {
     try {
-      const response = await axios.delete(
+      const response = await apiClient.delete(
         `/api/v1/event/${eventId}/${userId}/image-list}`,
         {
           headers: {

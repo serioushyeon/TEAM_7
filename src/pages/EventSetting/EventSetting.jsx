@@ -98,7 +98,7 @@ const EventSetting = () => {
   const putEventName = async () => {
     console.log(myEvent);
     try {
-      const response = await axios.put(`/api/v1/event/${myEvent.eventId}/event-name`, {
+      const response = await apiClient.put(`/api/v1/event/${myEvent.eventId}/event-name`, {
         eventName: eventName
       }, {
         headers: {
@@ -134,7 +134,7 @@ const EventSetting = () => {
   const putEventDate = async () => {
     console.log(myEvent);
     try {
-      const response = await axios.put(`/api/v1/event/${myEvent.eventId}/event-date`, {
+      const response = await apiClient.put(`/api/v1/event/${myEvent.eventId}/event-date`, {
         startDate : startDate,
         endDate: endDate,
       }, {

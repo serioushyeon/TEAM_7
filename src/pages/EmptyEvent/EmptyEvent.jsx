@@ -6,6 +6,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setMyEvent } from "../../redux/myEventSlice";
 import { useCookies } from "react-cookie";
+import { apiClient } from '../../api/ApiClient';
 const EmptyEvent = () => {
     //참여하고 있는 이벤트가 있는 지 체크
     //참여하고 있다면
@@ -18,7 +19,7 @@ const EmptyEvent = () => {
 
     const fetchEventData = async () => {
         try {
-          const response = await axios.get(`/api/v1/user/my-event`, {
+          const response = await apiClient.get(`/api/v1/user/my-event`, {
             headers: { Authorization: `Bearer ${getAccessCookie}` },
           });
           if (response.data.existEvent) {
