@@ -91,9 +91,13 @@ const EventDisplay = () => {
             Authorization: `Bearer ${getAccessCookie}`
         }
       });
+      console.log(response.data);
+      dispatch(setEventList(response.data))
         setEventData(response.data);
+        console.log(eventData);
       } catch (error) {
-        if(error.response.statusText === "EVENT_NOT_FOUND")
+        console.error(error);
+        /*if(error.response.statusText === "EVENT_NOT_FOUND")
         {
 
         }
@@ -104,11 +108,12 @@ const EventDisplay = () => {
           navigate(`/`);
         }
         console.error("Error fetching event data:", error);
-      }
+      }*/
     };
+  }
 
     fetchEventData();
-  }, [id]);
+  }, []);
 
   // 이벤트 데이터가 없을 경우 기본 화면 또는 로딩 표시
   if (!eventData) {
