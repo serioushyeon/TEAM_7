@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import EventHeader from "../../components/EventHeader/EventHeader";
 import EventParticipants from "../../components/EventParticipants/EventParticipants";
 import EventUploadList from "../../components/EventUploadList/EventUploadList";
@@ -11,9 +11,11 @@ import axios from "axios";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import BG from "../../assets/images/Event/eventBG.jpg";
+import { useNavigate } from "react-router-dom";
 
 const EventDisplay = () => {
   const getAccessCookie = localStorage.getItem("accessCookie");
+  const navigate = useNavigate();
   const fetchMyEventData = async () => {
     try {
       const response = await axios.get(`/api/v1/user/my-event`, {
@@ -34,23 +36,24 @@ const EventDisplay = () => {
       }
     }
   };
-  useEffect(() => {
-    fetchMyEventData();
-  }, []);
-  const eventId = useSelector((state) => state.myEvent.value.eventId);
-  useEffect(() => {
-    const fetchEventData = async () => {
-      try {
-        const response = await axios.get(`/api/v1/event/${eventId}`, {
-          headers: {
-            Authorization: `Bearer ${getAccessCookie}`,
-          },
-        });
-        console.log(response.data);
-        dispatch(setEventList(response.data));
-      } catch (error) {
-        console.error(error);
-        /*if(error.response.statusText === "EVENT_NOT_FOUND")
+
+  useLayoutEffect(() => {
+  fetchMyEventData();
+},[])
+const eventId = useSelector((state) => state.myEvent.value.eventId);
+useLayoutEffect(() => {
+  const fetchEventData = async () => {
+    try {
+      const response = await axios.get(`/api/v1/event/${eventId}`, {
+        headers: {
+          Authorization: `Bearer ${getAccessCookie}`,
+        },
+      });
+      console.log(response.data);
+      dispatch(setEventList(response.data));
+    } catch (error) {
+      console.error(error);
+      /*if(error.response.statusText === "EVENT_NOT_FOUND")
       {
 
       }

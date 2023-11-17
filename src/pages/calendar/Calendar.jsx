@@ -11,6 +11,7 @@ import { selectDate } from "../../redux/dateSlice";
 import { setActiveStartDate } from "../../redux/CalendarUI";
 import { updateDay, updateMonth, updateYear } from "../../redux/dateDaySlice";
 import { setThumbnailInfoList, setButtonStatus } from "../../redux/calendarSlice";
+import { updateDateRange } from '../../redux/dateRangeSlice';
 
 import { S } from "./CalendarStyle";
 import "./Calendar.css";
@@ -116,7 +117,6 @@ export default function MyCalendar() {
     try {
       // startDate, endDate 형식은 YYYY-MM-DD
       const response = await axios.get(`${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/calender`, {
-        // 서버에서 params 기준으로 값 가져옴.
         params: {
           startDate: dateRange.startDate,
           endDate: dateRange.endDate,
@@ -148,7 +148,20 @@ export default function MyCalendar() {
     }
   };
 
+  // 날짜 변경 핸들러
+  const updateActiveStartDate = (year, month) => {
+    dispatch(setActiveStartDate(new Date(year, month).toISOString()));
+  };
+
   useEffect(() => {
+    const today = new Date(); // 현재 날짜와 시간
+    const year = today.getFullYear(); // 현재 연도
+    const month = today.getMonth(); // 현재 월 (1을 더함)
+
+    updateActiveStartDate(year, month); // 시작 날짜 설정 함수 호출
+    dispatch(updateDateRange({ year, month })); // 월간 시작 및 종료 주소 설정 함수 호출
+
+    
     getCalendarInfo();
   }, []);
 

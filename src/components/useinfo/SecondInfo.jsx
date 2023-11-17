@@ -10,6 +10,7 @@ import InfoBarcord from "../../assets/images/userinfo/infoBarcord.svg";
 import Cloud from "../../assets/images/userinfo/cloud.svg";
 import Profile from "../../assets/images/userinfo/profile.svg";
 import { selectDate } from '../../redux/dateSlice';
+import userInfoSlice from '../../redux/userInfoSlice';
 
 export default function SecondInfo() {
 
@@ -40,25 +41,27 @@ export default function SecondInfo() {
   console.log('userInfo: ', userInfo);
 
   const [edit, setEdit] = useState(false);
-  const [confirm, setConfirm] = useState(false);
+  const [fileState, setFileState] = useState("");
+  const [imagePreview, setImagePreview] = useState("");
 
   const [selectedFile, setSelectedFile] = useState(null);
   // file 저장
 
 // 로컬 상태 초기화
   const [user, setUser] = useState(userInfo);
+  console.log('user', user);
 
   
   // 유저 데이터 실시간 수정
   const handleInfoChange = (e, field) => {
-    const updatedUser = { ...user, [field]: e.target.value };
+    const updatedUser = { ...userInfo, [field]: e.target.value };
   setUser(updatedUser);
-  console.log(user);
+  console.log(updatedUser);
 
-  dispatch(userInfoSlice.actions.userData(updatedUser));
+  dispatch(userData(updatedUser));
   };
    
-  // resux와 user 동기화
+  // redux와 user 동기화
   useEffect(() => {
     setUser(userInfo);
   }, [userInfo]);
@@ -89,14 +92,27 @@ export default function SecondInfo() {
     }
   }
     getUserInfo();
-    setUser(userInfo);
   }, []);
 
   // 프로필 이미지 핸들러
 const handleProfileImageChange = (event) => {
   if (event.target.files && event.target.files[0]) {
     const file = event.target.files[0];
-    setSelectedFile(file); // 파일 상태 저장
+    setFileState(file);
+
+  // 미리보기
+  const objectUrl = URL.createObjectURL(file);
+  
+  setUser({ ...user, profileImage: objectUrl });
+
+  dispatch(userData({
+    ...userInfo,
+    profileImage: objectUrl
+  }));
+
+  console.log('image url: ', objectUrl);
+  console.log(userInfo.profileImage);
+
   }
 };
 
@@ -104,10 +120,10 @@ const handleProfileImageChange = (event) => {
 const postUserInfo = async () => {
   const formData = new FormData();
 
-// 폼 데이터로 전송
-   formData.append('profileImage', selectedFile);
+// 파일을 formdata로 전송
+   formData.append('profileImage', fileState);
 
-   formData.append('nickName', user.nickName);
+   formData.append('nickname', user.nickname);
    formData.append('birth', user.birth);
    formData.append('gender', user.gender);
 
@@ -118,9 +134,6 @@ const postUserInfo = async () => {
        headers: {
          // 쿠키 보냄, axios가 자동으로 Content-type 설정해줌.
          'Content-Type': 'multipart/form-data',
-         transformRequest: (data, headers) => {
-          return data;
-        },
          Authorization: `Bearer ${getAccessCookie}`
        },
      });
@@ -154,12 +167,13 @@ function handleEdit() {
         <>
         </>
       )}
-            <S.ProfileBox>
-              {user.profileImage}
+
+          <S.ProfileBox>
+                <S.Images src = {userInfo.profileImage} />
             </S.ProfileBox>
             {edit ? 
             (<>
-             <S.ProfileLabel htmlFor="profile">프로필 사진<br />변경</S.ProfileLabel>
+             <S.ProfileLabel htmlFor="profileImage">프로필 사진<br />변경</S.ProfileLabel>
             </>) : (<>
             
             </>)}
@@ -174,10 +188,10 @@ function handleEdit() {
             <S.Question>닉네임/Nick name</S.Question>
             <S.Answer 
             type="text" 
-            value={user.nickName}
+            value={userInfo.nickname}
             id="nickname"
             name="nickname"
-            onChange={(e) => handleInfoChange(e, 'nickName')} 
+            onChange={(e) => handleInfoChange(e, 'nickname')} 
             readOnly={!edit}
             edit = {edit}
             maxLength={8} 
@@ -191,7 +205,6 @@ function handleEdit() {
             name="birth"
             min="1900-01-01"
             max="2024-01-01"
-            value={user.birth}
             placeholder='0000-00-00'
             onChange={(e) => handleInfoChange(e, 'birth')} 
             readOnly={!edit}
@@ -220,7 +233,7 @@ function handleEdit() {
             <>
              <S.Answer 
              type="text" 
-             value={user.gender === 'M' ? '남성' : (user.gender === 'Y' ? '여성' : '')}
+             value={userInfo.gender === 'M' ? '남성' : (userInfo.gender === 'Y' ? '여성' : '')}
              readOnly
              edit = {edit}
            />
@@ -232,7 +245,7 @@ function handleEdit() {
             <S.Question
             readOnly
             >발급일/Date of issue</S.Question>
-            {user.dateOfIssue}
+            {userInfo.dateOfIssue}
             </S.DateOfIssue>
             <S.NunberBarcord>
             <S.Question
@@ -240,15 +253,9 @@ function handleEdit() {
             >보유 바코드 수/Number</S.Question>
             {userInfo.barcodeCount}
             </S.NunberBarcord>
-            <S.UserBarcord>
-            {!user.recentBarcodeImg ? (
-                <>
-                </>
-              ) :
-              (
-                <S.Images src = {user.recentBarcodeImg} />
-              )}
-            </S.UserBarcord>
+                <S.UserBarcord>
+                <S.Images src={userInfo.recentBarcodeImg} />
+                </S.UserBarcord>
             {edit ? (
               <>
               <S.SendButton type="submit" onClick={handleEditUserInfo}>저장</S.SendButton>

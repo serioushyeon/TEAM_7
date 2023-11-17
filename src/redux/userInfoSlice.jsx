@@ -5,7 +5,7 @@ import Profile from "../assets/images/userinfo/profile.svg";
 
 // 여권 페이지에 유저 정보 
 const userInfoState = {
-    nickName: "",
+    nickname: "",
     birth: "",
     gender: "",
     dateOfIssue: "",
@@ -21,7 +21,7 @@ export const userInfoSlice = createSlice({
     initialState: userInfoState,
     reducers: {
       userData: (state, action) => {
-      state.nickName = action.payload.nickName;
+      state.nickname = action.payload.nickname;
       state.birth = action.payload.birth;
       state.gender = action.payload.gender;
       state.dateOfIssue = action.payload.dateOfIssue;
