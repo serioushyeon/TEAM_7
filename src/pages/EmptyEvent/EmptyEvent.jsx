@@ -32,6 +32,7 @@ const EmptyEvent = () => {
             navigate(`/eventdisplay/${eventId}`)
           } else {
             console.log("no event");
+            console.log(isExistEvent);
           }
         } catch (error) {
           console.error("Error fetching data", error);
