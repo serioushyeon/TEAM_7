@@ -39,12 +39,12 @@ const Wrapper = styled.div`
 // 여기서 경로 설정해주세요.
 function App() {
   const [accessCookie] = useCookies(["accessCookie"]);
-    const [refreshCookie] = useCookies(["refreshCookie"]);
+  const [refreshCookie] = useCookies(["refreshCookie"]);
 
-    const getAccessCookie = localStorage.getItem("accessCookie");
-   const getRefreshCookie = localStorage.getItem("refreshCookie");
+  const getAccessCookie = localStorage.getItem("accessCookie");
+  const getRefreshCookie = localStorage.getItem("refreshCookie");
 
-   console.log(getAccessCookie);
+  console.log(getAccessCookie);
 
   function setScreenSize() {
     let vh = window.innerHeight * 0.01;
@@ -56,14 +56,13 @@ function App() {
     <>
       <Background>
         <Wrapper>
-        {getAccessCookie &&
-          getAccessCookie !== "undefined" && 
-          getAccessCookie !== undefined && (
-            <>
-              <NavBar />
-            </>
-          )
-        }
+          {getAccessCookie &&
+            getAccessCookie !== "undefined" &&
+            getAccessCookie !== undefined && (
+              <>
+                <NavBar />
+              </>
+            )}
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/substart" element={<SubStart />} />
@@ -72,7 +71,7 @@ function App() {
             <Route path="/calendar-photo" element={<CalendarPhoto />} />
             <Route path="/calendar-non-photo" element={<CCalendarGallery />} />
             <Route path="/test" element={<TestPage />} />
-            <Route path="/eventphoto" element={<EventPhoto />} />
+            <Route path="/eventphoto/:eventId" element={<EventPhoto />} />
             {/* <EmptyEvent /> */}
             <Route path="/event" element={<EmptyEvent />} />
             {/*<EventSetting>*/}
