@@ -11,6 +11,7 @@ import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const EventUploadBlock = ({
   userId,
@@ -113,6 +114,18 @@ const NoList = () => {
 
 // EventDisplay로부터 props를 받아옵니다.
 const EventUploadList = ({ userInfo, loginUserId }) => {
+  const navigate = useNavigate();
+
+  // 사용자가 이미지를 업로드했는지 확인
+  const hasUserUploadedImages = userInfo.some(
+    (user) => user.userId === loginUserId
+  );
+
+  // EventPhoto 페이지로 이동하는 함수
+  const navigateToEventPhoto = () => {
+    navigate("/eventphoto"); // EventPhoto 페이지의 경로로 변경하세요.
+  };
+
   return (
     <div className="eventUploadList">
       {userInfo.map((user) => (
@@ -124,16 +137,12 @@ const EventUploadList = ({ userInfo, loginUserId }) => {
           checkStatus={user.checkStatus}
           imageCount={user.imageCount}
           loginUserId={loginUserId}
+          // 리스트 클릭 시 EventPhoto 페이지로 이동
+          onClick={user.userId === loginUserId ? navigateToEventPhoto : null}
         />
       ))}
-      {userInfo.length === 0 && (
-        <div className="list">
-          <div className="uploadlist">
-            <div className="noList">아직 생성된 리스트가 없습니다.</div>
-          </div>
-        </div>
-      )}
-      <div className="addList">
+      {userInfo.length === 0 && <NoList />}
+      <div className="addList" onClick={navigateToEventPhoto}>
         <button className="addListBtn">
           <IoIosAddCircleOutline size="40" color="#F28B50" />
         </button>

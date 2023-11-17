@@ -85,7 +85,7 @@ const EventDisplay = () => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const response = await axios.get(`/api/v1/event/${id}`);
+        const response = await axios.get(`/api/v1/event/${eventid}`);
         setEventData(response.data);
       } catch (error) {
         console.error("Error fetching event data:", error);
