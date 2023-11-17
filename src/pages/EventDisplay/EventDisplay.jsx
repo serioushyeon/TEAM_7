@@ -15,7 +15,7 @@ import BG from "../../assets/images/Event/eventBG.jpg";
 const EventDisplay = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.eventList);
+  const users = useSelector((state) => state.eventList.value);
   const [buttonEnabled, setButtonEnabled] = useState(false);
   const [eventData, setEventData] = useState(null);
   let stompClient = null;
@@ -152,7 +152,7 @@ const EventDisplay = () => {
         userInfo={users.userInfo}
         loginUserId={users.loginUserId}
       />
-      {users.isRoomMaker && (
+      {users.roomMaker && (
         <div className="makeBarcode">
           <button
             className="makeBarcodeBtn"

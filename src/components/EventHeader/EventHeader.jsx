@@ -12,7 +12,7 @@ import { TbDoorExit } from "react-icons/tb";
 import { useSelector } from 'react-redux';
 
 const EventHeader = () => {
-    const users = useSelector((state) => state.eventList);
+    const users = useSelector((state) => state.eventList.value);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [toast, setToast] = useState(false);
     const openModal = () => {
@@ -60,7 +60,7 @@ const EventHeader = () => {
                 <button className='exit' onClick={openModal}> 
                     <TbDoorExit size="22" color="white"/>
                 </button>
-                {users.isRoomMaker ? 
+                {users.roomMaker ? 
                 <button className='edit' onClick={goToSetting}>
                     <FaRegEdit size="22" color="white"/>
                 </button> : <></>}
@@ -69,9 +69,9 @@ const EventHeader = () => {
                 modalIsOpen={modalIsOpen}
                 closeModal={closeModal}
                 mainContent={"이벤트를"}
-                highlight={users.isRoomMaker? "폭파":"퇴장"}
-                end={users.isRoomMaker? "하시겠습니까?":"하시겠습니까?"}
-                notice={users.isRoomMaker? "※참여한 모든 인원이 자동으로 나가집니다." : "※지금까지 참여한 이벤트가 삭제됩니다."}
+                highlight={users.roomMaker? "폭파":"퇴장"}
+                end={users.roomMaker? "하시겠습니까?":"하시겠습니까?"}
+                notice={users.roomMaker? "※참여한 모든 인원이 자동으로 나가집니다." : "※지금까지 참여한 이벤트가 삭제됩니다."}
                 action={goToEvent}
             />
         </div>

@@ -24,7 +24,7 @@ const EventUploadBlock = ({
   const [isChecked, setIsChecked] = useState(imageCount >= 30);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const { id: eventId } = useParams(); // 이벤트 ID
-  const users = useSelector((state) => state.eventList);
+  const users = useSelector((state) => state.eventList.value);
 
   // 체크 상태 업데이트를 위한 WebSocket 연결
   useEffect(() => {
