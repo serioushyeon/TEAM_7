@@ -2,13 +2,6 @@ import styled from "styled-components";
 import CameraImoge from "../../assets/images/calendarPhoto/camera.svg";
 
 const Container = styled.div`
-  position: relative;
-  display: flex;
-  margin: 0 auto;
-  flex-direction: column;
-  width: 100%;
-  overflow-y: scroll;
-  height: calc(100vh - 100px);
 `;
 
 const DayWeek = styled.div`

@@ -6,30 +6,18 @@ import Chat from '../../assets/images/Login/ChatImoge.svg';
 import Goorm from '../../assets/images/Login/TitleGoorm.svg';
 
 const Container = styled.div`
-position: relative;
-display: flex;
-align-items: center;
-margin: 0 auto;
-max-width: 390px;
-max-height: 1020px;
-width: 100%;
-height: 100vh;
 `
 
 const Bg = styled.div`
-display: flex;
-width: 390px;
-height: 1020px;
-background-color: #FDFCFB;
 `
 // background-color: #FDFCFB 0;
 const BookContainer = styled.div`
 display: flex;
 position: absolute;
-top: 8.5rem;
+top: 6.5rem;
 left: 0.9rem;
-width: 22.5rem;
-height: 35rem;
+width: 90%;
+height: 15rem;
 border-radius: 4px;
 background-color: #BEEAFC;
 box-shadow: 8px 4px 4px 0px rgba(0, 0, 0, 0.50);
@@ -39,7 +27,7 @@ box-shadow: 8px 4px 4px 0px rgba(0, 0, 0, 0.50);
 const Title = styled.div`
 display: flex;
 position: absolute;
-top: 2.625rem;
+top: 0.625rem;
 right: 1rem;
 color: #191919;
 font-size: 28px;
@@ -51,7 +39,7 @@ line-height: normal;
 const Titletext = styled.div`
 display: block;
 position: absolute;
-top: 4.875rem;
+top: 2.875rem;
 right: 1rem;
 color: #001C30;
 font-size: 16px;
@@ -62,7 +50,7 @@ line-height: normal;
 
 const TitleGoorm = styled.div`
 position: absolute;
-top: 2.625rem;
+top: 0.625rem;
 right: 8rem;
 width: 40px;
 height: 32.239px;
@@ -71,17 +59,18 @@ background-image: url(${Goorm});
 
 const Earth = styled.div`
 position: absolute;
-top: 7.31rem;
+top: 0.31rem;
 left: 3.75rem;
 width: 15.625rem;
 height: 15.625rem;
+scale: 0.6;
 background-image: url(${EarthImoge});
 background-repeat: no-repeat;
 ` 
 
 const Kakao = styled.div`
 position: absolute;
-top: 28.5rem;
+top: 10.5rem;
 left: 1.8rem;
 width: 18.75rem;
 height: 2.875rem;
@@ -93,7 +82,7 @@ const LoudSpeaker = styled.div`
 position: absolute;
 width: 2.5rem;
 height: 2.5rem;
-top: 45rem;
+top: 23rem;
 left: 1.18rem;
 background-image: url(${Speaker});
 background-repeat: no-repeat;
@@ -103,7 +92,7 @@ const ChatBox = styled.div`
 position: absolute;
 width: 2.5rem;
 height: 2.5rem;
-top: 51.5rem;
+top: 29.5rem;
 right: 1.18rem;
 background-image: url(${Chat});
 background-repeat: no-repeat;
@@ -118,6 +107,7 @@ position: absolute;
 border-radius: 4px;
 background-color: #EDEDED;
 padding: 0.75rem;
+margin-bottom: ${(props) => props.margin};
 `
 
 // 12px로 하니 화면을 넘어감.
