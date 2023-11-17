@@ -26,6 +26,9 @@ const EventUploadBlock = ({
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
   const eventId = useSelector((state) => state.myEvent.value.eventId);
+  const {id} = useParams();
+    if(!eventId) 
+      eid = id;
   const getAccessCookie = localStorage.getItem("accessCookie");
   let stompClient = null;
 
@@ -45,7 +48,7 @@ const EventUploadBlock = ({
   // 체크 상태를 서버에 전송하는 함수
   const sendCheckStatus = (userId, checkStatus) => {
     stompClient.send(
-      `/topic/check/${eventId}`,
+      `/topic/check/${eid}`,
       {},
       JSON.stringify({ userId, checkStatus })
     );
@@ -55,7 +58,7 @@ const EventUploadBlock = ({
     stompClient = Stomp.over(socket);
 
     stompClient.connect({}, () => {
-      stompClient.subscribe(`/subscribe/check/${eventId}`, (message) => {
+      stompClient.subscribe(`/subscribe/check/${eid}`, (message) => {
         const messageBody = JSON.parse(message.body);
         if (messageBody.userId === userId) {
           setIsChecked(messageBody.checkStatus);
@@ -84,7 +87,7 @@ const EventUploadBlock = ({
   const deleteEventBlockData = async () => {
     try {
       const response = await apiClient.delete(
-        `/api/v1/event/${eventId}/${userId}/image-list}`,
+        `/api/v1/event/${eid}/${userId}/image-list}`,
         {
           headers: {
             Authorization: `Bearer ${getAccessCookie}`,
