@@ -35,11 +35,8 @@ const EventDisplay = () => {
       }
     }
   };
-useEffect(() => {
   fetchMyEventData();
-},[])
 const eventId = useSelector((state) => state.myEvent.value.eventId);
-useEffect(() => {
   const fetchEventData = async () => {
     try {
       const response = await axios.get(`/api/v1/event/${eventId}`, {
@@ -67,7 +64,6 @@ useEffect(() => {
   };
 
   fetchEventData();
-}, []);
   const dispatch = useDispatch();
   const users = useSelector((state) => state.eventList.value);
   const [buttonEnabled, setButtonEnabled] = useState(false);
