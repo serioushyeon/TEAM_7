@@ -11,13 +11,17 @@ import axios from "axios";
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import BG from "../../assets/images/Event/eventBG.jpg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { apiClient } from '../../api/ApiClient';
 
 const EventDisplay = () => {
   const getAccessCookie = localStorage.getItem("accessCookie");
   const navigate = useNavigate();
 const eventId = useSelector((state) => state.myEvent.value.eventId);
+const [eId, setEiD] = useState(eventId);
+const {id} = useParams();
+if(!eventId) 
+  setEiD(id)
 useLayoutEffect(() => {
   const fetchEventData = async () => {
     try {
