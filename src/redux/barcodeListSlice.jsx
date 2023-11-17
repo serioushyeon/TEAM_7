@@ -2,7 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialstate = {
     barcodeList:
-    []
+    [
+		{
+		id:"String",
+	    imageUrl:"String",
+	    title:"String"
+	   }
+	]
 }
 export const barcodeListSlice = createSlice(
 {
