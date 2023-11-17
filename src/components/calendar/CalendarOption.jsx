@@ -33,6 +33,7 @@ export default function CalendarOption() {
 const handleYearChange = (year) => {
   console.log('year', year);
   setNewYear(year);
+  dispatch(updateYear(year));
   updateActiveStartDate(year, newMonth);
   dispatch(updateDateRange({ year, newMonth}));
 
