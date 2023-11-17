@@ -41,6 +41,7 @@ const MoodCloud = () => {
           });
           //리덕스
           const { barcodeList } = response.data;
+          console.log(response.data);
           dispatch(setBarcodeList({barcodeList}));
         } catch (error) {
           console.error("Error fetching data", error);
