@@ -79,6 +79,23 @@ const EventSetting = () => {
       goToEventDisplay();
     } catch (error) {
       console.error("Error posting data", error);
+      console.log(error.response);
+      console.log(error.status);
+      console.log(error.statusText);
+      if(error.statusText === "USER_ALREADY_HAS_EVENT")
+      {
+
+      }
+      if(error.statusText === "EVENT_TITLE_EMPTY")
+      {
+        
+      }
+      if(error.statusText === "USER_NOT_FOUNR")
+      {
+        alert("다시 로그인해주세요");
+        //로그아웃
+        navigate(`/`);
+      }
     }
   };
 
