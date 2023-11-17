@@ -29,7 +29,7 @@ import { selectDate } from '../../redux/dateSlice';
 
 export default function SecondInfo() {
   const dispatch = useDispatch();
-  // formData 선언
+ 
 
   const [accessCookie] = useCookies(["accessCookie"]);
   const [refreshCookie] = useCookies(["refreshCookie"]);
@@ -43,8 +43,10 @@ export default function SecondInfo() {
 
   const [edit, setEdit] = useState(false);
   const [confirm, setConfirm] = useState(false);
+
   const [selectedFile, setSelectedFile] = useState(null);
   // file 저장
+
 
   const [user, setUser] = useState({
     nickName: "",
