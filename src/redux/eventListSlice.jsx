@@ -48,7 +48,7 @@ export const eventListSlice = createSlice({
       state.value = action.payload;
     },
     setEventName: (state, action) => {
-      state.value.eventName = action.payload.eventName;
+      state.value.eventName = action.payload;
     },
     setEventDate: (state, action) => {
       state.value.startDate = action.payload.startDate;
