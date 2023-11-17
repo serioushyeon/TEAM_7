@@ -26,18 +26,6 @@ import Profile from "../../assets/images/userinfo/profile.svg";
 }
 */
 
-const DUMMY_USERINFO = {
-  nickName: "Eunji",
-    birth: "2002.08.27",
-    gender: "Y",
-    dateOfIssue: "2023-11-15",
-    barcodeCount: 4,
-    profileImage: `${Profile}`,
-    recentBarcodeImg: `${InfoBarcord}`,
-    recentBarcodeTitleList: [`${Cloud}`, `${Cloud}`, `${Cloud}`],
-    modalActive: false,
-}
-
 export default function SecondInfo() {
   const dispatch = useDispatch();
   var formData = new FormData();
@@ -132,12 +120,34 @@ const handleEditUserInfo = async (event) => {
   setEdit(!edit);
 };
 
+// 프로필 이미지 변경 핸들러
+const handleProfileImageChange = (event) => {
+  if (event.target.files && event.target.files[0]) {
+    const file = event.target.files[0];
+    const imageUrl = URL.createObjectURL(file);
+    setUser({ ...user, profileImage: imageUrl }); 
+    // 미리보기 URL을 user 상태에 저장
+  }
+};
+
   return (
     <S.Book2Container>
             <S.EditButton onClick={handleEditUserInfo}/>
-            <S.ProfileImage url = {user.profileImage}/>
-            <S.ProfileLabel htmlFor="profile">프로필 사진<br />변경</S.ProfileLabel>
-            <S.InputProfile type="file" id="profile"/>
+            <S.ProfileBox>
+            <S.ProfileImage src = {user.profileImage} />
+            </S.ProfileBox>
+            {edit ? 
+            (<>
+             <S.ProfileLabel htmlFor="profile">프로필 사진<br />변경</S.ProfileLabel>
+            </>) : (<>
+            
+            </>)}
+            <S.InputProfile 
+            type="file" 
+            id="profile"
+            onChange={handleProfileImageChange}
+            disabled={!edit}
+            />
             <S.NickName>
             <S.Question>닉네임/Nick name</S.Question>
             <S.Answer 

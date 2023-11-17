@@ -78,16 +78,24 @@ height: 18px;
 background-image: url(${EditImoge});
 `
 
-const ProfileImage = styled.div`
+const ProfileBox = styled.div`
 position: absolute;
 top: 2rem;
 left: 0.625rem;
 width: 100px;
 height: 140px;
-background-image: url(${props => props.url});
+background-image: url(${Profile});
 `
 // ${props => props.left}
 // ${props => !props.editable && `display: none;`}
+
+const ProfileImage = styled.img`
+position: absolute;
+height: 100%;    
+width: 100%;     
+objectFit: 'cover';
+backgroundSize: 'contain';
+`
 
 const Question = styled.div`
 color: #5E5E5E;
@@ -233,6 +241,7 @@ export const S = {
     ThirdCloud,
     Book2Container,
     EditButton,
+    ProfileBox,
     ProfileImage,
     Question,
     Answer,

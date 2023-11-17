@@ -8,11 +8,6 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { setCalendarData } from "../../redux/CalendarPhotoBoard";
 import PhotoOption from "../../components/calendar/PhotoOption";
 import { setActiveStartDate, toggleSelected } from '../../redux/CalendarUI';
-import dateDaySlice, {
-  updateDay,
-  updateMonth,
-  updateYear,
-} from "../../redux/dateDaySlice";
 
 export default function CalendarPhoto() {
   let navigate = useNavigate();
@@ -160,6 +155,7 @@ export default function CalendarPhoto() {
     postCalendarData();
     // Redux 스토어 업데이트
     dispatch(setCalendarData({ memo, images }));
+    navigate("/calendar");
   };
 
   return (
