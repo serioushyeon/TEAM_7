@@ -12,10 +12,12 @@ import dateDaySlice from "./dateDaySlice";
 import userInfoSlice from "./userInfoSlice";
 import barcodeListSlice from "./barcodeListSlice";
 import ticketSlice from "./ticketSlice";
+import calendarReducer from './calendarSlice';
 
 // 여기서 데이터 관리해주세요.
 export default configureStore({
   reducer: {
+    photoList: calendarReducer,
     user: userReducer,
     userdata: userInfoSlice,
     theme: themeReducer,

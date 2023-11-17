@@ -9,7 +9,8 @@ import { useCookies } from "react-cookie";
 
 import { selectDate } from '../../redux/dateSlice';
 import { setActiveStartDate } from '../../redux/CalendarUI';
-import dateDaySlice, { updateDay, updateMonth, updateYear } from '../../redux/dateDaySlice';
+import { updateDay, updateMonth, updateYear } from '../../redux/dateDaySlice';
+import {setThumbnailInfoList} from '../../redux/calendarSlice';
 
 import { S } from './CalendarStyle';
 import './Calendar.css';
@@ -17,26 +18,6 @@ import CalendarOption from '../../components/calendar/CalendarOption';
 import Lion from '../../assets/images/calendar/lion.png';
 import Calendar1 from "../../assets/images/calendar/Calendar1.svg";
 import Background from "../../assets/images/calendar/Background.svg";
-
-// 서버에서 받은 images Data
-const imageData = {
-  thumbnailInfoList: [
-    { date: "2023-11-01", url: Lion },
-    { date: "2023-11-15", url: Lion },
-    { date: "2023-11-03", url: Background },
-    { date: "2023-11-13", url: Background },
-    { date: "2023-11-02", url: Lion },
-    { date: "2023-11-05", url: Lion },
-    { date: "2023-11-06", url: Background },
-    { date: "2023-11-07", url: Background },
-    { date: "2023-11-08", url: Lion },
-    { date: "2023-11-09", url: Lion },
-    { date: "2023-11-10", url: Background },
-    { date: "2023-11-11", url: Background },
-  ],
-  buttonStatus: false
-}
-
   
   // 서버에서 데이터를 받아와 사진을 배치한다.
   export default function MyCalendar() {
@@ -44,9 +25,14 @@ const imageData = {
     const dateDay = useSelector((state) => state.dateDay.dateDay);
     const dateInfo = useSelector((state) => state.date);
 
-    // 리듀서들
+    // 시작 페이지 날짜 지정
     const activeStartDateString = useSelector((state) => state.calendarUI.activeStartDate);
+
+    // 날짜 범위(시작일, 끝일, 월, 년)
     const dateRange = useSelector(state => state.dateRange.dateRange);
+
+    // 달력 내 사진
+    const thumbnailInfoList = useSelector(state => state.photoList.thumbnailInfoList);
 
     const [accessCookie] = useCookies(["accessCookie"]);
     const [refreshCookie] = useCookies(["refreshCookie"]);
@@ -57,22 +43,6 @@ const imageData = {
    console.log('startDate2: ', dateRange.startDate, 'endDate2: ', dateRange.endDate);
    console.log('Rangeyear:', dateRange.year, 'Rangemonth: ', dateRange.month);
     
-    const [calendarInfo, setCalendarInfo] = useState({
-      thumbnailInfoList:
-	[
-		{
-			thumbnailUrl: "",
-			date: ""
-		},
-		{
-			thumbnailUrl: "",
-			date: ""
-		}
-    // 위 데이터를 startDate - endDate까지 반복한다.
-	],
-	buttonStatus: false 
-    });
-
     // navigate 선언
     let navigate = useNavigate();
     const dispatch = useDispatch();
@@ -83,6 +53,7 @@ const imageData = {
   const getCalendarInfo = async () => {
     console.log('startDate: ', dateRange.startDate, 'endDate: ', dateRange.endDate);
     console.log('Rangeyear:', dateRange.year, 'Rangemonth: ', dateRange.month);
+    console.log(thumbnailInfoList);
     try {
       // startDate, endDate 형식은 YYYY-MM-DD
       const response = await apiClient.get(`/api/v1/user/calender`, {
@@ -96,7 +67,9 @@ const imageData = {
           Authorization: `${Bearer [getAccessCookie]}`
         },
       });
-      setCalendarInfo(response.data);
+
+      // 사진 리덕스에 저장
+      dispatch(setThumbnailInfoList(response.data));
       console.log("성공, UserInfo : ", response.data);
 
     } catch(error) {
@@ -106,18 +79,10 @@ const imageData = {
 
     useEffect(() => {
 
-  if(dateRange.startDate && dateRange.endDate) {
     getCalendarInfo();
-  }
+
 }, []);
 
-// 사진 추가 / 삭제 할 때도 계속 get 보내야하나?
-
-    const userinfo = {
-      id: "",
-      pw: ""
-    }
-  
     // 사진이 없는 경우, 사진 등록 창으로 이동
     function handleLocatePhoto(date) {
       navigate('/calendar-photo');
@@ -205,7 +170,7 @@ const imageData = {
         tileContent={({ date, view }) => {
       // 날짜에 해당하는 이미지 데이터를 찾는다.
       // moment로 date 내부 데이터에서 day만 빼옴.
-      const imageEntry = imageData.thumbnailInfoList.find(entry =>
+      const imageEntry = thumbnailInfoList.find(entry =>
         moment(date).isSame(entry.date, 'day')
       );
   
@@ -224,7 +189,7 @@ const imageData = {
         className="report-image" 
         style={style} 
         onClick={() => handleLocateDay(date)}
-        ><S.DayImage src={imageEntry.url}/>
+        ><S.DayImage src={imageEntry.thumbnailUrl}/>
         </div>
       );
     }
