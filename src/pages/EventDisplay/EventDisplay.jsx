@@ -88,6 +88,16 @@ const EventDisplay = () => {
         const response = await axios.get(`/api/v1/event/${eventid}`);
         setEventData(response.data);
       } catch (error) {
+        if(error.response.statusText === "EVENT_NOT_FOUND")
+        {
+
+        }
+        if(error.response.statusText === "USER_NOT_FOUND")
+        {
+          alert("다시 로그인해주세요");
+          //로그아웃
+          navigate(`/`);
+        }
         console.error("Error fetching event data:", error);
       }
     };
@@ -110,6 +120,24 @@ const EventDisplay = () => {
         console.log("Barcode generated successfully:", response.data);
       } catch (error) {
         console.error("Error in generating barcode:", error);
+        if(error.response.statusText === "NOT_ROOM_MAKER"){
+
+        }
+        if(error.response.statusText === "EVENT_PHOTO_EXCEED"){
+          
+        }
+        if(error.response.statusText === "EVENT_PHOTO_IS_LESS_THAN"){
+          
+        }
+        if(error.response.statusText === "EVENT_NOT_FOUND"){
+
+        }
+        if(error.response.statusText === "USER_NOT_FOUND"){
+          alert("다시 로그인해주세요");
+          //로그아웃
+          navigate(`/`);
+        }
+        
       }
     } else {
       console.log("Barcode generation button is disabled.");

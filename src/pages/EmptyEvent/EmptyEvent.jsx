@@ -35,6 +35,12 @@ const EmptyEvent = () => {
           }
         } catch (error) {
           console.error("Error fetching data", error);
+          if(error.statusText === "USER_NOT_FOUND")
+          {
+            alert("다시 로그인해주세요");
+            //로그아웃
+            navigate(`/`);
+          }
         }
       };
 
