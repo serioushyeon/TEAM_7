@@ -17,16 +17,13 @@ const EventSetting = () => {
   const myEvent = useSelector((state)=>state.myEvent.value);
   const dispatch = useDispatch();
   const getAccessCookie = localStorage.getItem("accessCookie");
-
   const title = event.eventName;
   const startD = event.startDate
   const endD = event.endDate;
-
   const [startDate, setStartDate] = useState(new Date(startD));
   const [endDate, setEndDate] = useState(new Date(endD));
   const [eventName, setEventTitle] = useState(title);
   const [flag, setFlag] = useState(true);
-  
   const saveEventName = (e) => {
     setEventTitle(e.target.value);
   };
@@ -75,9 +72,8 @@ const EventSetting = () => {
           Authorization: `Bearer ${getAccessCookie}`
       }
     });
-      const { eventId } = response.data;
-      const existEvent  = true; 
-      dispatch(setMyEvent({existEvent, eventId}));
+      const mEvent  = { eventId: response.data ,existEvent: false};
+      dispatch(setMyEvent(mEvent));
       goToEventDisplay();
     } catch (error) {
       console.error("Error posting data", error);
@@ -170,7 +166,10 @@ const EventSetting = () => {
   return (
     <>
       <div className="eventSetting">
-        <div className="eventTitle">함께 할 이벤트 생성하기</div>
+        <div className="eventTitle">
+          {location.pathname === "/eventsetting/edit"?
+          "이벤트 수정"
+        :"함께 할 이벤트 생성하기"}</div>
         <div className="formWrap">
           <form className="eventForm">
             <div className="wrapper">
@@ -240,12 +239,13 @@ const EventSetting = () => {
           </form>
         </div>
         <div className="eventMake">{
-          !myEvent.isExistEvent ? 
-          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? makeEvent() : ()=>{}}}>
-            이벤트 생성
-          </button> :
+          location.pathname === "/eventsetting/edit" ? 
           <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? editEvent : ()=>{}}}>
             이벤트 수정
+          </button>
+          :
+          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? makeEvent() : ()=>{}}}>
+            이벤트 생성
           </button>
           }
         </div>

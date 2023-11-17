@@ -44,7 +44,7 @@ const EventHeader = () => {
           navigate("/event")
       }
       const goToSetting = () => {
-        navigate(`/eventsetting`);
+        navigate(`/eventsetting/edit`);
       }
 
       const exitEventData = async () => {
@@ -54,7 +54,8 @@ const EventHeader = () => {
               Authorization: `Bearer ${getAccessCookie}`
           }
         });
-          dispatch(setMyEvent({false, ""}));
+        const mEvent  = { eventId: response.data ,existEvent: false};
+        dispatch(setMyEvent(mEvent));
           goToEvent();
         } catch (error) {
             console.error(error);
