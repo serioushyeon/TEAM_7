@@ -61,7 +61,7 @@ function App() {
             <Route path="/event" element={<EmptyEvent />} />
             {/*<EventSetting>*/}
             <Route path="/eventsetting" element={<EventSetting />} />
-            <Route path="/eventsetting/:id" element={<EventSetting />} />
+            <Route path="/eventsetting/edit" element={<EventSetting />} />
             {/* <EventDisplay /> */}
             <Route path="/eventdisplay" element={<EventDisplay />} />
             <Route path="/eventdisplay/:id" element={<EventDisplay />} />
