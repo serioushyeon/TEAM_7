@@ -58,7 +58,7 @@ const EventUploadBlock = ({
       stompClient.subscribe(`/subscribe/check/${eventId}`, (message) => {
         const messageBody = JSON.parse(message.body);
         if (messageBody.userId === userId) {
-          setIsChecked(messageBody.checkStatus === "true");
+          setIsChecked(messageBody.checkStatus);
         }
       });
     });
