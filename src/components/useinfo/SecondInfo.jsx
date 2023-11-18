@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { S } from "./Style";
 import { apiClient } from "../../api/ApiClient";
+import DatePicker from "react-datepicker";
+import { ko } from "date-fns/esm/locale";
+import { BsCalendarHeart, BsCalendarWeek } from "react-icons/bs"
+import { format } from "date-fns";
 import { useSelector, useDispatch } from "react-redux";
 import { useCookies } from "react-cookie";
 import { userData } from "../../redux/userInfoSlice";
@@ -226,22 +230,26 @@ export default function Second() {
           readOnly={!edit}
           edit={edit}
           maxLength={8}
-          placeholder="이름을 입력해주세요."
         />
       </S.NickName>
       <S.Date>
         <S.Question>생일/Date of birth</S.Question>
-        <S.Answer
-          type="date"
+        
+        <DatePicker
+          dateFormat="yyyy-MM-dd"
           id="birth"
           name="birth"
           min="1900-01-01"
           max="2024-01-01"
           placeholder="0000-00-00"
           onChange={(e) => handleInfoChange(e, "birth")}
+          selected={user.birth}
+          selectsStart
+          locale={ko}
           readOnly={!edit}
           edit={edit}
         />
+        <BsCalendarHeart />
       </S.Date>
       <S.Sex>
         <S.Question>성별</S.Question>

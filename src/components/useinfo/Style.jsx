@@ -103,6 +103,10 @@ outline: none;
 
 `
 
+const WraperDate = styled.div`
+
+`
+
 const NickName = styled.div`
 display: block;
 position: absolute;
