@@ -21,10 +21,12 @@ export const Notice = styled.div`
 `;
 
 export const LinkWrapper = styled.div`
+  margin-top: 50px;
   display: flex;
-  justify-content: end;
-  width: 90%;
+  justify-content: center;
+  width: 100%;
   color: "#F28B50";
+
 `;
 
 export const ImageUploadContainer = styled.div`
