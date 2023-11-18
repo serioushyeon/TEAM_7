@@ -312,6 +312,7 @@ export default function MyCalendar() {
             );
             // width를 지정하고 height를 auto로 하면 안됌.
             // height를 지정하고 width를 auto로 해야함.
+            //아
             if (imageEntry) {
               // Inline style for dynamic background image
               const style = {
