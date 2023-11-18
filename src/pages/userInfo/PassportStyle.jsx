@@ -5,6 +5,12 @@ import Cloud from "../../assets/images/userinfo/cloud.svg";
 import Profile from "../../assets/images/userinfo/profile.svg";
 import Goorm from "../../assets/images/Login/TitleGoorm.svg";
 
+const Container = styled.div`
+height: calc(var(--vh, 1vh) * 100);
+  overflow-y: hidden;
+  background-size: cover;
+`
+
 const BookContainer = styled.div`
 display: flex;
 position: absolute;
@@ -312,5 +318,5 @@ export const S = {
     BookBg,
     Title,
     Titletext,
-    TitleGoorm
+    Container
 }
