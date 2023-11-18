@@ -296,7 +296,6 @@ const BarcodeBoard = () => {
                     </div>
                 </div>
                 <div className="myMooco">
-                        <button className="myMoocoBtn" onClick={goToBarcode}>나만의 바코드 만들기</button>
                     </div>
                 <div className="boardTitle" style={{fontWeight:"bold"}}>
                     {ticket.nickname}님의 갤러리
