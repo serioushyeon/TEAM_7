@@ -307,7 +307,7 @@ export default function MyCalendar() {
           tileContent={({ date, view }) => {
             // 날짜에 해당하는 이미지 데이터를 찾는다.
             // moment로 date 내부 데이터에서 day만 빼옴.
-            const imageEntry = thumbnailInfoList.find((entry) =>
+            const imageEntry = thumbnailInfoList?.find((entry) =>
               moment(date).isSame(entry.date, "day")
             );
             // width를 지정하고 height를 auto로 하면 안됌.
