@@ -1,7 +1,7 @@
 import './MoodCloud.css';
 import Icon from '../../assets/images/MoodCloud/cloud1.png'
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setBarcodeList } from '../../redux/barcodeListSlice';
 import { useSelector } from 'react-redux';
@@ -30,8 +30,9 @@ const MoodCloudList = ({title, id}) => {
 }
 
 const MoodCloud = () => {
-    const dispatch = useDispatch();
-    const barcodeList = useSelector((state) => state.barcodeList.value);
+    //const dispatch = useDispatch();
+    //const barcodeList = useSelector((state) => state.barcodeList.value);
+    const [barcodeList, setBarcodeList] = useState();
     const getAccessCookie = localStorage.getItem("accessCookie");
     console.log(barcodeList);
     const fetchBarcodeListData = async () => {
@@ -41,7 +42,7 @@ const MoodCloud = () => {
           });
           //리덕스
           console.log(response.data);
-          dispatch(setBarcodeList(response.data));
+          setBarcodeList(response.data);
         } catch (error) {
           console.error("Error fetching data", error);
           if(error.response.statusText === "USER_NOT_FOUND"){
@@ -55,7 +56,10 @@ const MoodCloud = () => {
       useEffect(()=>{
         fetchBarcodeListData();
       },[]);
-      
+    
+    if(!barcodeList)
+        return (null);
+
     return (
         <>{
             barcodeList.length === 0 ? 
