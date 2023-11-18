@@ -78,6 +78,7 @@ export default function MyCalendar() {
 
     fetchCalendarInfo();
   }, [year, month, dispatch, accessCookie]);
+// 변경하는 값들 의존성으로 넣기
 
   // 날짜 변경 핸들러
   const updateActiveStartDate = (year, month) => {
