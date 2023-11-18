@@ -13,7 +13,7 @@ import axios from "axios";
 function EventPhoto() {
   const {eventId} =  useParams();  
   const [images, setImages] = useState([]);
-  const [eventName, setEventName] = useState("name");
+  const [eventName, setEventName] = useState();
   const [isGuest, setIsGuest] = useState(false);
   const [toast, setToast] = useState(false);
   const getAccessCookie = localStorage.getItem("accessCookie");
@@ -38,7 +38,7 @@ function EventPhoto() {
       alert("클립보드에 복사가 되었습니다. 다른 사람에게 공유해보세요 !");
   };
 
-  /*useLayoutEffect(() => {
+  useLayoutEffect(() => {
     const fetchEventBlockData = async () => {
       try {
         const response = await apiClient.get(`/api/v1/event/image-list/${eventId}`,{
@@ -51,7 +51,7 @@ function EventPhoto() {
         }
       };
       fetchEventBlockData();
-    }, []);*/
+    }, []);
 
   //이미지 선택 상태 관리 (삭제위한코드)
   const [selectedImages, setSelectedImages] = useState(new Set());
@@ -222,14 +222,14 @@ function EventPhoto() {
     {isGuest? <S.Navigation></S.Navigation> : <></>}
     <S.EventPhotoWrapper>
       {toast && <Toast setToast={setToast} text={"클립보드에 복사되었습니다."}/>}
-      <S.EventName>{eventName}</S.EventName>
-      <S.Notice>사진 등록 시 변경이 불가하니 신중하게 선택해주세요!</S.Notice>
       {isGuest?<>
       </>
       :
       <S.LinkWrapper className='invite' onClick={copyUrl}> 
         <FiLink size="22" color="grey"/>
       </S.LinkWrapper>}
+      <S.EventName>{eventName}</S.EventName>
+      <S.Notice>사진 등록 시 변경이 불가하니 신중하게 선택해주세요!</S.Notice>
       <S.ImageUploadContainer onDragOver={handleDragOver} onDrop={handleDrop}>
         <S.UploadButton htmlFor="file-input" hasImages={images.length > 0}>
           <S.UploadIcon
