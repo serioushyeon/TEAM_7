@@ -120,7 +120,7 @@ export default function Second() {
       // 미리보기
       const objectUrl = URL.createObjectURL(file);
 
-      setUser((user) => ({ ...user, profileImage: objectUrl }));
+      setUser((user) => fileState && ({ ...user, profileImage: objectUrl }));
 
       console.log("image url: ", objectUrl);
       // console.log(user.profileImage);
@@ -210,7 +210,7 @@ export default function Second() {
         <S.Question>닉네임/Nick name</S.Question>
         <S.Answer
           type="text"
-          value={user.nickname}
+          value={user && user.nickname}
           id="nickname"
           name="nickname"
           onChange={(e) => handleInfoChange(e, "nickname")}
@@ -228,7 +228,7 @@ export default function Second() {
           onChange={(date) => setStartDate(date)}
           locale={ko}
           selectsStart
-          startDate={user.birth}
+          startDate={user && user.birth}
           endDate={endDate}
           readOnly={!edit}
           edit={edit}
@@ -271,14 +271,14 @@ export default function Second() {
       </S.Sex>
       <S.DateOfIssue>
         <S.Question readOnly>발급일/Date of issue</S.Question>
-        {user.dateOfIssue}
+        {user && user.dateOfIssue}
       </S.DateOfIssue>
       <S.NunberBarcord>
         <S.Question readOnly>보유 바코드 수/Number</S.Question>
-        {user.barcodeCount}
+        {user && user.barcodeCount}
       </S.NunberBarcord>
       <S.UserBarcord>
-        <S.Images src={user.recentBarcodeImg} />
+        <S.Images src={user && user.recentBarcodeImg} />
       </S.UserBarcord>
       {edit ? (
         <>
