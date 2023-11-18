@@ -9,6 +9,12 @@ import { useCookies } from "react-cookie";
 
 export default function Second() {
   const [cookies] = useCookies(["accessCookie", "refreshCookie"]);
+  const accessCookie = cookies.accessCookie;
+  const refreshCookie = cookies.refreshCookie;
+
+
+//   localStorage.setItem("accessCookie", accessCookie);
+//   localStorage.setItem("refreshCookie", refreshCookie);
 
   localStorage.setItem("accessCookie", cookies.accessCookie);
   localStorage.setItem("refreshCookie", cookies.refreshCookie);
@@ -30,9 +36,6 @@ export default function Second() {
   };
 
  // const dispatch = useDispatch();
-
-  const [accessCookie] = useCookies(["accessCookie"]);
-  const [refreshCookie] = useCookies(["refreshCookie"]);
 
   const getAccessCookie = localStorage.getItem("accessCookie");
   const getRefreshCookie = localStorage.getItem("refreshCookie");
@@ -57,6 +60,8 @@ export default function Second() {
     modalActive: false,
   });
 
+
+  const [loading, setLoading] = useState(true);
   console.log("user", user);
 
   // 유저 데이터 실시간 수정

@@ -7,11 +7,24 @@ export const EventPhotoWrapper = styled.div`
   height: 100%;
   justify-content: center;
 `;
-
 export const EventName = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 100px;
+  margin-top: 70px;
+`;
+export const Notice = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  color: gray;
+  font-size: 0.825rem;
+`;
+
+export const LinkWrapper = styled.div`
+  display: flex;
+  justify-content: end;
+  width: 90%;
+  color: "#F28B50";
 `;
 
 export const ImageUploadContainer = styled.div`
@@ -68,7 +81,18 @@ export const UploadChange = styled.div`
 `;
 
 export const UploadChangeItem = styled.div`
-  width: 120px;
+  width: 100px;
+  height: 40px;
+  border: 1px solid ${(props) => (props.isSelected ? "#F28B50" : "#cbcbcb")};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 4px;
+  color: ${(props) => (props.isSelected ? "#F28B50" : "black")};
+`;
+export const makeBarcode = styled.div`
+  width: 100px;
   height: 40px;
   border: 1px solid ${(props) => (props.isSelected ? "#F28B50" : "#cbcbcb")};
   display: flex;
