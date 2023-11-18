@@ -166,6 +166,20 @@ export default function Second() {
     setEdit(true);
   }
 
+  function getGender() {
+    if (!!userInfo.gender) {
+      if (userInfo.gender === "M") {
+        return "M"
+      } else if (userInfo.gender === "Y") {
+        return "Y"
+      }
+
+      return ""
+    }
+  }
+
+  const genderValue = getGender();
+
   return (
     <S.Book2Container>
       {!edit ? (
@@ -254,7 +268,7 @@ export default function Second() {
             <S.Answer
               type="text"
               value={
-                userInfo.gender === "M" ? "남성" : userInfo.gender === "Y" ? "여성" : ""
+                genderValue
               }
               readOnly
               edit={edit}

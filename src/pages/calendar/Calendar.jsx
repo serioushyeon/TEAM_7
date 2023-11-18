@@ -95,7 +95,7 @@ const updateThumbnailInfoAtIndex = (index, newThumbnailInfo) => {
       dispatch(setThumbnailInfoList(data?.thumbnailInfoList));
       dispatch(setButtonStatus(data?.buttonStatus));
     })()
-  }, [ startDate, endDate, thumbnailInfoList ]);
+  }, [ startDate, endDate ]);
 
 
   // 날짜 변경 핸들러

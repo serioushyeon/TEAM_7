@@ -29,7 +29,7 @@ export default function First() {
       </S.CloudImage>
 
       <S.CloudImage top="1rem" left="14.5rem">
-        {!userInfo.recentBarcodeTitleList[2] ? (
+        {!userInfo?.recentBarcodeTitleList[2] ? (
           <></>
         ) : (
           <S.BarcordImage>
