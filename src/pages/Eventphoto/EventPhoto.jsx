@@ -220,8 +220,8 @@ function EventPhoto() {
     <S.EventPhotoWrapper>
       {toast && <Toast setToast={setToast} text={"클립보드에 복사되었습니다."}/>}
       <S.EventName>{eventName}</S.EventName>
-      {isGuest?<>
       <S.Notice>사진 등록 시 변경이 불가하니 신중하게 선택해주세요!</S.Notice>
+      {isGuest?<>
       </>
       :
       <S.LinkWrapper className='invite' onClick={copyUrl}> 
@@ -263,16 +263,6 @@ function EventPhoto() {
       </S.ImageUploadContainer>
       <S.UploadChange>
       {!isGuest?<S.makeBarcode onClick={handleBarcodeGeneration}>바코드 생성</S.makeBarcode>:<></>}
-      {
-        !isGuest?<>
-        <S.UploadChangeItem
-          onClick={deleteSelectedImages}
-          isSelected={selectedImages.size > 0}>
-          삭제
-        </S.UploadChangeItem>
-        </>
-        :<></>
-        }
         <S.UploadChangeItem onClick={handleSubmit}>저장</S.UploadChangeItem>
       </S.UploadChange>
     </S.EventPhotoWrapper>
