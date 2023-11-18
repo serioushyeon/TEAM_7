@@ -62,10 +62,7 @@ const EventG = ({imageInfoList}) => {
 
 //바코드 게시판
 const BarcodeBoard = () => {
-    //const ticket = useSelector((state)=>state.ticket.value);
-    const ticket = {
-        
-    }
+    const ticket = useSelector((state)=>state.ticket.value);
     const dispatch = useDispatch();
     const {id} = useParams();
 
