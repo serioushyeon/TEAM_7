@@ -75,13 +75,25 @@ export default function MyCalendar() {
     };
 // 변경하는 값들 의존성으로 넣기
 
+const updateThumbnailInfoAtIndex = (index, newThumbnailInfo) => {
+  return thumbnailInfoList.map((item, i) => {
+    if (i === index) {
+      return newThumbnailInfo;
+    }
+    return item;
+  });
+};
+
   // redux와 user 동기화
   useEffect(() => {
     (async () => {
-      const { data } = await fetchCalendarInfo();
-// 데이터를 메서드로 따로 받은 후 세팅한다.
-      dispatch(setThumbnailInfoList(data.thumbnailInfoList));
-      dispatch(setButtonStatus(data.buttonStatus));
+      const data = await fetchCalendarInfo();
+
+      console.log({useEffectData: data});
+
+// 업데이트된 리스트를 dispatch로 전달
+      dispatch(setThumbnailInfoList(data?.thumbnailInfoList));
+      dispatch(setButtonStatus(data?.buttonStatus));
     })()
   }, [ startDate, endDate, thumbnailInfoList ]);
 
@@ -91,6 +103,7 @@ export default function MyCalendar() {
     dispatch(setActiveStartDate(new Date(year, month).toISOString()));
   };
 
+  console.log({thumbnailInfoList});
   // getCalendarInfo 함수를 useEffect 밖으로 이동
   // const getCalendarInfo = async (startDate, endDate, year, month) => {
   //   try {
