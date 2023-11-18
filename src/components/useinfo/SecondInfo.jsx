@@ -148,7 +148,7 @@ export default function Second() {
    const handleInfoChange = (e, field) => {
     const updatedUser = { ...userInfo, [field]: e.target.value };
     //setUser(updatedUser);
-    dispatch(userData(updatedUser));
+    dispatch(setUserData(updatedUser));
 
     // userinfo로
     // dispatch(userData(updatedUser));
