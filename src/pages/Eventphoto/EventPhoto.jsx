@@ -202,7 +202,6 @@ function EventPhoto() {
     }
   };
   const handleBarcodeGeneration = async () => {
-    if (buttonEnabled) {
       try {
         const response = await apiClient.post(`/api/v1/event/${eventId}/result`, {
           eventId : eventId
@@ -216,9 +215,6 @@ function EventPhoto() {
       } catch (error) {
         console.error("Error in generating barcode:", error);
       }
-    } else {
-      console.log("Barcode generation button is disabled.");
-    }
   };
   return (
     <S.EventPhotoWrapper>
