@@ -178,7 +178,7 @@ export default function Second() {
 
       <S.ProfileBox>
         {
-          userInfo.profileImage &&  <S.Images src={userInfo.profileImage} />
+          userInfo?.profileImage &&  <S.Images src={userInfo?.profileImage} />
         }
       </S.ProfileBox>
       {edit ? (
