@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
+import { FiLink } from "react-icons/fi";
 import * as S from "./style";
 import { useNavigate, useParams } from "react-router-dom";
 import { apiClient } from '../../api/ApiClient';
@@ -10,13 +11,17 @@ import EventIconAfter from "../../assets/images/EventPhoto/EventIconAfter.png";
 import axios from "axios";
 
 function EventPhoto() {
-  const {eventId} = useParams();
+  const eventId =  useParams();
   const [images, setImages] = useState([]);
-  const [eventName, setEventName] = useState(null);
+  const [eventName, setEventName] = useState();
   const [isGuest, setIsGuest] = useState(false);
   const [toast, setToast] = useState(false);
-  if(location.pathname === `/eventphoto/${eventId}/guest`)
+
+  useEffect(()=>{if(location.pathname === `/eventphoto/${eventId}/guest`)
     setIsGuest(true);
+},[]);
+
+
     const copyUrl = async () => {
       var textarea = document.createElement('textarea');
       textarea.value = `${location.href}/guest`;
@@ -213,13 +218,12 @@ function EventPhoto() {
       {toast && <Toast setToast={setToast} text={"클립보드에 복사되었습니다."}/>}
       <S.EventName>{eventName}</S.EventName>
       {isGuest?<>
-      <S.EventName>사진 등록 시 변경이 불가하니 신중하게 선택해주세요!</S.EventName>
-      <button className='invite' onClick={copyUrl}> 
-        <FiLink size="22" color="white"/>
-      </button>
+      <div>사진 등록 시 변경이 불가하니 신중하게 선택해주세요!</div>
       </>
       :
-      <></>}
+      <S.UploadChangeItem className='invite' onClick={copyUrl}> 
+        <FiLink size="22" color="white"/>
+      </S.UploadChangeItem>}
       <S.ImageUploadContainer onDragOver={handleDragOver} onDrop={handleDrop}>
         <S.UploadButton htmlFor="file-input" hasImages={images.length > 0}>
           <S.UploadIcon
@@ -255,13 +259,13 @@ function EventPhoto() {
         ))}
       </S.ImageUploadContainer>
       <S.UploadChange>{
-        isGuest?<>
+        !isGuest?<>
+        <S.UploadChangeItem onClick={handleBarcodeGeneration}>바코드 생성</S.UploadChangeItem>
         <S.UploadChangeItem
           onClick={deleteSelectedImages}
           isSelected={selectedImages.size > 0}>
           삭제
         </S.UploadChangeItem>
-        <S.UploadChangeItem onClick={handleBarcodeGeneration}>바코드 생성</S.UploadChangeItem>
         </>
         :<></>
         }
