@@ -138,6 +138,7 @@ export default function Passport() {
     dispatch(userData(user));
 
     try {
+      console.log("쿠키 확인 : ",getAccessCookie);
       const response = await axios.post(
         `${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/user-info`,
         formData,
@@ -201,6 +202,7 @@ export default function Passport() {
   }
 
   return (
+    <S.Container>
     <S.Bg>
       <S.BookBg />
     <S.TitleGoorm />
@@ -359,5 +361,6 @@ export default function Passport() {
       )}
     </S.Book2Container>
         </S.Bg>
+        </S.Container>
   )
 }
