@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { S } from "./Style";
 import { apiClient } from "../../api/ApiClient";
+import DatePicker from "react-datepicker";
+import { ko } from "date-fns/esm/locale";
+import { BsCalendarHeart, BsCalendarWeek } from "react-icons/bs"
+import { format } from "date-fns";
 import { useSelector, useDispatch } from "react-redux";
 import { useCookies } from "react-cookie";
 import { userData } from "../../redux/userInfoSlice";
@@ -18,8 +22,13 @@ export default function Second() {
   const accessCookie = cookies.accessCookie;
   const refreshCookie = cookies.refreshCookie;
 
-  localStorage.setItem("accessCookie", accessCookie);
-  localStorage.setItem("refreshCookie", refreshCookie);
+
+//   localStorage.setItem("accessCookie", accessCookie);
+//   localStorage.setItem("refreshCookie", refreshCookie);
+
+  localStorage.setItem("accessCookie", cookies.accessCookie);
+  localStorage.setItem("refreshCookie", cookies.refreshCookie);
+
 
   // 더미데이터
   const DummyDate = {
@@ -34,21 +43,17 @@ export default function Second() {
     modalActive: false,
   };
 
-  const dispatch = useDispatch();
+ // const dispatch = useDispatch();
 
   const getAccessCookie = localStorage.getItem("accessCookie");
   const getRefreshCookie = localStorage.getItem("refreshCookie");
 
   // 리덕스(userData 대신 사용)
-  const userInfo = useSelector((state) => state.userdata);
-  console.log("userInfo: ", userInfo);
+  // const userInfo = useSelector((state) => state.userdata);
+   // console.log("userInfo: ", userInfo);
 
   const [edit, setEdit] = useState(false);
   const [fileState, setFileState] = useState("");
-  const [imagePreview, setImagePreview] = useState("");
-
-  const [selectedFile, setSelectedFile] = useState(null);
-  // file 저장
 
   // 로컬 상태 초기화
   const [user, setUser] = useState({
@@ -63,6 +68,7 @@ export default function Second() {
     modalActive: false,
   });
 
+
   const [loading, setLoading] = useState(true);
   console.log("user", user);
 
@@ -73,7 +79,7 @@ export default function Second() {
     console.log(updatedUser);
 
     // userinfo로
-    dispatch(userData(updatedUser));
+    // dispatch(userData(updatedUser));
   };
 
   // 유저 정보 get 메서드
@@ -89,14 +95,18 @@ export default function Second() {
         }
       );
       console.log("성공, UserInfo : ", response.data);
-      dispatch(userInfoSlice.actions.userData(response.data));
-      setUser(response.data);
+      // dispatch(userInfoSlice.actions.userData(response.data));
+      // setUser(response.data);
+
+      // return하면 상태에 저장했던 데이터가 생길거죠
+      return response.data;
 
       // 데이터 재세팅
 
-      if (response.data.modalActive === false) {
+ /*  if (response.data.modalActive === false) {
         alert("정보를 입력해주세요 !");
       }
+      */
     } catch (error) {
       console.log(error);
     }
@@ -104,9 +114,12 @@ export default function Second() {
 
   // redux와 user 동기화
   useEffect(() => {
-    getUserInfo();
-    setUser(userInfo);
-  }, [userInfo]);
+    (async () => {
+      const { data } = await getUserInfo();
+// 데이터를 메서드로 따로 받은 후 세팅한다.
+      setUser(data);
+    })()
+  }, []);
 
   // 프로필 이미지 핸들러
   const handleProfileImageChange = (event) => {
@@ -117,20 +130,14 @@ export default function Second() {
       // 미리보기
       const objectUrl = URL.createObjectURL(file);
 
-      setUser({ ...user, profileImage: objectUrl });
-
-      dispatch(
-        userData({
-          ...userInfo,
-          profileImage: objectUrl,
-        })
-      );
+      setUser((user) => ({ ...user, profileImage: objectUrl }));
 
       console.log("image url: ", objectUrl);
-      console.log(user.profileImage);
+      // console.log(user.profileImage);
     }
   };
 
+  // 401
   // formData 전송, 편집 버튼 클릭 시
   const postUserInfo = async () => {
     const formData = new FormData();
@@ -148,6 +155,7 @@ export default function Second() {
       const response = await axios.post(
         `${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/user-info`,
         formData,
+        // 서버에서 body로 요청을 했는지 확인해야함
         {
           headers: {
             // 쿠키 보냄, axios가 자동으로 Content-type 설정해줌.
@@ -163,18 +171,12 @@ export default function Second() {
         localStorage.setItem("refreshToken", response.data.refreshToken);
       }
     } catch (error) {
-      console.log("전송 data : ", formData);
       console.error("실패 error : ", error);
     }
   };
 
   // 데이터 전송
   function handleEditUserInfo() {
-    localStorage.setItem("nickname", userInfo.nickname);
-    localStorage.setItem("birth", userInfo.birth);
-    localStorage.setItem("gender", userInfo.gender);
-    localStorage.setItem("profileImage", userInfo.profileImage);
-
     postUserInfo();
     setEdit(!edit);
   }
@@ -225,22 +227,26 @@ export default function Second() {
           readOnly={!edit}
           edit={edit}
           maxLength={8}
-          placeholder="이름을 입력해주세요."
         />
       </S.NickName>
       <S.Date>
         <S.Question>생일/Date of birth</S.Question>
-        <S.Answer
-          type="date"
+        
+        <DatePicker
+          dateFormat="yyyy-MM-dd"
           id="birth"
           name="birth"
           min="1900-01-01"
           max="2024-01-01"
           placeholder="0000-00-00"
           onChange={(e) => handleInfoChange(e, "birth")}
+          selected={user.birth}
+          selectsStart
+          locale={ko}
           readOnly={!edit}
           edit={edit}
         />
+        <BsCalendarHeart />
       </S.Date>
       <S.Sex>
         <S.Question>성별</S.Question>
@@ -278,14 +284,14 @@ export default function Second() {
       </S.Sex>
       <S.DateOfIssue>
         <S.Question readOnly>발급일/Date of issue</S.Question>
-        {userInfo.dateOfIssue}
+        {user.dateOfIssue}
       </S.DateOfIssue>
       <S.NunberBarcord>
         <S.Question readOnly>보유 바코드 수/Number</S.Question>
-        {userInfo.barcodeCount}
+        {user.barcodeCount}
       </S.NunberBarcord>
       <S.UserBarcord>
-        <S.Images src={userInfo.recentBarcodeImg} />
+        <S.Images src={user.recentBarcodeImg} />
       </S.UserBarcord>
       {edit ? (
         <>

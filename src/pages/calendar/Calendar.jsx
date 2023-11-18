@@ -51,8 +51,8 @@ export default function MyCalendar() {
       buttonStatus: state.photoList.buttonStatus,
     }));
 
-  useEffect(() => {
-    const activeStartDate = new Date(year, month, 1);
+    // 시작페이지 날짜 지정
+    setActiveStartDateState(new Date(year, month, 1));
     const fetchCalendarInfo = async () => {
       try {
         const response = await axios.get("/api/v1/user/calender", {
@@ -68,16 +68,26 @@ export default function MyCalendar() {
             Authorization: `Bearer ${getAccessCookie}`,
           },
         });
-        dispatch(setThumbnailInfoList(response.data.thumbnailInfoList));
-        dispatch(setButtonStatus(response.data.buttonStatus));
-        setIsDisabed(response.data.buttonStatus !== "INACTIVE");
+
+        console.log('data : ', response.data);
       } catch (error) {
         console.error("Error fetching calendar info:", error);
       }
-    };
 
-    fetchCalendarInfo();
-  }, [year, month, dispatch, accessCookie]);
+      return response.data;
+    };
+// 변경하는 값들 의존성으로 넣기
+
+  // redux와 user 동기화
+  useEffect(() => {
+    (async () => {
+      const { data } = await fetchCalendarInfo();
+// 데이터를 메서드로 따로 받은 후 세팅한다.
+      dispatch(setThumbnailInfoList(data.thumbnailInfoList));
+      dispatch(setButtonStatus(data.buttonStatus));
+    })()
+  }, [ startDate, endDate, year, month, thumbnailInfoList, buttonStatus ]);
+
 
   // 날짜 변경 핸들러
   const updateActiveStartDate = (year, month) => {
@@ -141,7 +151,7 @@ export default function MyCalendar() {
   // };
 
   // getCalendarInfo 함수를 useEffect 밖으로 이동
-  const getCalendarInfo = async (startDate, endDate, year, month) => {
+  /* const getCalendarInfo = async (startDate, endDate, year, month) => {
     try {
       const response = await axios.get("/api/v1/user/calender", {
         params: { startDate, endDate, year, month },
@@ -151,6 +161,7 @@ export default function MyCalendar() {
       });
       dispatch(setThumbnailInfoList(response.data.thumbnailInfoList));
       dispatch(setButtonStatus(response.data.buttonStatus));
+      console.log(response.data);
       setIsDisabed(response.data.buttonStatus !== "INACTIVE");
     } catch (error) {
       console.error("Error fetching calendar info:", error);
@@ -166,6 +177,7 @@ export default function MyCalendar() {
       .format("YYYY-MM-DD");
     getCalendarInfo(startDate2, endDate2, year, month);
   }, [year, month, dispatch, accessCookie]);
+  */
 
   const tileContent = ({ date, view }) => {
     if (view === "month") {
@@ -188,6 +200,10 @@ export default function MyCalendar() {
     // 날짜 형식을 'YYYY-MM-DD'로 변환
     const formattedDate = moment(date).format("YYYY-MM-DD");
     navigate(`/calendar-photo/${formattedDate}`);
+    dispatch(selectDate(formattedDate));
+    dispatch(updateDay({ day: moment(date).date() }));
+    dispatch(updateMonth({ month: moment(date).month() }));
+    dispatch(updateYear({ year: moment(date).year() }));
   }
 
   // 사진이 있는 경우, 사진 표시 창으로 이동하는 함수
@@ -195,6 +211,10 @@ export default function MyCalendar() {
     // 날짜 형식을 'YYYY-MM-DD'로 변환
     const formattedDate = moment(date).format("YYYY-MM-DD");
     navigate(`/calendar-non-photo/${formattedDate}`);
+    dispatch(selectDate(formattedDate));
+    dispatch(updateDay({ day: moment(date).date() }));
+    dispatch(updateMonth({ month: moment(date).month() }));
+    dispatch(updateYear({ year: moment(date).year() }));
   }
 
   // 일요일, 토요일 색상 변경
