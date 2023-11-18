@@ -23,6 +23,9 @@ export default function Second() {
   localStorage.setItem("accessCookie", cookies.accessCookie);
   localStorage.setItem("refreshCookie", cookies.refreshCookie);
 
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
   // 더미데이터
   const DummyDate = {
     nickname: "KangSeungJun",
@@ -143,8 +146,6 @@ export default function Second() {
     formData.append("birth", user.birth);
     formData.append("gender", user.gender);
 
-    dispatch(userData(user));
-
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/user-info`,
@@ -227,16 +228,14 @@ export default function Second() {
         <S.Question>생일/Date of birth</S.Question>
         
         <DatePicker
+          className="input"
           dateFormat="yyyy-MM-dd"
-          id="birth"
-          name="birth"
-          min="1900-01-01"
-          max="2024-01-01"
-          placeholder="0000-00-00"
-          onChange={(e) => handleInfoChange(e, "birth")}
           selected={user.birth}
-          selectsStart
+          onChange={(date) => setStartDate(date)}
           locale={ko}
+          selectsStart
+          startDate={user.birth}
+          endDate={endDate}
           readOnly={!edit}
           edit={edit}
         />
