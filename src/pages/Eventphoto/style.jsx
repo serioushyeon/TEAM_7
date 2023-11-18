@@ -21,10 +21,12 @@ export const Notice = styled.div`
 `;
 
 export const LinkWrapper = styled.div`
+  margin-top: 50px;
   display: flex;
-  justify-content: end;
-  width: 90%;
+  justify-content: center;
+  width: 100%;
   color: "#F28B50";
+
 `;
 
 export const ImageUploadContainer = styled.div`
@@ -102,3 +104,16 @@ export const makeBarcode = styled.div`
   border-radius: 4px;
   color: ${(props) => (props.isSelected ? "#F28B50" : "black")};
 `;
+
+export const Navigation = styled.div`
+position: fixed;
+background-color: #faf6f4;
+bottom: 0;
+display: flex;
+width: 100%;
+max-width: 390px;
+height: 100px;
+justify-content:center;
+align-items: center;
+z-index: 500;
+`

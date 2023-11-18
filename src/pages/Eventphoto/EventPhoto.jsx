@@ -11,7 +11,7 @@ import EventIconAfter from "../../assets/images/EventPhoto/EventIconAfter.png";
 import axios from "axios";
 
 function EventPhoto() {
-  const {eventId} =  useParams();
+  const {eventId} =  useParams();  
   const [images, setImages] = useState([]);
   const [eventName, setEventName] = useState();
   const [isGuest, setIsGuest] = useState(false);
@@ -35,6 +35,7 @@ function EventPhoto() {
       document.body.removeChild(textarea);
   
       setToast(true);
+      alert("클립보드에 복사가 되었습니다. 다른 사람에게 공유해보세요 !");
   };
 
   useLayoutEffect(() => {
@@ -209,7 +210,7 @@ function EventPhoto() {
           headers: {
             Authorization: `Bearer ${getAccessCookie}`
         }
-      });
+      }).then();
         console.log("Barcode generated successfully:", response.data);
         navigate("/bcstore");
       } catch (error) {
@@ -217,16 +218,18 @@ function EventPhoto() {
       }
   };
   return (
+    <>
+    {isGuest? <S.Navigation></S.Navigation> : <></>}
     <S.EventPhotoWrapper>
       {toast && <Toast setToast={setToast} text={"클립보드에 복사되었습니다."}/>}
-      <S.EventName>{eventName}</S.EventName>
-      <S.Notice>사진 등록 시 변경이 불가하니 신중하게 선택해주세요!</S.Notice>
       {isGuest?<>
       </>
       :
       <S.LinkWrapper className='invite' onClick={copyUrl}> 
         <FiLink size="22" color="grey"/>
       </S.LinkWrapper>}
+      <S.EventName>{eventName}</S.EventName>
+      <S.Notice>사진 등록 시 변경이 불가하니 신중하게 선택해주세요!</S.Notice>
       <S.ImageUploadContainer onDragOver={handleDragOver} onDrop={handleDrop}>
         <S.UploadButton htmlFor="file-input" hasImages={images.length > 0}>
           <S.UploadIcon
@@ -266,6 +269,7 @@ function EventPhoto() {
         <S.UploadChangeItem onClick={handleSubmit}>저장</S.UploadChangeItem>
       </S.UploadChange>
     </S.EventPhotoWrapper>
+    </>
   );
 }
 
