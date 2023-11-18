@@ -40,7 +40,6 @@ export default function Second() {
   const [loading, setLoading] = useState(true);
 
   const userInfo = useSelector((state) => state.userdata.value);
-  console.log("user", userInfo);
   
   /*// 로컬 상태 초기화
   const [user, setUser] = useState({
@@ -150,7 +149,6 @@ export default function Second() {
     const updatedUser = { ...userInfo, [field]: e.target.value };
     //setUser(updatedUser);
     dispatch(userData(updatedUser));
-    console.log(updatedUser);
 
     // userinfo로
     // dispatch(userData(updatedUser));
@@ -173,13 +171,15 @@ export default function Second() {
       } else if (userInfo.gender === "Y") {
         return "Y"
       }
-
-      return ""
     }
+
+    return ""
   }
 
   const genderValue = getGender();
 
+  console.log({genderValue});
+  console.log({userInfo});
   return (
     <S.Book2Container>
       {!edit ? (
