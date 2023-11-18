@@ -39,7 +39,7 @@ function EventPhoto() {
   useLayoutEffect(() => {
     const fetchEventBlockData = async () => {
       try {
-        const response = await apiClient.get(`/api/v1/image-list/${eventId}`);
+        const response = await apiClient.get(`/api/v1/event/image-list/${eventId}`);
         setEventName(response.data.title);
         setImages(response.data.imageUrlList);
       } catch (error) {
