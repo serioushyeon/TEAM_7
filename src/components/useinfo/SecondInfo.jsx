@@ -8,7 +8,7 @@ import { BsCalendarHeart, BsCalendarWeek } from "react-icons/bs"
 import { useCookies } from "react-cookie";
 
 export default function Second() {
-  const [cookies] = useCookies(["accessCookie", "refreshCookie"]);
+  /*const [cookies] = useCookies(["accessCookie", "refreshCookie"]);
   const accessCookie = cookies.accessCookie;
   const refreshCookie = cookies.refreshCookie;
 
@@ -17,7 +17,7 @@ export default function Second() {
 //   localStorage.setItem("refreshCookie", refreshCookie);
 
   localStorage.setItem("accessCookie", cookies.accessCookie);
-  localStorage.setItem("refreshCookie", cookies.refreshCookie);
+  localStorage.setItem("refreshCookie", cookies.refreshCookie);*/
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
