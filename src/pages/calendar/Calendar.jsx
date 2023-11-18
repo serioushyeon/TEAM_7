@@ -51,59 +51,58 @@ export default function MyCalendar() {
       buttonStatus: state.photoList.buttonStatus,
     }));
 
+  const fetchCalendarInfo = async () => {
+    try {
+      const response = await axios.get("/api/v1/user/calender", {
+        params: {
+          startDate: moment(activeStartDate)
+            .startOf("month")
+            .format("YYYY-MM-DD"),
+          endDate: moment(activeStartDate).endOf("month").format("YYYY-MM-DD"),
+          year: moment().format("YYYY"),
+          month: moment().format("MM"),
+        },
+        headers: {
+          Authorization: `Bearer ${getAccessCookie}`,
+        },
+      });
 
-    
-    const fetchCalendarInfo = async () => {
-      try {
-        const response = await axios.get("/api/v1/user/calender", {
-          params: {
-            startDate: moment(activeStartDate).startOf("month").format("YYYY-MM-DD"),
-            endDate: moment(activeStartDate).endOf("month").format("YYYY-MM-DD"),
-            year: moment().format("YYYY"),
-            month: moment().format("MM"),
-          },
-          headers: {
-            Authorization: `Bearer ${getAccessCookie}`,
-          },
-        });
-
-        console.log('data : ', response.data);
-        return response.data;
-      } catch (error) {
-        console.error("Error fetching calendar info:", error);
-      }
-    };
-// 변경하는 값들 의존성으로 넣기
-
-const updateThumbnailInfoAtIndex = (index, newThumbnailInfo) => {
-  return thumbnailInfoList.map((item, i) => {
-    if (i === index) {
-      return newThumbnailInfo;
+      console.log("data : ", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching calendar info:", error);
     }
-    return item;
-  });
-};
+  };
+  // 변경하는 값들 의존성으로 넣기
+
+  const updateThumbnailInfoAtIndex = (index, newThumbnailInfo) => {
+    return thumbnailInfoList.map((item, i) => {
+      if (i === index) {
+        return newThumbnailInfo;
+      }
+      return item;
+    });
+  };
 
   // redux와 user 동기화
   useEffect(() => {
     (async () => {
       const data = await fetchCalendarInfo();
 
-      console.log({useEffectData: data});
+      console.log({ useEffectData: data });
 
-// 업데이트된 리스트를 dispatch로 전달
+      // 업데이트된 리스트를 dispatch로 전달
       dispatch(setThumbnailInfoList(data?.thumbnailInfoList));
       dispatch(setButtonStatus(data?.buttonStatus));
-    })()
-  }, [ startDate, endDate ]);
-
+    })();
+  }, [startDate, endDate]);
 
   // 날짜 변경 핸들러
   const updateActiveStartDate = (year, month) => {
     dispatch(setActiveStartDate(new Date(year, month).toISOString()));
   };
 
-  console.log({thumbnailInfoList});
+  console.log({ thumbnailInfoList });
   // getCalendarInfo 함수를 useEffect 밖으로 이동
   // const getCalendarInfo = async (startDate, endDate, year, month) => {
   //   try {
@@ -189,7 +188,7 @@ const updateThumbnailInfoAtIndex = (index, newThumbnailInfo) => {
   }, [year, month, dispatch, accessCookie]);
   */
 
-/*  const tileContent = ({ date, view }) => {
+  /*  const tileContent = ({ date, view }) => {
     if (view === "month") {
       const dateString = moment(date).format("YYYY-MM-DD");
       const imageEntry = thumbnailInfoList.find(
@@ -206,22 +205,11 @@ const updateThumbnailInfoAtIndex = (index, newThumbnailInfo) => {
   };
   */
 
-  // 사진이 없는 경우, 사진 등록 창으로 이동하는 함수
+  // 항상 사진 등록 창으로 이동하는 함수
   function handleLocatePhoto(date) {
     // 날짜 형식을 'YYYY-MM-DD'로 변환
     const formattedDate = moment(date).format("YYYY-MM-DD");
     navigate(`/calendar-photo/${formattedDate}`);
-    dispatch(selectDate(formattedDate));
-    dispatch(updateDay({ day: moment(date).date() }));
-    dispatch(updateMonth({ month: moment(date).month() }));
-    dispatch(updateYear({ year: moment(date).year() }));
-  }
-
-  // 사진이 있는 경우, 사진 표시 창으로 이동하는 함수
-  function handleLocateDay(date) {
-    // 날짜 형식을 'YYYY-MM-DD'로 변환
-    const formattedDate = moment(date).format("YYYY-MM-DD");
-    navigate(`/calendar-non-photo/${formattedDate}`);
     dispatch(selectDate(formattedDate));
     dispatch(updateDay({ day: moment(date).date() }));
     dispatch(updateMonth({ month: moment(date).month() }));
