@@ -277,7 +277,7 @@ const BarcodeBoard = () => {
                                 <div className="QRCode">
                                     <QR
                                     className="QRQR"
-                                    value={`${location.href}/guest`}
+                                    value={`${location.href}`}
                                     size={120}
                                     level={"L"}
                                     includeMargin={false}

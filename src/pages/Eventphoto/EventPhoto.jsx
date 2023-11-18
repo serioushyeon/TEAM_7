@@ -210,7 +210,7 @@ function EventPhoto() {
           headers: {
             Authorization: `Bearer ${getAccessCookie}`
         }
-      });
+      }).then();
         console.log("Barcode generated successfully:", response.data);
         navigate("/bcstore");
       } catch (error) {
