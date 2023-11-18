@@ -37,7 +37,7 @@ export default function Second() {
 
   const [loading, setLoading] = useState(true);
 
-  const userInfo = useSelector((state) => state.userdata);
+  const userInfo = useSelector((state) => state.userdata.value);
   console.log("user", userInfo);
   
   /*// 로컬 상태 초기화
