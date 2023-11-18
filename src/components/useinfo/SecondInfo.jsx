@@ -5,17 +5,7 @@ import { apiClient } from "../../api/ApiClient";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 import { BsCalendarHeart, BsCalendarWeek } from "react-icons/bs"
-import { format } from "date-fns";
-import { useSelector, useDispatch } from "react-redux";
 import { useCookies } from "react-cookie";
-import { userData } from "../../redux/userInfoSlice";
-import Loading from "../../pages/loading/Loading";
-
-import InfoBarcord from "../../assets/images/userinfo/infoBarcord.svg";
-import Cloud from "../../assets/images/userinfo/cloud.svg";
-import Profile from "../../assets/images/userinfo/profile.svg";
-import { selectDate } from "../../redux/dateSlice";
-import userInfoSlice from "../../redux/userInfoSlice";
 
 export default function Second() {
   const [cookies] = useCookies(["accessCookie", "refreshCookie"]);
@@ -29,6 +19,8 @@ export default function Second() {
   localStorage.setItem("accessCookie", cookies.accessCookie);
   localStorage.setItem("refreshCookie", cookies.refreshCookie);
 
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   // 더미데이터
   const DummyDate = {
@@ -149,8 +141,6 @@ export default function Second() {
     formData.append("birth", user.birth);
     formData.append("gender", user.gender);
 
-    dispatch(userData(user));
-
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/user-info`,
@@ -233,16 +223,14 @@ export default function Second() {
         <S.Question>생일/Date of birth</S.Question>
         
         <DatePicker
+          className="input"
           dateFormat="yyyy-MM-dd"
-          id="birth"
-          name="birth"
-          min="1900-01-01"
-          max="2024-01-01"
-          placeholder="0000-00-00"
-          onChange={(e) => handleInfoChange(e, "birth")}
           selected={user.birth}
-          selectsStart
+          onChange={(date) => setStartDate(date)}
           locale={ko}
+          selectsStart
+          startDate={user.birth}
+          endDate={endDate}
           readOnly={!edit}
           edit={edit}
         />
