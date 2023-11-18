@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { apiClient } from "../../api/ApiClient";
 import { useCookies } from "react-cookie";
-
 import Calendar1 from "../../assets/images/calendar/Calendar1.svg";
 
 import { selectDate } from "../../redux/dateSlice";
@@ -18,7 +17,6 @@ import {
 } from "../../redux/calendarSlice";
 import { updateDateRange } from "../../redux/dateRangeSlice";
 import axios from "axios";
-
 import { S } from "./CalendarStyle";
 import "./Calendar.css";
 import CalendarOption from "../../components/calendar/CalendarOption";
@@ -34,7 +32,6 @@ import CalendarOption from "../../components/calendar/CalendarOption";
 // } from "../../redux";
 
 export default function MyCalendar() {
-  const [activeStartDate, setActiveStartDateState] = useState(new Date());
   const [value, onChange] = useState(new Date());
   const [isDisabled, setIsDisabed] = useState(false);
   const navigate = useNavigate();
@@ -51,41 +48,63 @@ export default function MyCalendar() {
       buttonStatus: state.photoList.buttonStatus,
     }));
 
-  const fetchCalendarInfo = async () => {
-    try {
-      const response = await axios.get("/api/v1/user/calender", {
-        params: {
-          startDate: moment(activeStartDate)
-            .startOf("month")
-            .format("YYYY-MM-DD"),
-          endDate: moment(activeStartDate).endOf("month").format("YYYY-MM-DD"),
-          year: moment().format("YYYY"),
-          month: moment().format("MM"),
-        },
-        headers: {
-          Authorization: `Bearer ${getAccessCookie}`,
-        },
-      });
+    // 시작 페이지 날짜 지정
+  const activeStartDateString = useSelector(
+    (state) => state.calendarUI.activeStartDate
+  );
 
-      console.log("data : ", response.data);
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching calendar info:", error);
-    }
-  };
-  // 변경하는 값들 의존성으로 넣기
+    // Date 객체로 변환함.
+  const activeStartDate = new Date(activeStartDateString);
 
-  const updateThumbnailInfoAtIndex = (index, newThumbnailInfo) => {
-    return thumbnailInfoList.map((item, i) => {
-      if (i === index) {
-        return newThumbnailInfo;
+      // 날짜 범위(시작일, 끝일, 월, 년)
+  const dateRange = useSelector((state) => state.dateRange.dateRange);
+  console.log(
+    "startDate2: ",
+    dateRange.startDate,
+    "endDate2: ",
+    dateRange.endDate
+  );
+  console.log("Rangeyear:", dateRange.year, "Rangemonth: ", dateRange.month);
+  console.log("disabled", isDisabled);
+
+    const fetchCalendarInfo = async () => {
+      try {
+        const response = await axios.get("/api/v1/user/calender", {
+          params: {
+            startDate: dateRange.startDate,
+            endDate: dateRange.endDate,
+            year: dateRange.year,
+            month: dateRange.month
+          },
+          headers: {
+            Authorization: `Bearer ${getAccessCookie}`,
+          },
+        });
+
+        console.log('data : ', response.data);
+        return response.data;
+      } catch (error) {
+        console.error("Error fetching calendar info:", error);
       }
-      return item;
-    });
+    };
+// 변경하는 값들 의존성으로 넣기
+  
+
+  // 날짜 변경 핸들러
+  const updateActiveStartDate = (year, month) => {
+    dispatch(setActiveStartDate(new Date(year, month).toISOString()));
   };
 
   // redux와 user 동기화
   useEffect(() => {
+    
+    const today = new Date(); // 현재 날짜와 시간
+    const year = today.getFullYear(); // 현재 연도
+    const month = today.getMonth(); // 현재 월 (1을 더함)
+
+    updateActiveStartDate(year, month); // 시작 날짜 설정 함수 호출
+    dispatch(updateDateRange({ year, month })); // 월간 시작 및 종료 주소 설정 함수 호출
+
     (async () => {
       const data = await fetchCalendarInfo();
 
@@ -94,13 +113,8 @@ export default function MyCalendar() {
       // 업데이트된 리스트를 dispatch로 전달
       dispatch(setThumbnailInfoList(data?.thumbnailInfoList));
       dispatch(setButtonStatus(data?.buttonStatus));
-    })();
-  }, [startDate, endDate]);
-
-  // 날짜 변경 핸들러
-  const updateActiveStartDate = (year, month) => {
-    dispatch(setActiveStartDate(new Date(year, month).toISOString()));
-  };
+    })()
+  }, [ dateRange.startDate, dateRange.endDate ]);
 
   console.log({ thumbnailInfoList });
   // getCalendarInfo 함수를 useEffect 밖으로 이동
