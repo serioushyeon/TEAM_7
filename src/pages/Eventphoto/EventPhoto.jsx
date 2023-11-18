@@ -11,9 +11,9 @@ import EventIconAfter from "../../assets/images/EventPhoto/EventIconAfter.png";
 import axios from "axios";
 
 function EventPhoto() {
-  const eventId =  useParams();
+  const eventId =  "String"
   const [images, setImages] = useState([]);
-  const [eventName, setEventName] = useState();
+  const [eventName, setEventName] = useState("hh");
   const [isGuest, setIsGuest] = useState(false);
   const [toast, setToast] = useState(false);
 
@@ -218,12 +218,12 @@ function EventPhoto() {
       {toast && <Toast setToast={setToast} text={"클립보드에 복사되었습니다."}/>}
       <S.EventName>{eventName}</S.EventName>
       {isGuest?<>
-      <div>사진 등록 시 변경이 불가하니 신중하게 선택해주세요!</div>
+      <S.Notice>사진 등록 시 변경이 불가하니 신중하게 선택해주세요!</S.Notice>
       </>
       :
-      <S.UploadChangeItem className='invite' onClick={copyUrl}> 
-        <FiLink size="22" color="white"/>
-      </S.UploadChangeItem>}
+      <S.LinkWrapper className='invite' onClick={copyUrl}> 
+        <FiLink size="22" color="grey"/>
+      </S.LinkWrapper>}
       <S.ImageUploadContainer onDragOver={handleDragOver} onDrop={handleDrop}>
         <S.UploadButton htmlFor="file-input" hasImages={images.length > 0}>
           <S.UploadIcon
@@ -258,9 +258,10 @@ function EventPhoto() {
           />
         ))}
       </S.ImageUploadContainer>
-      <S.UploadChange>{
+      <S.UploadChange>
+      {!isGuest?<S.makeBarcode onClick={handleBarcodeGeneration}>바코드 생성</S.makeBarcode>:<></>}
+      {
         !isGuest?<>
-        <S.UploadChangeItem onClick={handleBarcodeGeneration}>바코드 생성</S.UploadChangeItem>
         <S.UploadChangeItem
           onClick={deleteSelectedImages}
           isSelected={selectedImages.size > 0}>
