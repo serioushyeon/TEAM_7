@@ -174,10 +174,6 @@ export default function Passport() {
 
   // 데이터 전송
   function handleEditUserInfo() {
-    localStorage.setItem("nickname", userInfo.nickname);
-    localStorage.setItem("birth", userInfo.birth);
-    localStorage.setItem("gender", userInfo.gender);
-    localStorage.setItem("profileImage", userInfo.profileImage);
 
     console.log('after user', user);
     console.log('after userInfo', userInfo);
