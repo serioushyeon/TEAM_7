@@ -8,6 +8,7 @@ import { BsCalendarHeart, BsCalendarWeek } from "react-icons/bs"
 import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
 import { setUserData } from "../../redux/userInfoSlice";
+import { useDispatch } from "react-redux";
 
 export default function Second() {
   /*const [cookies] = useCookies(["accessCookie", "refreshCookie"]);
@@ -24,7 +25,7 @@ export default function Second() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
- // const dispatch = useDispatch();
+ const dispatch = useDispatch();
 
   const getAccessCookie = localStorage.getItem("accessCookie");
   const getRefreshCookie = localStorage.getItem("refreshCookie");
