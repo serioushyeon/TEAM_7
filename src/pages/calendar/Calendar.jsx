@@ -89,9 +89,11 @@ const updateThumbnailInfoAtIndex = (index, newThumbnailInfo) => {
     (async () => {
       const { data } = await fetchCalendarInfo();
 
+      console.log({useEffectData: data});
+
 // 업데이트된 리스트를 dispatch로 전달
-      dispatch(setThumbnailInfoList(data.thumbnailInfoList));
-      dispatch(setButtonStatus(data.buttonStatus));
+      dispatch(setThumbnailInfoList(data?.thumbnailInfoList));
+      dispatch(setButtonStatus(data?.buttonStatus));
     })()
   }, [ startDate, endDate, thumbnailInfoList ]);
 
