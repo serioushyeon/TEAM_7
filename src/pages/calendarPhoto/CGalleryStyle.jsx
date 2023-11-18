@@ -2,12 +2,10 @@ import styled from "styled-components";
 import EditImoge from "../../assets/images/calendarPhoto/edit.svg";
 
 // 기본 컨테이너
-const Container = styled.div`
-`;
+const Container = styled.div``;
 
 // 배경색
-const Bg = styled.div`
-`;
+const Bg = styled.div``;
 
 // 12px 글씨 템플릿
 const SmallText = styled.div`
@@ -42,7 +40,8 @@ const DayPhotoBox = styled.div`
   width: 8.75rem;
   height: 12.5rem;
   border-radius: 4px;
-  background-color: blue;
+  /* background-color: blue; */
+  border: 1px solid gray;
 `;
 
 // 메모 박스

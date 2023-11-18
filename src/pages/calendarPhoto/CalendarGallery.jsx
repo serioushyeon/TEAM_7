@@ -5,36 +5,62 @@ import { S } from "./CGalleryStyle";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
 export default function CalendarBoard() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const { date } = useParams();
 
-  const dateInfo = useSelector((state) => state.date); // 한 번만 선언
+  const dateInfo = useSelector((state) => state.date);
   const dateDay = useSelector((state) => state.dateDay.dateDay);
-  console.log("Date Info:", dateInfo); // 현재 상태 출력
-  console.log('일 클릭(사진 O) : year: ', dateDay.year, 'month: ', dateDay.month, 'day: ', dateDay.day);
+  console.log("Date Info:", dateInfo);
+  console.log(
+    "일 클릭(사진 O) : year: ",
+    dateDay.year,
+    "month: ",
+    dateDay.month,
+    "day: ",
+    dateDay.day
+  );
 
   // 데이터 불러오는 함수
-  const fetchCalendarData = async () => {
-    try {
-      const response = await axios.get(`/api/v1/user/${date}`);
-      if (response.data) {
-        const { memo, images } = response.data;
-        setMemo(memo);
-        dispatch(setCalendarData({ memo, images }));
-      } else {
-        navigate(`/calendar-photo/${date}`);
-      }
-    } catch (error) {
-      console.error("Error fetching data", error);
-      navigate(`/calendar-photo/${date}`);
-    }
-  };
+  // const fetchCalendarData = async () => {
+  //   try {
+  //     const response = await axios.get(`/api/v1/user/${date}`);
+  //     if (response.data) {
+  //       const { memo, images } = response.data;
+  //       setMemo(memo);
+  //       dispatch(setCalendarData({ memo, images }));
+  //     } else {
+  //       // navigate(`/calendar-photo/${date}`);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data", error);
+  //     // navigate(`/calendar-photo/${date}`);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchCalendarData();
+  // }, [dateInfo.yearMonthDay]);
 
   useEffect(() => {
+    // 더미 데이터 설정
+    const fetchCalendarData = async () => {
+      // 가정: API 요청 대신 더미 데이터를 사용
+      const dummyData = {
+        memo: "이것은 더미 메모입니다.",
+        images: ["https://ifh.cc/g/qjT3Cg.png", "https://ifh.cc/g/qjT3Cg.png"],
+      };
+
+      // 더미 데이터로 상태 업데이트
+      setMemo(dummyData.memo);
+      dispatch(
+        setCalendarData({ memo: dummyData.memo, images: dummyData.images })
+      );
+    };
+
     fetchCalendarData();
   }, [dateInfo.yearMonthDay]);
 
