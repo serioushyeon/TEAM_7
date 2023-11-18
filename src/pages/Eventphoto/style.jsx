@@ -102,3 +102,16 @@ export const makeBarcode = styled.div`
   border-radius: 4px;
   color: ${(props) => (props.isSelected ? "#F28B50" : "black")};
 `;
+
+export const Navigation = styled.div`
+position: fixed;
+background-color: #faf6f4;
+bottom: 0;
+display: flex;
+width: 100%;
+max-width: 390px;
+height: 100px;
+justify-content:center;
+align-items: center;
+z-index: 500;
+`

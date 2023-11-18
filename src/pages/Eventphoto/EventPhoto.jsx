@@ -11,9 +11,9 @@ import EventIconAfter from "../../assets/images/EventPhoto/EventIconAfter.png";
 import axios from "axios";
 
 function EventPhoto() {
-  const {eventId} =  useParams();
+  const {eventId} =  useParams();  
   const [images, setImages] = useState([]);
-  const [eventName, setEventName] = useState();
+  const [eventName, setEventName] = useState("name");
   const [isGuest, setIsGuest] = useState(false);
   const [toast, setToast] = useState(false);
   const getAccessCookie = localStorage.getItem("accessCookie");
@@ -35,9 +35,10 @@ function EventPhoto() {
       document.body.removeChild(textarea);
   
       setToast(true);
+      alert("클립보드에 복사가 되었습니다. 다른 사람에게 공유해보세요 !");
   };
 
-  useLayoutEffect(() => {
+  /*useLayoutEffect(() => {
     const fetchEventBlockData = async () => {
       try {
         const response = await apiClient.get(`/api/v1/event/image-list/${eventId}`,{
@@ -50,7 +51,7 @@ function EventPhoto() {
         }
       };
       fetchEventBlockData();
-    }, []);
+    }, []);*/
 
   //이미지 선택 상태 관리 (삭제위한코드)
   const [selectedImages, setSelectedImages] = useState(new Set());
@@ -217,6 +218,8 @@ function EventPhoto() {
       }
   };
   return (
+    <>
+    {isGuest? <S.Navigation></S.Navigation> : <></>}
     <S.EventPhotoWrapper>
       {toast && <Toast setToast={setToast} text={"클립보드에 복사되었습니다."}/>}
       <S.EventName>{eventName}</S.EventName>
@@ -266,6 +269,7 @@ function EventPhoto() {
         <S.UploadChangeItem onClick={handleSubmit}>저장</S.UploadChangeItem>
       </S.UploadChange>
     </S.EventPhotoWrapper>
+    </>
   );
 }
 
