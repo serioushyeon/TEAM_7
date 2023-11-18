@@ -16,6 +16,7 @@ function EventPhoto() {
   const [eventName, setEventName] = useState();
   const [isGuest, setIsGuest] = useState(false);
   const [toast, setToast] = useState(false);
+  const getAccessCookie = localStorage.getItem("accessCookie");
   console.log(eventId);
   useEffect(()=>{if(location.pathname === `/eventphoto/${eventId}/guest`)
     setIsGuest(true);
@@ -39,7 +40,9 @@ function EventPhoto() {
   useLayoutEffect(() => {
     const fetchEventBlockData = async () => {
       try {
-        const response = await apiClient.get(`/api/v1/event/image-list/${eventId}`);
+        const response = await apiClient.get(`/api/v1/event/image-list/${eventId}`,{
+          
+        });
         setEventName(response.data.title);
         setImages(response.data.imageUrlList);
       } catch (error) {
@@ -123,7 +126,7 @@ function EventPhoto() {
       if (response.status === 200) {
         alert("이미지가 저장되었습니다 :)");
         if(!isGuest){
-          navigate(`/eventdisplay`);
+          navigate(`/event`);
         }
       }
        else {
@@ -203,7 +206,11 @@ function EventPhoto() {
       try {
         const response = await apiClient.post(`/api/v1/event/${eventId}/result`, {
           eventId : eventId
-        });
+        },{
+          headers: {
+            Authorization: `Bearer ${getAccessCookie}`
+        }
+      });
         console.log("Barcode generated successfully:", response.data);
         navigate("/bcstore");
       } catch (error) {
