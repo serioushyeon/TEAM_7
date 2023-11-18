@@ -13,7 +13,7 @@ import axios from "axios";
 function EventPhoto() {
   const eventId =  useParams()
   const [images, setImages] = useState([]);
-  const [eventName, setEventName] = useState(null);
+  const [eventName, setEventName] = useState();
   const [isGuest, setIsGuest] = useState(false);
   const [toast, setToast] = useState(false);
 
