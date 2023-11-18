@@ -11,7 +11,7 @@ import EventIconAfter from "../../assets/images/EventPhoto/EventIconAfter.png";
 import axios from "axios";
 
 function EventPhoto() {
-  const {eventId} =  useParams();
+  const {eventId} =  useParams();  
   const [images, setImages] = useState([]);
   const [eventName, setEventName] = useState("name");
   const [isGuest, setIsGuest] = useState(false);
@@ -35,6 +35,7 @@ function EventPhoto() {
       document.body.removeChild(textarea);
   
       setToast(true);
+      alert("클립보드에 복사가 되었습니다. 다른 사람에게 공유해보세요 !");
   };
 
   /*useLayoutEffect(() => {
