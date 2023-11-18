@@ -20,7 +20,7 @@ export const userInfoSlice = createSlice({
     name: "userdata",
     initialState: userInfoState,
     reducers: {
-      userData: (state, action) => {
+      setUserData: (state, action) => {
       state.nickname = action.payload.nickname;
       state.birth = action.payload.birth;
       state.gender = action.payload.gender;
@@ -34,5 +34,5 @@ export const userInfoSlice = createSlice({
    },
   });
 
-  export const { userData } = userInfoSlice.actions;
+  export const { setUserData } = userInfoSlice.actions;
   export default userInfoSlice.reducer;

@@ -5,7 +5,7 @@ import Background from "../assets/images/calendar/Background.svg";
 
 // 31개의 빈 데이터를 포함하는 thumbnailInfoList 초기화
 const initializeThumbnailInfoList = () => Array.from({ length: 31 }, () => ({
-  thumbnailUrl: "",
+  thumbnailUrl: null,
   date: ""
 }));
 

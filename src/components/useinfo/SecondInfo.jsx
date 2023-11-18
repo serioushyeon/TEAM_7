@@ -7,6 +7,7 @@ import { ko } from "date-fns/esm/locale";
 import { BsCalendarHeart, BsCalendarWeek } from "react-icons/bs"
 import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
+import { setUserData } from "../../redux/userInfoSlice";
 
 export default function Second() {
   /*const [cookies] = useCookies(["accessCookie", "refreshCookie"]);
@@ -36,11 +37,11 @@ export default function Second() {
   const [fileState, setFileState] = useState("");
 
   const [loading, setLoading] = useState(true);
-  console.log("user", user);
 
   const userInfo = useSelector((state) => state.userdata);
+  console.log("user", userInfo);
   
-  // 로컬 상태 초기화
+  /*// 로컬 상태 초기화
   const [user, setUser] = useState({
     nickname: "", // KangSeungJun
     birth: "", // 1999-09-01
@@ -51,7 +52,7 @@ export default function Second() {
     recentBarcodeImg: "", // https://www.ahdsfadsfafd~~~~ (url로 넘어갑니다!)
     recentBarcodeTitleList: [], // String의 List로 넘어갑니다. 없으면 null
     modalActive: false,
-  });
+  }); */
 
   // 유저 정보 get 메서드
   const getUserInfo = async () => {
@@ -66,7 +67,6 @@ export default function Second() {
         }
       );
       console.log("성공 : ", response.data);
-      setUser(response.data);
       // dispatch(userInfoSlice.actions.userData(response.data));
       // setUser(response.data);
 
@@ -88,7 +88,7 @@ export default function Second() {
    useEffect(() => {
       const { data } = getUserInfo();
 // 데이터를 메서드로 따로 받은 후 세팅한다.
-      setUser(data);
+      dispatch(setUserData(data));
   }, []);
 
   // 프로필 이미지 핸들러
@@ -100,7 +100,8 @@ export default function Second() {
       // 미리보기
       const objectUrl = URL.createObjectURL(file);
 
-      setUser((user) => fileState && ({ ...user, profileImage: objectUrl }));
+      // setUser((user) => fileState && ({ ...user, profileImage: objectUrl }));
+
 
       console.log("image url: ", objectUrl);
       // console.log(user.profileImage);
@@ -115,9 +116,9 @@ export default function Second() {
     // 파일을 formdata로 전송
     formData.append("profileImage", fileState);
 
-    formData.append("nickname", user.nickname);
-    formData.append("birth", user.birth);
-    formData.append("gender", user.gender);
+    formData.append("nickname", userInfo.nickname);
+    formData.append("birth", userInfo.birth);
+    formData.append("gender", userInfo.gender);
 
     try {
       const response = await axios.post(
@@ -145,8 +146,9 @@ export default function Second() {
 
    // 유저 데이터 실시간 수정
    const handleInfoChange = (e, field) => {
-    const updatedUser = { ...user, [field]: e.target.value };
-    setUser(updatedUser);
+    const updatedUser = { ...userInfo, [field]: e.target.value };
+    //setUser(updatedUser);
+    dispatch(userData(updatedUser));
     console.log(updatedUser);
 
     // userinfo로
@@ -175,7 +177,7 @@ export default function Second() {
 
       <S.ProfileBox>
         {
-          user.profileImage &&  <S.Images src={user.profileImage} />
+          userInfo.profileImage &&  <S.Images src={userInfo.profileImage} />
         }
       </S.ProfileBox>
       {edit ? (
@@ -200,7 +202,7 @@ export default function Second() {
         <S.Question>닉네임/Nick name</S.Question>
         <S.Answer
           type="text"
-          value={user && user.nickname}
+          value={userInfo && userInfo.nickname}
           id="nickname"
           name="nickname"
           onChange={(e) => handleInfoChange(e, "nickname")}
@@ -218,7 +220,7 @@ export default function Second() {
           onChange={(date) => setStartDate(date)}
           locale={ko}
           selectsStart
-          startDate={user && user.birth}
+          startDate={userInfo && userInfo.birth}
           endDate={endDate}
           readOnly={!edit}
           edit={edit}
@@ -251,7 +253,7 @@ export default function Second() {
             <S.Answer
               type="text"
               value={
-                user.gender === "M" ? "남성" : user.gender === "Y" ? "여성" : ""
+                userInfo.gender === "M" ? "남성" : userInfo.gender === "Y" ? "여성" : ""
               }
               readOnly
               edit={edit}
@@ -261,14 +263,14 @@ export default function Second() {
       </S.Sex>
       <S.DateOfIssue>
         <S.Question readOnly>발급일/Date of issue</S.Question>
-        {user && user.dateOfIssue}
+        {userInfo && userInfo.dateOfIssue}
       </S.DateOfIssue>
       <S.NunberBarcord>
         <S.Question readOnly>보유 바코드 수/Number</S.Question>
-        {user && user.barcodeCount}
+        {userInfo && userInfo.barcodeCount}
       </S.NunberBarcord>
       <S.UserBarcord>
-        <S.Images src={user && user.recentBarcodeImg} />
+        <S.Images src={userInfo && userInfo.recentBarcodeImg} />
       </S.UserBarcord>
       {edit ? (
         <>
