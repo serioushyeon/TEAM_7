@@ -123,7 +123,7 @@ function EventPhoto() {
       if (response.status === 200) {
         alert("이미지가 저장되었습니다 :)");
         if(!isGuest){
-          navigate(`/eventdisplay`);
+          navigate(`/event`);
         }
       }
        else {
