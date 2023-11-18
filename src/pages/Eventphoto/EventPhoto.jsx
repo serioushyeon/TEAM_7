@@ -39,7 +39,7 @@ function EventPhoto() {
   useLayoutEffect(() => {
     const fetchEventBlockData = async () => {
       try {
-        const response = await apiClient.get(`/api/v1/event/${eventId}`);
+        const response = await apiClient.get(`/api/v1/image-list/${eventId}`);
         setEventName(response.data.title);
         setImages(response.data.imageUrlList);
       } catch (error) {
@@ -114,7 +114,7 @@ function EventPhoto() {
 
     try {
       // 서버에 POST 요청
-      const response = await axios.post(`/api/v1/event/${eventId}/save-photo`, formData, {
+      const response = await axios.post(`/api/v1/event/save-photo/${eventId}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
