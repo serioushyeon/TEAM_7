@@ -58,9 +58,7 @@ export default function MyCalendar() {
         const response = await axios.get("/api/v1/user/calender", {
           params: {
             startDate: moment(activeStartDate).format("YYYY-MM-DD"),
-            endDate: moment(activeStartDate)
-              .endOf("month")
-              .format("YYYY-MM-DD"),
+            endDate: moment(activeStartDate),
             year,
             month,
           },
