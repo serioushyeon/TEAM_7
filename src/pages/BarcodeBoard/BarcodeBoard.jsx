@@ -13,7 +13,6 @@ import barcode from "../../assets/images/Barcode/barcodebg.jpg"
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setTicket } from "../../redux/ticketSlice";
-import axios from "axios";
 import { apiClient } from '../../api/ApiClient';
 
 //일상일 때 갤러리
@@ -84,7 +83,7 @@ const BarcodeBoard = () => {
     //본인의 티켓 불러오기
     const fetchTicketData = async () => {
         try {
-          const response = await apiClient.get(`/api/v1/barcode/${id}/my-ticket`,{
+          const response = await apiClient.get(`/api/v1/barcode/${id}`,{
             headers: { Authorization: `Bearer ${getAccessCookie}` }
           });
           dispatch(setTicket(response.data));
@@ -105,40 +104,13 @@ const BarcodeBoard = () => {
           }
         }
       };
-      //게스트가 티켓 불러오기
-      const fetchTicketGuestData = async () => {
-        try {
-          const response = await apiClient.get(`/api/v1/barcode/${id}/guest-ticket`);
-          dispatch(setTicket(response.data));
-        } catch (error) {
-          console.error("Error fetching data", error);
-          if(error.response.statusText === "BARCODE_NOT_FOUND"){
-            alert("해당 바코드가 없습니다.");
-            navigate(`/`);
-          }
-        }
-      };
 
       useEffect(() => {
-        console.log(location.pathname);
-        //게스트이면
-        if(location.pathname === `/ticket/${id}/guest`){
-            fetchTicketGuestData();
-        }
-        //본인이면
-        else {
-            fetchTicketData();
-        }
+        fetchTicketData();
     },[])
 
     //본인이면 링크, 저장 로드
     const isLoadBtn = () => {
-        if(location.pathname === `/ticket/${id}/guest`){
-            console.log("guest");
-            return (<></>)
-        }
-        else {
-            console.log("my");
             return (
             <div className="ticketBtnWrapper">
             <div>
@@ -148,7 +120,6 @@ const BarcodeBoard = () => {
                 <MdOutlineFileDownload  onClick={openModal}className="ticketIcon" size="28"/>
             </div>
         </div>)
-        }
     }
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -272,7 +243,7 @@ const BarcodeBoard = () => {
                                 탑승자
                             </div>
                             <div className="ticketContentContent">
-                                {ticket.nickname}{ticket.memberCnt !== 0 ? ` 외${ticket.memberCnt} 명` : ""}
+                                {ticket.nickname}
                             </div>
                             <div className="ticketContentTitle">
                                 출발일

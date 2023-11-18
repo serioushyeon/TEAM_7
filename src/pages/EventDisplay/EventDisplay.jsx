@@ -6,7 +6,7 @@ import BG from "../../assets/images/Event/eventBG.jpg";
 import { apiClient } from '../../api/ApiClient';
 
 const EventDisplay = () => {
-  const [eventList, setEventList] = useState(null);
+  const [eventList, setEventList] = useState();
   const getAccessCookie = localStorage.getItem("accessCookie");
   //이벤트 목록 받아옴
   useLayoutEffect(() => {
