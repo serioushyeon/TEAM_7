@@ -74,15 +74,12 @@ function App() {
               element={<CCalendarGallery />}
             />
             <Route path="/test" element={<TestPage />} />
-            <Route path="/eventphoto/:eventId" element={<EventPhoto />} />
             {/* <EmptyEvent /> */}
-            <Route path="/event" element={<EmptyEvent />} />
+            <Route path="/event" element={<EventDisplay />} />
             {/*<EventSetting>*/}
             <Route path="/eventsetting" element={<EventSetting />} />
-            <Route path="/eventsetting/edit" element={<EventSetting />} />
-            {/* <EventDisplay /> */}
-            <Route path="/eventdisplay" element={<EventDisplay />} />
-            <Route path="/eventdisplay/:id" element={<EventDisplay />} />
+            <Route path="/eventphoto/:eventId" element={<EventPhoto />} />
+            <Route path="/eventphoto/:eventId/guest" element={<EventPhoto />} />
             {/* <MoodCloud /> */}
             <Route path="/bcstore" element={<MoodCloud />} />
             {/* <BarcodeBoard /> */}
