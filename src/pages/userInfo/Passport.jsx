@@ -209,36 +209,36 @@ export default function Passport() {
 
     <S.BookContainer>
       <S.CloudImage top="2.5rem" left="0.625rem">
-              {!userInfo.recentBarcodeTitleList[0] ? (
+              {!user.recentBarcodeTitleList[0] ? (
                 <>
                 </>
               ) :
               (
                   <S.BarcordImage>
-                <S.Images src = {userInfo.recentBarcodeTitleList[0]} />
+                <S.Images src = {user.recentBarcodeTitleList[0]} />
                 </S.BarcordImage>  
            )}
            </S.CloudImage>
             <S.CloudImage top="7.68rem" left="8.125rem">
-              {!userInfo.recentBarcodeTitleList[1] ? (
+              {!user.recentBarcodeTitleList[1] ? (
                 <>
                 </>
               ) :
               (
                 <S.BarcordImage>
-                <S.Images src = {userInfo.recentBarcodeTitleList[1]} />
+                <S.Images src = {user.recentBarcodeTitleList[1]} />
                 </S.BarcordImage>
               )}
             </S.CloudImage>
 
             <S.CloudImage top="1rem" left="14.5rem">
-              {!userInfo.recentBarcodeTitleList[2] ? (
+              {!user.recentBarcodeTitleList[2] ? (
                 <>
                 </>
               ) :
               (
                 <S.BarcordImage>
-                <S.Images src = {userInfo.recentBarcodeTitleList[2]} />
+                <S.Images src = {user.recentBarcodeTitleList[2]} />
                 </S.BarcordImage>
               )}
             </S.CloudImage>
@@ -339,14 +339,14 @@ export default function Passport() {
       </S.Sex>
       <S.DateOfIssue>
         <S.Question readOnly>발급일/Date of issue</S.Question>
-        {userInfo.dateOfIssue}
+        {user.dateOfIssue}
       </S.DateOfIssue>
       <S.NunberBarcord>
         <S.Question readOnly>보유 바코드 수/Number</S.Question>
-        {userInfo.barcodeCount}
+        {user.barcodeCount}
       </S.NunberBarcord>
       <S.UserBarcord>
-        <S.Images src={userInfo.recentBarcodeImg} />
+        <S.Images src={user.recentBarcodeImg} />
       </S.UserBarcord>
       {edit ? (
         <>
