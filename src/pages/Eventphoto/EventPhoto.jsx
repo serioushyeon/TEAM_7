@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import * as S from "./style";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useParams } from "react-router-dom";
+import { apiClient } from '../../api/ApiClient';
+import Toast from '../../components/EventToast/EventToast';
 //사진 import
 import EventIconBefore from "../../assets/images/EventPhoto/EventIconBefore.png";
 import EventIconAfter from "../../assets/images/EventPhoto/EventIconAfter.png";
@@ -10,40 +11,44 @@ import EventIconAfter from "../../assets/images/EventPhoto/EventIconAfter.png";
 import axios from "axios";
 
 function EventPhoto() {
+  const {eventId} = useParams();
   const [images, setImages] = useState([]);
+  const [eventName, setEventName] = useState(null);
+  const [isGuest, setIsGuest] = useState(false);
+  const [toast, setToast] = useState(false);
+  if(location.pathname === `/eventphoto/${eventId}/guest`)
+    setIsGuest(true);
+    const copyUrl = async () => {
+      var textarea = document.createElement('textarea');
+      textarea.value = `${location.href}/guest`;
+  
+      document.body.appendChild(textarea);
+      textarea.select();
+      textarea.setSelectionRange(0, 9999);  // 추가
+  
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+  
+      setToast(true);
+  };
+
+  useLayoutEffect(() => {
+    const fetchEventBlockData = async () => {
+      try {
+        const response = await apiClient.get(`/api/v1/event/${eventId}`);
+        setEventName(response.data.title);
+        setImages(response.data.imageUrlList);
+      } catch (error) {
+        console.error(error);
+        }
+      };
+      fetchEventBlockData();
+    }, []);
+
   //이미지 선택 상태 관리 (삭제위한코드)
   const [selectedImages, setSelectedImages] = useState(new Set());
-  const eventId = useSelector((state) => state.myEvent.value.eventId);
-  const getAccessCookie = localStorage.getItem("accessCookie");
   const navigate = useNavigate();
 
-  console.log("Access Cookie:", getAccessCookie); // 콘솔에서 accessCookie 값 확인
-
-  useEffect(() => {
-    const fetchEventImages = async () => {
-      try {
-        console.log(`Fetching images for event ID: ${eventId}`);
-        const response = await axios.get(
-          `/api/v1/event/${eventId}/image-list`,
-          {
-            headers: {
-              Authorization: `Bearer ${getAccessCookie}`,
-            },
-          }
-        );
-        if (response.status === 200) {
-          console.log("Fetched images:", response.data.imageUrlList);
-          setImages(response.data.imageUrlList);
-        } else {
-          console.error("Failed to fetch images");
-        }
-      } catch (error) {
-        console.error("Error fetching images:", error);
-      }
-    };
-
-    fetchEventImages();
-  }, [eventId, getAccessCookie]);
   //드래그 이미지 선택 상태 관리 (삭제 드래그)
   const [isDragging, setIsDragging] = useState(false);
 
@@ -105,17 +110,19 @@ function EventPhoto() {
 
     try {
       // 서버에 POST 요청
-      const response = await axios.post(`/api/v1/event/${eventId}`, formData, {
+      const response = await axios.post(`/api/v1/event/${eventId}/save-photo`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${getAccessCookie}`,
         },
       });
 
       if (response.status === 200) {
         alert("이미지가 저장되었습니다 :)");
-        navigate(`/eventdisplay/${eventId}`);
-      } else {
+        if(!isGuest){
+          navigate(`/eventdisplay`);
+        }
+      }
+       else {
         alert("업로드에 실패했습니다.");
       }
     } catch (error) {
@@ -187,10 +194,33 @@ function EventPhoto() {
       toggleImageSelection(index);
     }
   };
-
+  const handleBarcodeGeneration = async () => {
+    if (buttonEnabled) {
+      try {
+        const response = await apiClient.post(`/api/v1/event/${eventId}/result`, {
+          eventId : eventId
+        });
+        console.log("Barcode generated successfully:", response.data);
+        navigate("/bcstore");
+      } catch (error) {
+        console.error("Error in generating barcode:", error);
+      }
+    } else {
+      console.log("Barcode generation button is disabled.");
+    }
+  };
   return (
     <S.EventPhotoWrapper>
-      <S.EventName>나의 이벤트명</S.EventName>
+      {toast && <Toast setToast={setToast} text={"클립보드에 복사되었습니다."}/>}
+      <S.EventName>{eventName}</S.EventName>
+      {isGuest?<>
+      <S.EventName>사진 등록 시 변경이 불가하니 신중하게 선택해주세요!</S.EventName>
+      <button className='invite' onClick={copyUrl}> 
+        <FiLink size="22" color="white"/>
+      </button>
+      </>
+      :
+      <></>}
       <S.ImageUploadContainer onDragOver={handleDragOver} onDrop={handleDrop}>
         <S.UploadButton htmlFor="file-input" hasImages={images.length > 0}>
           <S.UploadIcon
@@ -225,13 +255,17 @@ function EventPhoto() {
           />
         ))}
       </S.ImageUploadContainer>
-      <S.UploadChange>
+      <S.UploadChange>{
+        isGuest?<>
         <S.UploadChangeItem
           onClick={deleteSelectedImages}
-          isSelected={selectedImages.size > 0}
-        >
+          isSelected={selectedImages.size > 0}>
           삭제
         </S.UploadChangeItem>
+        <S.UploadChangeItem onClick={handleBarcodeGeneration}>바코드 생성</S.UploadChangeItem>
+        </>
+        :<></>
+        }
         <S.UploadChangeItem onClick={handleSubmit}>저장</S.UploadChangeItem>
       </S.UploadChange>
     </S.EventPhotoWrapper>

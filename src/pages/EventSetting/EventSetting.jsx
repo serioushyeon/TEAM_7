@@ -12,16 +12,10 @@ import { setEventStartDate,setEventEndDate, setEventName } from "../../redux/eve
 import { apiClient } from '../../api/ApiClient';
 import { setMyEvent } from "../../redux/myEventSlice";
 const EventSetting = () => {
-  const event = useSelector((state)=>state.eventList.value);
-  const myEvent = useSelector((state)=>state.myEvent.value);
-  const dispatch = useDispatch();
   const getAccessCookie = localStorage.getItem("accessCookie");
-  const title = event.eventName;
-  const startD = event.startDate
-  const endD = event.endDate;
-  const [startDate, setStartDate] = useState(new Date(startD));
-  const [endDate, setEndDate] = useState(new Date(endD));
-  const [eventName, setEventTitle] = useState(title);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+  const [eventName, setEventTitle] = useState();
   const [flag, setFlag] = useState(true);
   const saveEventName = (e) => {
     setEventTitle(e.target.value);
@@ -45,15 +39,9 @@ const EventSetting = () => {
   }
 
   const navigate = useNavigate();
-  const goToEventDisplay = () => {
-    navigate(`/eventdisplay/${myEvent.eventId}`);
+  const goToEvent = () => {
+    navigate(`/event`);
   };
-
-  const editEvent = () => {
-    putEventName();
-    putEventDate();
-    goToEventDisplay();
-  }
 
   //이벤트 생성 API
   const postEventData = async () => {
@@ -67,109 +55,17 @@ const EventSetting = () => {
           Authorization: `Bearer ${getAccessCookie}`
       }
     });
-    console.log(response.data);
-    console.log(response.data.eventId);
-    navigate(`/eventdisplay/${response.data.eventId}`)
-    const data = { eventId: response.data.eventId, existEvent: true}
-    dispatch(setMyEvent(data));
+    goToEvent();
     } catch (error) {
       console.error("Error posting data", error);
-      console.log(error.response);
-      console.log(error.response.status);
-      console.log(error.response.statusText);
-      /*if(error.statusText === "USER_ALREADY_HAS_EVENT")
-      {
-
-      }
-      if(error.statusText === "EVENT_TITLE_EMPTY")
-      {
-        
-      }
-      if(error.statusText === "USER_NOT_FOUNR")
-      {
-        alert("다시 로그인해주세요");
-        //로그아웃
-        navigate(`/`);
-      }*/
     }
   };
 
-  //이벤트 이름 수정 API
-  const putEventName = async () => {
-    console.log(myEvent);
-    try {
-      const response = await apiClient.put(`/api/v1/event/${myEvent.eventId}/event-name`, {
-        eventName: eventName
-      }, {
-        headers: {
-          Authorization: `Bearer ${getAccessCookie}`
-      }
-    });
-      console.log(response.data);
-      dispatch(setEventName(eventName));
-    } catch (error) {
-      console.error("Error posting data", error);
-      /*if(error.statusText === "NOT_ROOM_MAKER")
-      {
-
-      }
-      if(error.statusText === "EVENT_TITLE_EMPTY")
-      {
-        
-      }
-      if(error.statusText === "EVENT_NOT_FOUND")
-      {
-
-      }
-      if(error.statusText === "USER_NOT_FOUND")
-      {
-        alert("다시 로그인해주세요");
-        //로그아웃
-        navigate(`/`);
-      }*/
-    }
-  }
-
-  //이벤트 기간 수정 API
-  const putEventDate = async () => {
-    console.log(myEvent);
-    try {
-      const response = await apiClient.put(`/api/v1/event/${myEvent.eventId}/event-date`, {
-        startDate : startDate,
-        endDate: endDate,
-      }, {
-        headers: {
-          Authorization: `Bearer ${getAccessCookie}`
-      }
-    });
-      console.log(response.data);
-      dispatch(setEventStartDate(`${format(startDate, "yyyy-MM-dd")}`));
-      dispatch(setEventEndDate(`${format(endDate, "yyyy-MM-dd")}`));
-    } catch (error) {
-      console.error("Error posting data", error);
-      /*if(error.statusText === "NOT_ROOM_MAKER")
-      {
-
-      }
-      if(error.statusText === "EVENT_NOT_FOUND")
-      {
-
-      }
-      if(error.statusText === "USER_NOT_FOUND")
-      {
-        alert("다시 로그인해주세요");
-        //로그아웃
-        navigate(`/`);
-      }*/
-    }
-  }
   return (
     <>
       <div className="eventSetting">
         <div className="eventTitle">
-          {location.pathname === "/eventsetting/edit"?
-          "이벤트 수정"
-        :"함께 할 이벤트 생성하기"}</div>
+        함께 할 이벤트 생성하기</div>
         <div className="formWrap">
           <form className="eventForm">
             <div className="wrapper">
@@ -238,16 +134,10 @@ const EventSetting = () => {
             </div>
           </form>
         </div>
-        <div className="eventMake">{
-          location.pathname === "/eventsetting/edit" ? 
-          <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? editEvent() : ()=>{}}}>
-            이벤트 수정
-          </button>
-          :
+        <div className="eventMake">
           <button className="eventMakeBtn" onClick={() => {eventAlert(); flag ? postEventData() : ()=>{}}}>
             이벤트 생성
           </button>
-          }
         </div>
       </div>
     </>
