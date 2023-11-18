@@ -38,6 +38,7 @@ const Wrapper = styled.div`
 
 // 여기서 경로 설정해주세요.
 function App() {
+
   const location = useLocation();
   const [accessCookie] = useCookies(["accessCookie"]);
   const [refreshCookie] = useCookies(["refreshCookie"]);
@@ -64,7 +65,9 @@ function App() {
     <>
       <Background>
         <Wrapper>
+
           {showNavBar() && <NavBar />} {/* 네브바 조건부 렌더링 */}
+
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/substart" element={<SubStart />} />
