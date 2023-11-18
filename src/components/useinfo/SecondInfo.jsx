@@ -6,6 +6,7 @@ import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 import { BsCalendarHeart, BsCalendarWeek } from "react-icons/bs"
 import { useCookies } from "react-cookie";
+import { useSelector } from "react-redux";
 
 export default function Second() {
   /*const [cookies] = useCookies(["accessCookie", "refreshCookie"]);
