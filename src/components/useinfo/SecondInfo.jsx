@@ -18,7 +18,7 @@ import { selectDate } from "../../redux/dateSlice";
 import userInfoSlice from "../../redux/userInfoSlice";
 
 export default function Second() {
-  const [cookies] = useCookies(["accessCookie", "refreshCookie"]);
+  /*const [cookies] = useCookies(["accessCookie", "refreshCookie"]);
   const accessCookie = cookies.accessCookie;
   const refreshCookie = cookies.refreshCookie;
 
@@ -27,7 +27,7 @@ export default function Second() {
 //   localStorage.setItem("refreshCookie", refreshCookie);
 
   localStorage.setItem("accessCookie", cookies.accessCookie);
-  localStorage.setItem("refreshCookie", cookies.refreshCookie);
+  localStorage.setItem("refreshCookie", cookies.refreshCookie);*/
 
 
   // 더미데이터
