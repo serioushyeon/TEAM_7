@@ -69,9 +69,10 @@ function App() {
         <Wrapper>
           {showNavBar() && <NavBar />}
           <Routes>
-
-            <Route path="/" element={<Login />} />
- 
+            <Route element={<PublicLayout />}>
+              <Route path="/" element={<Login />} />
+            </Route>
+            {/* <Route element={<AuthLayout />}> */}
             <Route path="/substart" element={<Passport />} />
             <Route path="/calendar" element={<MyCalendar />} />
             <Route path="/calendar-photo/:date" element={<CalendarPhoto />} />
@@ -92,6 +93,7 @@ function App() {
             <Route path="/ticket" element={<BarcodeBoard />} />
             <Route path="/ticket/:id" element={<BarcodeBoard />} />
             <Route path="/ticket/:id/guest" element={<BarcodeBoard />} />
+            {/* </Route> */}
           </Routes>
         </Wrapper>
       </Background>

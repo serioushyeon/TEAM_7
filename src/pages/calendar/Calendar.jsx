@@ -108,15 +108,15 @@ export default function MyCalendar() {
     (async () => {
       const data = await fetchCalendarInfo();
 
-      console.log({useEffectData: data});
+      console.log({ useEffectData: data });
 
-// 업데이트된 리스트를 dispatch로 전달
+      // 업데이트된 리스트를 dispatch로 전달
       dispatch(setThumbnailInfoList(data?.thumbnailInfoList));
       dispatch(setButtonStatus(data?.buttonStatus));
     })()
   }, [ dateRange.startDate, dateRange.endDate ]);
 
-  console.log({thumbnailInfoList});
+  console.log({ thumbnailInfoList });
   // getCalendarInfo 함수를 useEffect 밖으로 이동
   // const getCalendarInfo = async (startDate, endDate, year, month) => {
   //   try {
@@ -202,7 +202,7 @@ export default function MyCalendar() {
   }, [year, month, dispatch, accessCookie]);
   */
 
-/*  const tileContent = ({ date, view }) => {
+  /*  const tileContent = ({ date, view }) => {
     if (view === "month") {
       const dateString = moment(date).format("YYYY-MM-DD");
       const imageEntry = thumbnailInfoList.find(
@@ -219,22 +219,11 @@ export default function MyCalendar() {
   };
   */
 
-  // 사진이 없는 경우, 사진 등록 창으로 이동하는 함수
+  // 항상 사진 등록 창으로 이동하는 함수
   function handleLocatePhoto(date) {
     // 날짜 형식을 'YYYY-MM-DD'로 변환
     const formattedDate = moment(date).format("YYYY-MM-DD");
     navigate(`/calendar-photo/${formattedDate}`);
-    dispatch(selectDate(formattedDate));
-    dispatch(updateDay({ day: moment(date).date() }));
-    dispatch(updateMonth({ month: moment(date).month() }));
-    dispatch(updateYear({ year: moment(date).year() }));
-  }
-
-  // 사진이 있는 경우, 사진 표시 창으로 이동하는 함수
-  function handleLocateDay(date) {
-    // 날짜 형식을 'YYYY-MM-DD'로 변환
-    const formattedDate = moment(date).format("YYYY-MM-DD");
-    navigate(`/calendar-non-photo/${formattedDate}`);
     dispatch(selectDate(formattedDate));
     dispatch(updateDay({ day: moment(date).date() }));
     dispatch(updateMonth({ month: moment(date).month() }));

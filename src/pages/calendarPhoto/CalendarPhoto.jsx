@@ -196,7 +196,7 @@ export default function CalendarPhoto() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${accessCookie["accessCookie"]}`,
+            Authorization: `Bearer ${getAccessCookie}`,
           },
         }
       );
