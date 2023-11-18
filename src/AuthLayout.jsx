@@ -14,14 +14,7 @@ const AuthLayout = () => {
     const getAccessCookie = localStorage.getItem("accessCookie");
     // 쿠키가 없으면 로그인으로 이동한다. 아니라면 pathname을 state에 저장한다.
     
-    if((getAccessCookie &&
-        getAccessCookie !== "undefined" && 
-        getAccessCookie !== undefined)) {
-    } else {
-        alert("로그인이 필요한 기능입니다.");
-        console.log('쿠키 없음, 로그인, pathname 전달');
-        navigate("/", { state: { from: pathname } }); 
-    }     
+   
 }, [navigate, pathname]);
     
   return (
