@@ -154,14 +154,19 @@ const handleProfileImageChange = (event) => {
      console.log("전송 data : ", formData);
      console.error("실패 error : ", error);
    }
-
-   setEdit(!edit);
 };
 
 
 // 데이터 전송
 function handleEditUserInfo() {
+   
+  localStorage.setItem('nickname', userInfo.nickname);
+  localStorage.setItem('birth', userInfo.birth);
+  localStorage.setItem('gender', userInfo.gender);
+  localStorage.setItem('profileImage', userInfo.profileImage);
+
   postUserInfo();
+  setEdit(!edit);
 }
 
 function handleEdit() {
@@ -169,8 +174,6 @@ function handleEdit() {
 }
 
   return (
-    <>
-    {loading ? <Loading /> : null}
     <S.Book2Container>
       {!edit ? (
         <>
@@ -280,7 +283,6 @@ function handleEdit() {
               </>
             )}
           </S.Book2Container>
-          </>
   )
   
               }

@@ -67,7 +67,7 @@ export default function NavBar() {
   return (
     <Container>
       <Navigation>
-<NavigationButton to = "/userinfo"><ButtonImoge src={Home}/><ButtonText>홈</ButtonText></NavigationButton>
+<NavigationButton to = "/substart"><ButtonImoge src={Home}/><ButtonText>홈</ButtonText></NavigationButton>
 <NavigationButton to = "/calendar"><ButtonImoge src={Calendar}/><ButtonText>일상</ButtonText></NavigationButton>
 <NavigationButton to = "/event"><ButtonImoge src={Event}/><ButtonText>이벤트</ButtonText></NavigationButton>
 <NavigationButton to = "/bcstore"><ButtonImoge src={Barcord}/><ButtonText>무코 보관함</ButtonText></NavigationButton>

@@ -57,7 +57,7 @@ function App() {
 
   const showNavBar = () => {
     // 특정 경로에서는 네브바를 숨김
-    const hideOnRoutes = ["/", "/substart"];
+    const hideOnRoutes = ["/"];
     return getAccessCookie && !hideOnRoutes.includes(location.pathname);
   };
 
@@ -70,8 +70,7 @@ function App() {
 
           <Routes>
             <Route path="/" element={<Login />} />
-            <Route path="/substart" element={<SubStart />} />
-            <Route path="/userinfo" element={<Passport />} />
+            <Route path="/substart" element={<Passport />} />
             <Route path="/calendar" element={<MyCalendar />} />
             <Route path="/calendar-photo/:date" element={<CalendarPhoto />} />
             <Route
