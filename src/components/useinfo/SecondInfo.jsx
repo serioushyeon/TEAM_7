@@ -22,19 +22,6 @@ export default function Second() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
-  // 더미데이터
-  const DummyDate = {
-    nickname: "KangSeungJun",
-    birth: "1999-09-01",
-    gender: "Y",
-    dateOfIssue: "1999-09-01",
-    barcodeCount: 4,
-    profileImage: "https://www.example.com/profile.jpg",
-    recentBarcodeImg: "https://www.example.com/barcode.jpg",
-    recentBarcodeTitleList: ["Title 1", "Title 2", "Title 3"],
-    modalActive: false,
-  };
-
  // const dispatch = useDispatch();
 
   const getAccessCookie = localStorage.getItem("accessCookie");
@@ -50,16 +37,8 @@ export default function Second() {
   const [loading, setLoading] = useState(true);
   console.log("user", user);
 
-  // 유저 데이터 실시간 수정
-  const handleInfoChange = (e, field) => {
-    const updatedUser = { ...user, [field]: e.target.value };
-    setUser(updatedUser);
-    console.log(updatedUser);
-
-    // userinfo로
-    // dispatch(userData(updatedUser));
-  };
-
+  const userInfo = useSelector((state) => state.userdata);
+  
   // 로컬 상태 초기화
   const [user, setUser] = useState({
     nickname: "", // KangSeungJun
@@ -161,6 +140,16 @@ export default function Second() {
     } catch (error) {
       console.error("실패 error : ", error);
     }
+  };
+
+   // 유저 데이터 실시간 수정
+   const handleInfoChange = (e, field) => {
+    const updatedUser = { ...user, [field]: e.target.value };
+    setUser(updatedUser);
+    console.log(updatedUser);
+
+    // userinfo로
+    // dispatch(userData(updatedUser));
   };
 
   // 데이터 전송
