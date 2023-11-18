@@ -1,11 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { S } from './PassportStyle';
 import First from '../../components/useinfo/FirstInfo';
 import Second from '../../components/useinfo/SecondInfo'
+import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 
 export default function Passport() {
+
+  const navigate = useNavigate();
+  const {state} = useLocation();
+
+  useEffect(() => {
+    if(state) {
+      navigate(state);
+    }
+  });
+  
 // useCookie를 이용해서 웹 브라우저의 쿠키에서 데이터를 읽어옴
 // useCookie를 이용해서 웹 브라우저의 쿠키에서 데이터를 읽어옴
 const [accessCookie] = useCookies(["access_cookie"]);
