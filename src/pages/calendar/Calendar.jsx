@@ -51,8 +51,8 @@ export default function MyCalendar() {
       buttonStatus: state.photoList.buttonStatus,
     }));
 
-    // 시작페이지 날짜 지정
-    setActiveStartDateState(new Date(year, month, 1));
+
+    
     const fetchCalendarInfo = async () => {
       try {
         const response = await axios.get("/api/v1/user/calender", {
@@ -70,11 +70,10 @@ export default function MyCalendar() {
         });
 
         console.log('data : ', response.data);
+        return response.data;
       } catch (error) {
         console.error("Error fetching calendar info:", error);
       }
-
-      return response.data;
     };
 // 변경하는 값들 의존성으로 넣기
 
@@ -86,7 +85,7 @@ export default function MyCalendar() {
       dispatch(setThumbnailInfoList(data.thumbnailInfoList));
       dispatch(setButtonStatus(data.buttonStatus));
     })()
-  }, [ startDate, endDate, year, month, thumbnailInfoList, buttonStatus ]);
+  }, [ startDate, endDate, thumbnailInfoList ]);
 
 
   // 날짜 변경 핸들러
@@ -179,7 +178,7 @@ export default function MyCalendar() {
   }, [year, month, dispatch, accessCookie]);
   */
 
-  const tileContent = ({ date, view }) => {
+/*  const tileContent = ({ date, view }) => {
     if (view === "month") {
       const dateString = moment(date).format("YYYY-MM-DD");
       const imageEntry = thumbnailInfoList.find(
@@ -194,6 +193,7 @@ export default function MyCalendar() {
       }
     }
   };
+  */
 
   // 사진이 없는 경우, 사진 등록 창으로 이동하는 함수
   function handleLocatePhoto(date) {

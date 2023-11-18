@@ -5,17 +5,7 @@ import { apiClient } from "../../api/ApiClient";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
 import { BsCalendarHeart, BsCalendarWeek } from "react-icons/bs"
-import { format } from "date-fns";
-import { useSelector, useDispatch } from "react-redux";
 import { useCookies } from "react-cookie";
-import { userData } from "../../redux/userInfoSlice";
-import Loading from "../../pages/loading/Loading";
-
-import InfoBarcord from "../../assets/images/userinfo/infoBarcord.svg";
-import Cloud from "../../assets/images/userinfo/cloud.svg";
-import Profile from "../../assets/images/userinfo/profile.svg";
-import { selectDate } from "../../redux/dateSlice";
-import userInfoSlice from "../../redux/userInfoSlice";
 
 export default function Second() {
   const [cookies] = useCookies(["accessCookie", "refreshCookie"]);
