@@ -7,6 +7,9 @@ function SubStart() {
   const [cookies] = useCookies(["accessCookie", "refreshCookie"]);
   const accessCookie = cookies.accessCookie;
   const refreshCookie = cookies.refreshCookie;
+  console.log(cookies.accessCookie);
+  console.log(cookies.refreshCookie);
+
 
   localStorage.setItem("accessCookie", cookies.accessCookie);
   localStorage.setItem("refreshCookie", cookies.refreshCookie);
