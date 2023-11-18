@@ -104,13 +104,11 @@ export default function Second() {
     }
   };
 
-  // redux와 user 동기화
-  useEffect(() => {
-    (async () => {
-      const { data } = await getUserInfo();
+   // redux와 user 동기화
+   useEffect(() => {
+      const { data } = getUserInfo();
 // 데이터를 메서드로 따로 받은 후 세팅한다.
       setUser(data);
-    })()
   }, []);
 
   // 프로필 이미지 핸들러
