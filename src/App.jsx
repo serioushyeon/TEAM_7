@@ -38,7 +38,6 @@ const Wrapper = styled.div`
 
 // 여기서 경로 설정해주세요.
 function App() {
-
   const location = useLocation();
   const [accessCookie] = useCookies(["accessCookie"]);
   const [refreshCookie] = useCookies(["refreshCookie"]);
@@ -56,18 +55,15 @@ function App() {
   window.addEventListener("resize", () => setScreenSize());
 
   const showNavBar = () => {
-    // 특정 경로에서는 네브바를 숨김
-    const hideOnRoutes = ["/"];
-    return getAccessCookie && !hideOnRoutes.includes(location.pathname);
+    const hideOnRoutes = ["/"]; // NavBar를 숨길 경로 목록
+    return !hideOnRoutes.includes(location.pathname);
   };
 
   return (
     <>
       <Background>
         <Wrapper>
-
-          {showNavBar() && <NavBar />} {/* 네브바 조건부 렌더링 */}
-
+          {showNavBar() && <NavBar />}
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/substart" element={<Passport />} />
