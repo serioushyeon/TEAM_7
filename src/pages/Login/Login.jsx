@@ -14,7 +14,6 @@ export default function Login() {
   console.log("apiClient", apiClient);
 
   function handleLogin() {
-    Cookies.set("accessCookie", "accessCookie");
 
       window.location.href = `${
         import.meta.env.VITE_APP_SERVER_HOST
