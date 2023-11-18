@@ -22,6 +22,7 @@ const calendarSlice = createSlice({
   reducers: {
     // 상태 업데이트
     setThumbnailInfoList: (state, action) => {
+      console.log({state, payload: action.payload})
       state.thumbnailInfoList = action.payload;
     },
     // 버튼 상태 업데이트
