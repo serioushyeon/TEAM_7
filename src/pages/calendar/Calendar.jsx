@@ -83,9 +83,8 @@ export default function MyCalendar() {
   console.log('배열인가요? : ', thumbnailInfoList);
   const buttonStatus = useSelector((state) => state.photoList.buttonStatus);
 
-  const [accessCookie] = useCookies(["accessCookie"]);
-  const [refreshCookie] = useCookies(["refreshCookie"]);
-
+  const [Cookie] = useCookies(["accessCookie","refreshCookie"]);
+  
   const getAccessCookie = localStorage.getItem("accessCookie");
   const getRefreshCookie = localStorage.getItem("refreshCookie");
 

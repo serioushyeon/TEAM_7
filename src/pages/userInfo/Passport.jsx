@@ -13,6 +13,7 @@ import { selectDate } from "../../redux/dateSlice";
 import userInfoSlice from "../../redux/userInfoSlice";
 
 export default function Passport() {
+
   const cookies = new Cookies();
   
   const [accessCookie] = useCookies(["accessCookie"]);
@@ -138,7 +139,6 @@ export default function Passport() {
     dispatch(userData(user));
 
     try {
-      console.log("쿠키 확인 : ",getAccessCookie);
       const response = await axios.post(
         `${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/user-info`,
         formData,
