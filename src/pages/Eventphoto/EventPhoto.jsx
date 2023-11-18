@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import * as S from "./style";
-import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { apiClient } from '../../api/ApiClient';
 import Toast from '../../components/EventToast/EventToast';

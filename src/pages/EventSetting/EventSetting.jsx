@@ -6,11 +6,7 @@ import { BsCalendarHeart, BsCalendarWeek } from "react-icons/bs";
 import { ko } from "date-fns/esm/locale";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { setEventStartDate,setEventEndDate, setEventName } from "../../redux/eventListSlice";
 import { apiClient } from '../../api/ApiClient';
-import { setMyEvent } from "../../redux/myEventSlice";
 const EventSetting = () => {
   const getAccessCookie = localStorage.getItem("accessCookie");
   const [startDate, setStartDate] = useState(new Date());

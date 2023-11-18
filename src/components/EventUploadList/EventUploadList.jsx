@@ -4,17 +4,7 @@
 //완료버튼 추가하기
 import "./EventUploadList.css";
 import { IoIosAddCircleOutline } from "react-icons/io";
-import { LiaTrashAltSolid } from "react-icons/lia";
-import { useState, useEffect } from "react";
-import EventModel from "../EventModal/EventModal";
-import SockJS from "sockjs-client";
-import { Stomp } from "@stomp/stompjs";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { setMyEvent } from "../../redux/myEventSlice";
-import axios from "axios";
-import { apiClient } from '../../api/ApiClient';
 const EventUploadBlock = ({eventBlock}) => {
   const navigate = useNavigate();
   const navigateToEventPhoto = () => {
