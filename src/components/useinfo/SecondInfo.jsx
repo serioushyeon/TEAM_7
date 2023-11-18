@@ -164,22 +164,22 @@ export default function Second() {
     setEdit(true);
   }
 
-  function getGender() {
-    if (!!userInfo.gender) {
-      if (userInfo.gender === "M") {
-        return "M"
-      } else if (userInfo.gender === "Y") {
-        return "Y"
-      }
-    }
+  // function getGender() {
+  //   if (userInfo?.gender !== null) {
+  //     if (userInfo.gender === "M") {
+  //       return "M"
+  //     } else if (userInfo.gender === "Y") {
+  //       return "Y"
+  //     }
+  //   }
 
-    return ""
-  }
+  //   return ""
+  // }
 
-  const genderValue = getGender();
+  // const genderValue = getGender();
 
-  console.log({genderValue});
-  console.log({userInfo});
+  // console.log({genderValue});
+  // console.log({userInfo});
   return (
     <S.Book2Container>
       {!edit ? (
@@ -265,14 +265,14 @@ export default function Second() {
           </>
         ) : (
           <>
-            <S.Answer
+            {/* <S.Answer
               type="text"
               value={
                 genderValue
               }
               readOnly
               edit={edit}
-            />
+            /> */}
           </>
         )}
       </S.Sex>
