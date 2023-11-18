@@ -151,6 +151,7 @@ export default function MyCalendar() {
       });
       dispatch(setThumbnailInfoList(response.data.thumbnailInfoList));
       dispatch(setButtonStatus(response.data.buttonStatus));
+      console.log(response.data);
       setIsDisabed(response.data.buttonStatus !== "INACTIVE");
     } catch (error) {
       console.error("Error fetching calendar info:", error);
