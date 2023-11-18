@@ -9,6 +9,7 @@ import { setCalendarData } from "../../redux/CalendarPhotoBoard";
 import PhotoOption from "../../components/calendar/PhotoOption";
 import { setActiveStartDate, toggleSelected } from "../../redux/CalendarUI";
 import { useParams } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 export default function CalendarPhoto() {
   let navigate = useNavigate();
@@ -35,6 +36,9 @@ export default function CalendarPhoto() {
   // 이미지 상태
   // const [images, setImages] = useState([]);
   const fileInputRef = useRef(null);
+  const [accessCookie, setAccessCookie, removeCookie] = useCookies([
+    "accessCookie",
+  ]);
 
   // 대표 사진 상태
   const [representativeImageIndex, setRepresentativeImageIndex] =
@@ -51,6 +55,20 @@ export default function CalendarPhoto() {
   //   dateDay.day
   // );
 
+  // 로그아웃 처리 함수
+  const handleLogout = () => {
+    // 쿠키 삭제
+    removeCookie("accessCookie", { path: "/" });
+    removeCookie("refreshCookie", { path: "/" });
+
+    // 로컬 스토리지에서 토큰 삭제
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+
+    // 로그인 페이지로 리다이렉트
+    navigate("/");
+  };
+
   useEffect(() => {
     const fetchDayData = async () => {
       try {
@@ -66,12 +84,28 @@ export default function CalendarPhoto() {
           }))
         );
       } catch (error) {
-        console.error("Error fetching day data", error);
+        if (error.response && error.response.status === 404) {
+          if (error.response.data.code === "DAY_NOT_FOUND") {
+            // 'DAY_NOT_FOUND' 에러 처리
+            alert("정상적이지 않은 경로입니다. 캘린더 페이지로 이동합니다.");
+            navigate("/calendar");
+          } else if (error.response.data.code === "USER_NOT_FOUND") {
+            // 'USER_NOT_FOUND' 에러 처리
+            alert(
+              "로그인한 사용자가 존재하지 않습니다. 로그인 페이지로 이동합니다."
+            );
+            handleLogout();
+          } else {
+            console.error("Error fetching day data", error);
+          }
+        } else {
+          console.error("Error fetching day data", error);
+        }
       }
     };
 
     fetchDayData();
-  }, [date]);
+  }, [date, navigate]);
 
   // 메모 실시간 변경
   const handleMemoChange = (e) => {
