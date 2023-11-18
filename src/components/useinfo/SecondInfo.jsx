@@ -13,7 +13,9 @@ import Profile from "../../assets/images/userinfo/profile.svg";
 import { selectDate } from "../../redux/dateSlice";
 import userInfoSlice from "../../redux/userInfoSlice";
 
-export default function SecondInfo() {
+export default function Second() {
+  const [cookies] = useCookies(["accessCookie", "refreshCookie"]);
+
   localStorage.setItem("accessCookie", cookies.access_cookie);
   localStorage.setItem("refreshCookie", cookies.refresh_cookie);
 
