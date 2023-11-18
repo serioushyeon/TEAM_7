@@ -49,14 +49,14 @@ export default function Second() {
 
   // 로컬 상태 초기화
   const [user, setUser] = useState({
-    nickname: "", // KangSeungJun
-    birth: "", // 1999-09-01
-    gender: "", // M or Y
-    dateOfIssue: "", // 1999-09-01
-    barcodeCount: "", //4
-    profileImage: "", //https://www.ahdsfadsfafd~~~~ (url로 넘어갑니다!)
-    recentBarcodeImg: "", // https://www.ahdsfadsfafd~~~~ (url로 넘어갑니다!)
-    recentBarcodeTitleList: [], // String의 List로 넘어갑니다. 없으면 null
+    nickname: "1", // KangSeungJun
+    birth: "1", // 1999-09-01
+    gender: "1", // M or Y
+    dateOfIssue: "1", // 1999-09-01
+    barcodeCount: "1", //4
+    profileImage: "1", //https://www.ahdsfadsfafd~~~~ (url로 넘어갑니다!)
+    recentBarcodeImg: "1", // https://www.ahdsfadsfafd~~~~ (url로 넘어갑니다!)
+    recentBarcodeTitleList: ["1", "1", "1"], // String의 List로 넘어갑니다. 없으면 null
     modalActive: false,
   });
 
@@ -86,7 +86,8 @@ export default function Second() {
           },
         }
       );
-      console.log("성공, UserInfo : ", response.data);
+      console.log("성공 : ", response.data);
+      setUser(response.data);
       // dispatch(userInfoSlice.actions.userData(response.data));
       // setUser(response.data);
 
@@ -225,7 +226,6 @@ export default function Second() {
         <DatePicker
           className="input"
           dateFormat="yyyy-MM-dd"
-          selected={user.birth}
           onChange={(date) => setStartDate(date)}
           locale={ko}
           selectsStart
