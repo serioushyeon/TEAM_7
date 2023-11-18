@@ -79,6 +79,7 @@ function App() {
             {/*<EventSetting>*/}
             <Route path="/eventsetting" element={<EventSetting />} />
             <Route path="/eventphoto/:eventId" element={<EventPhoto />} />
+            <Route path="/eventphoto/:eventId/guest" element={<EventPhoto />} />
             {/* <MoodCloud /> */}
             <Route path="/bcstore" element={<MoodCloud />} />
             {/* <BarcodeBoard /> */}
