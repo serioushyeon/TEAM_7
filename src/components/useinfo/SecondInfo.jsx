@@ -15,9 +15,11 @@ import userInfoSlice from "../../redux/userInfoSlice";
 
 export default function Second() {
   const [cookies] = useCookies(["accessCookie", "refreshCookie"]);
+  const accessCookie = cookies.accessCookie;
+  const refreshCookie = cookies.refreshCookie;
 
-  localStorage.setItem("accessCookie", cookies.access_cookie);
-  localStorage.setItem("refreshCookie", cookies.refresh_cookie);
+  localStorage.setItem("accessCookie", accessCookie);
+  localStorage.setItem("refreshCookie", refreshCookie);
 
   // 더미데이터
   const DummyDate = {
@@ -33,9 +35,6 @@ export default function Second() {
   };
 
   const dispatch = useDispatch();
-
-  const [accessCookie] = useCookies(["accessCookie"]);
-  const [refreshCookie] = useCookies(["refreshCookie"]);
 
   const getAccessCookie = localStorage.getItem("accessCookie");
   const getRefreshCookie = localStorage.getItem("refreshCookie");
@@ -64,7 +63,7 @@ export default function Second() {
     modalActive: false,
   });
 
-  const [loading, serLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   console.log("user", user);
 
   // 유저 데이터 실시간 수정

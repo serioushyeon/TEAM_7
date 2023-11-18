@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { S } from "./Style";
 import { useSelector } from "react-redux";
 import { userData } from "../../redux/userInfoSlice";
-import { useCookies } from "react-cookie";
 
 export default function First() {
   const userInfo = useSelector((state) => state.userdata);
