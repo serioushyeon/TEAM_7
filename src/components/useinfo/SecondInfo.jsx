@@ -47,20 +47,6 @@ export default function Second() {
   const [edit, setEdit] = useState(false);
   const [fileState, setFileState] = useState("");
 
-  // 로컬 상태 초기화
-  const [user, setUser] = useState({
-    nickname: "1", // KangSeungJun
-    birth: "1", // 1999-09-01
-    gender: "1", // M or Y
-    dateOfIssue: "1", // 1999-09-01
-    barcodeCount: "1", //4
-    profileImage: "1", //https://www.ahdsfadsfafd~~~~ (url로 넘어갑니다!)
-    recentBarcodeImg: "1", // https://www.ahdsfadsfafd~~~~ (url로 넘어갑니다!)
-    recentBarcodeTitleList: ["1", "1", "1"], // String의 List로 넘어갑니다. 없으면 null
-    modalActive: false,
-  });
-
-
   const [loading, setLoading] = useState(true);
   console.log("user", user);
 
@@ -73,6 +59,19 @@ export default function Second() {
     // userinfo로
     // dispatch(userData(updatedUser));
   };
+
+  // 로컬 상태 초기화
+  const [user, setUser] = useState({
+    nickname: "", // KangSeungJun
+    birth: "", // 1999-09-01
+    gender: "", // M or Y
+    dateOfIssue: "", // 1999-09-01
+    barcodeCount: "", //4
+    profileImage: "", //https://www.ahdsfadsfafd~~~~ (url로 넘어갑니다!)
+    recentBarcodeImg: "", // https://www.ahdsfadsfafd~~~~ (url로 넘어갑니다!)
+    recentBarcodeTitleList: [], // String의 List로 넘어갑니다. 없으면 null
+    modalActive: false,
+  });
 
   // 유저 정보 get 메서드
   const getUserInfo = async () => {
@@ -187,7 +186,9 @@ export default function Second() {
       )}
 
       <S.ProfileBox>
-        <S.Images src={user.profileImage} />
+        {
+          user.profileImage &&  <S.Images src={user.profileImage} />
+        }
       </S.ProfileBox>
       {edit ? (
         <>
