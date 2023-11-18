@@ -14,7 +14,6 @@ import SubStart from "./pages/start/SubStart";
 import Passport from "./pages/userInfo/Passport";
 import MyCalendar from "./pages/calendar/Calendar";
 import CalendarPhoto from "./pages/calendarPhoto/CalendarPhoto";
-import CCalendarGallery from "./pages/calendarPhoto/CalendarGallery";
 import { useCookies } from "react-cookie";
 import PublicLayout from "./PublicLayout";
 import AuthLayout from "./AuthLayout";
@@ -76,10 +75,6 @@ function App() {
             <Route path="/substart" element={<Passport />} />
             <Route path="/calendar" element={<MyCalendar />} />
             <Route path="/calendar-photo/:date" element={<CalendarPhoto />} />
-            <Route
-              path="/calendar-non-photo/:date"
-              element={<CCalendarGallery />}
-            />
             <Route path="/test" element={<TestPage />} />
             {/* <EmptyEvent /> */}
             <Route path="/event" element={<EventDisplay />} />
