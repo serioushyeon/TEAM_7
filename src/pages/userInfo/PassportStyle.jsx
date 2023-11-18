@@ -20,8 +20,6 @@ border-radius: 4px;
 border: 1px solid var(--gray-scale-gray-200-dividers, #DDD);
 `
 // background-color: #FDFCFB 0;
-
-
 const Title = styled.div`
 display: flex;
 position: absolute;
@@ -33,7 +31,6 @@ font-style: normal;
 font-weight: 700;
 line-height: normal;
 `
-
 const Titletext = styled.div`
 display: block;
 position: absolute;
