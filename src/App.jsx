@@ -16,6 +16,8 @@ import MyCalendar from "./pages/calendar/Calendar";
 import CalendarPhoto from "./pages/calendarPhoto/CalendarPhoto";
 import CCalendarGallery from "./pages/calendarPhoto/CalendarGallery";
 import { useCookies } from "react-cookie";
+import PublicLayout from "./PublicLayout";
+import AuthLayout from "./AuthLayout";
 
 const Background = styled.div`
   width: 100vw;
@@ -59,13 +61,18 @@ function App() {
     return !hideOnRoutes.includes(location.pathname);
   };
 
+  // 로그인 페이지 <= 토큰이 필요없는 페이지만 분리
+  // 토근이 필요한 페이지는 아래로!
   return (
     <>
       <Background>
         <Wrapper>
           {showNavBar() && <NavBar />}
           <Routes>
+          <Route element={<PublicLayout />}>
             <Route path="/" element={<Login />} />
+          </Route>
+            <Route element={<AuthLayout />}>
             <Route path="/substart" element={<Passport />} />
             <Route path="/calendar" element={<MyCalendar />} />
             <Route path="/calendar-photo/:date" element={<CalendarPhoto />} />
@@ -86,6 +93,7 @@ function App() {
             <Route path="/ticket" element={<BarcodeBoard />} />
             <Route path="/ticket/:id" element={<BarcodeBoard />} />
             <Route path="/ticket/:id/guest" element={<BarcodeBoard />} />
+            </Route>
           </Routes>
         </Wrapper>
       </Background>
