@@ -71,8 +71,8 @@ const Images = styled.img`
 position: absolute;
 height: 100%;    
 width: 100%;     
-objectFit: 'cover';
-backgroundSize: 'contain';
+object-fit: cover;
+backgroun-size: contain;
 `
 
 const Question = styled.div`
