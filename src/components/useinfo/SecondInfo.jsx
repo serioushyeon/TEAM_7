@@ -111,6 +111,7 @@ export default function Second() {
   useEffect(() => {
     getUserInfo();
     setUser(userInfo);
+    console.log('1');
   }, [userInfo]);
 
   // 프로필 이미지 핸들러
