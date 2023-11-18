@@ -11,12 +11,12 @@ import EventIconAfter from "../../assets/images/EventPhoto/EventIconAfter.png";
 import axios from "axios";
 
 function EventPhoto() {
-  const eventId =  useParams()
+  const {eventId} =  useParams()
   const [images, setImages] = useState([]);
   const [eventName, setEventName] = useState();
   const [isGuest, setIsGuest] = useState(false);
   const [toast, setToast] = useState(false);
-
+  console.log(eventId);
   useEffect(()=>{if(location.pathname === `/eventphoto/${eventId}/guest`)
     setIsGuest(true);
 },[]);
