@@ -6,6 +6,9 @@ import Chat from "../../assets/images/Login/ChatImoge.svg";
 import Goorm from "../../assets/images/Login/TitleGoorm.svg";
 
 const Container = styled.div`
+height: calc(var(--vh, 1vh) * 100);
+  overflow-y: hidden;
+  background-size: cover;
 `;
 
 const Bg = styled.div`
@@ -14,7 +17,7 @@ const Bg = styled.div`
 const BookContainer = styled.div`
   display: flex;
   position: absolute;
-  top: 6.5rem;
+  top: 7.5rem;
   left: 0.9rem;
   width: 22.5rem;
   height: 15rem;
@@ -27,7 +30,7 @@ const BookContainer = styled.div`
 const Title = styled.div`
   display: flex;
   position: absolute;
-  top: 0.625rem;
+  top: 1.625rem;
   right: 1rem;
   color: #191919;
   font-size: 28px;
@@ -39,7 +42,7 @@ const Title = styled.div`
 const Titletext = styled.div`
   display: block;
   position: absolute;
-  top: 2.875rem;
+  top: 3.875rem;
   right: 1rem;
   color: #001c30;
   font-size: 16px;
@@ -50,7 +53,7 @@ const Titletext = styled.div`
 
 const TitleGoorm = styled.div`
   position: absolute;
-  top: 0.625rem;
+  top: 1.625rem;
   right: 8rem;
   width: 40px;
   height: 32.239px;
@@ -70,7 +73,7 @@ const Earth = styled.div`
 
 const Kakao = styled.div`
   position: absolute;
-  top: 10.5rem;
+  top: 16.5rem;
   left: 1.8rem;
   width: 18.75rem;
   height: 2.875rem;
@@ -82,7 +85,7 @@ const LoudSpeaker = styled.div`
   position: absolute;
   width: 2.5rem;
   height: 2.5rem;
-  top: 23rem;
+  top: 28rem;
   left: 1.18rem;
   background-image: url(${Speaker});
   background-repeat: no-repeat;
@@ -92,8 +95,9 @@ const ChatBox = styled.div`
   position: absolute;
   width: 2.5rem;
   height: 2.5rem;
-  top: 29.5rem;
+  top: 33.5rem;
   right: 1.18rem;
+  margin-bottom: 5rem;
   background-image: url(${Chat});
   background-repeat: no-repeat;
 `;
