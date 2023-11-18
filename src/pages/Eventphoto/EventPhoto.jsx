@@ -11,9 +11,9 @@ import EventIconAfter from "../../assets/images/EventPhoto/EventIconAfter.png";
 import axios from "axios";
 
 function EventPhoto() {
-  const eventId =  "String"
+  const eventId =  useParams()
   const [images, setImages] = useState([]);
-  const [eventName, setEventName] = useState("hh");
+  const [eventName, setEventName] = useState(null);
   const [isGuest, setIsGuest] = useState(false);
   const [toast, setToast] = useState(false);
 
