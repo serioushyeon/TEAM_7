@@ -87,7 +87,7 @@ const updateThumbnailInfoAtIndex = (index, newThumbnailInfo) => {
   // redux와 user 동기화
   useEffect(() => {
     (async () => {
-      const { data } = await fetchCalendarInfo();
+      const data = await fetchCalendarInfo();
 
       console.log({useEffectData: data});
 
