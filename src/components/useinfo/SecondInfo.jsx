@@ -4,11 +4,14 @@ import { S } from "./Style";
 import { apiClient } from "../../api/ApiClient";
 import DatePicker from "react-datepicker";
 import { ko } from "date-fns/esm/locale";
-import { BsCalendarHeart, BsCalendarWeek } from "react-icons/bs"
+import { BsCalendarHeart, BsCalendarWeek } from "react-icons/bs";
 import { useCookies } from "react-cookie";
 import { useSelector } from "react-redux";
 import { setUserData } from "../../redux/userInfoSlice";
 import { useDispatch } from "react-redux";
+import userBarcord from "../../assets/images/userinfo/SubStartBar.png";
+import defaultProfileImage from "../../assets/images/userinfo/SubStartPro.png";
+// import { userData } from "./userData";
 
 export default function Second() {
   /*const [cookies] = useCookies(["accessCookie", "refreshCookie"]);
@@ -25,14 +28,22 @@ export default function Second() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
- const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const getAccessCookie = localStorage.getItem("accessCookie");
   const getRefreshCookie = localStorage.getItem("refreshCookie");
 
+  const defaultpro = "../../assets/images/userinfo/SubStartPro.png";
+
+  const displayProfileImage = () => {
+    return userInfo && userInfo.profileImage
+      ? userInfo.profileImage
+      : defaultProfileImage;
+  };
+
   // 리덕스(userData 대신 사용)
   // const userInfo = useSelector((state) => state.userdata);
-   // console.log("userInfo: ", userInfo);
+  // console.log("userInfo: ", userInfo);
 
   const [edit, setEdit] = useState(false);
   const [fileState, setFileState] = useState("");
@@ -40,7 +51,7 @@ export default function Second() {
   const [loading, setLoading] = useState(true);
 
   const userInfo = useSelector((state) => state.userdata.value);
-  
+
   /*// 로컬 상태 초기화
   const [user, setUser] = useState({
     nickname: "", // KangSeungJun
@@ -75,7 +86,7 @@ export default function Second() {
 
       // 데이터 재세팅
 
- /*  if (response.data.modalActive === false) {
+      /*  if (response.data.modalActive === false) {
         alert("정보를 입력해주세요 !");
       }
       */
@@ -84,11 +95,11 @@ export default function Second() {
     }
   };
 
-   // redux와 user 동기화
-   useEffect(() => {
-      const { data } = getUserInfo();
-// 데이터를 메서드로 따로 받은 후 세팅한다.
-      dispatch(setUserData(data));
+  // redux와 user 동기화
+  useEffect(() => {
+    const { data } = getUserInfo();
+    // 데이터를 메서드로 따로 받은 후 세팅한다.
+    dispatch(setUserData(data));
   }, []);
 
   // 프로필 이미지 핸들러
@@ -101,7 +112,6 @@ export default function Second() {
       const objectUrl = URL.createObjectURL(file);
 
       // setUser((user) => fileState && ({ ...user, profileImage: objectUrl }));
-
 
       console.log("image url: ", objectUrl);
       // console.log(user.profileImage);
@@ -124,10 +134,8 @@ export default function Second() {
       const response = await axios.post(
         `${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/user-info`,
         formData,
-        // 서버에서 body로 요청을 했는지 확인해야함
         {
           headers: {
-            // 쿠키 보냄, axios가 자동으로 Content-type 설정해줌.
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${getAccessCookie}`,
           },
@@ -144,15 +152,15 @@ export default function Second() {
     }
   };
 
-   // 유저 데이터 실시간 수정
-   const handleInfoChange = (e, field) => {
-    const updatedUser = { ...userInfo, [field]: e.target.value };
-    //setUser(updatedUser);
-    dispatch(setUserData(updatedUser));
+  // // 유저 데이터 실시간 수정
+  // const handleInfoChange = (e, field) => {
+  //   const updatedUser = { ...userInfo, [field]: e.target.value };
+  //   //setUser(updatedUser);
+  //   dispatch(setUserData(updatedUser));
 
-    // userinfo로
-    // dispatch(userData(updatedUser));
-  };
+  //   userInfo;
+  //   dispatch(userData(updatedUser));
+  // };
 
   // 데이터 전송
   function handleEditUserInfo() {
@@ -180,6 +188,10 @@ export default function Second() {
 
   // console.log({genderValue});
   // console.log({userInfo});
+
+  // 생일을 위한 상태 변수, 초기값은 현재 날짜 또는 userInfo의 생일 날짜
+  const [birthDate, setBirthDate] = useState(null);
+
   return (
     <S.Book2Container>
       {!edit ? (
@@ -191,9 +203,7 @@ export default function Second() {
       )}
 
       <S.ProfileBox>
-        {
-          userInfo?.profileImage &&  <S.Images src={userInfo?.profileImage} />
-        }
+        <S.Images src={displayProfileImage()} alt="프로필사진" />
       </S.ProfileBox>
       {edit ? (
         <>
@@ -220,7 +230,7 @@ export default function Second() {
           value={userInfo && userInfo.nickname}
           id="nickname"
           name="nickname"
-          onChange={(e) => handleInfoChange(e, "nickname")}
+          // onChange={(e) => handleInfoChange(e, "nickname")}
           readOnly={!edit}
           edit={edit}
           maxLength={8}
@@ -228,19 +238,21 @@ export default function Second() {
       </S.NickName>
       <S.Date>
         <S.Question>생일/Date of birth</S.Question>
-        
-        <DatePicker
-          className="input"
-          dateFormat="yyyy-MM-dd"
-          onChange={(date) => setStartDate(date)}
-          locale={ko}
-          selectsStart
-          startDate={userInfo && userInfo.birth}
-          endDate={endDate}
-          readOnly={!edit}
-          edit={edit}
-        />
-        <BsCalendarHeart />
+        <S.DatePick>
+          <DatePicker
+            className="input"
+            dateFormat="yyyy-MM-dd"
+            selected={birthDate}
+            onChange={(date) => setBirthDate(date)}
+            locale={ko}
+            selectsStart
+            startDate={birthDate}
+            endDate={endDate}
+            readOnly={!edit}
+            edit={edit}
+          />
+        </S.DatePick>
+        {/* <BsCalendarHeart /> */}
       </S.Date>
       <S.Sex>
         <S.Question>성별</S.Question>
@@ -251,7 +263,7 @@ export default function Second() {
               value="M"
               id="gender"
               name="gender"
-              onChange={(e) => handleInfoChange(e, "gender")}
+              // onChange={(e) => handleInfoChange(e, "gender")}
             />
             M
             <input
@@ -259,9 +271,9 @@ export default function Second() {
               id="gender"
               value="Y"
               name="gender"
-              onChange={(e) => handleInfoChange(e, "gender")}
+              // onChange={(e) => handleInfoChange(e, "gender")}
             />
-            Y
+            F
           </>
         ) : (
           <>
@@ -285,7 +297,7 @@ export default function Second() {
         {userInfo && userInfo.barcodeCount}
       </S.NunberBarcord>
       <S.UserBarcord>
-        <S.Images src={userInfo && userInfo.recentBarcodeImg} />
+        <S.Images src={userBarcord} />
       </S.UserBarcord>
       {edit ? (
         <>
