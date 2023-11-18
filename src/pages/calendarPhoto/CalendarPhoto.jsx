@@ -8,7 +8,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { setCalendarData } from "../../redux/CalendarPhotoBoard";
 import PhotoOption from "../../components/calendar/PhotoOption";
 import { setActiveStartDate, toggleSelected } from "../../redux/CalendarUI";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 
 export default function CalendarPhoto() {
   let navigate = useNavigate();
@@ -41,15 +41,15 @@ export default function CalendarPhoto() {
     useState(null);
 
   // 받은 데이터확인
-  console.log("dateInfo: ", dateInfo);
-  console.log(
-    "일 클릭(사진X) : year: ",
-    dateDay.year,
-    "month: ",
-    dateDay.month,
-    "day: ",
-    dateDay.day
-  );
+  // console.log("dateInfo: ", dateInfo);
+  // console.log(
+  //   "일 클릭(사진X) : year: ",
+  //   dateDay.year,
+  //   "month: ",
+  //   dateDay.month,
+  //   "day: ",
+  //   dateDay.day
+  // );
 
   useEffect(() => {
     const fetchDayData = async () => {
@@ -76,7 +76,6 @@ export default function CalendarPhoto() {
   // 메모 실시간 변경
   const handleMemoChange = (e) => {
     const value = e.target.value;
-
     setMemo(value);
   };
 
@@ -152,9 +151,9 @@ export default function CalendarPhoto() {
       });
 
       // FormData 객체 내용 확인을 위한 콘솔 로그
-      for (let [key, value] of formData.entries()) {
-        console.log(`${key}: `, value);
-      }
+      // for (let [key, value] of formData.entries()) {
+      //   console.log(`${key}: `, value);
+      // }
 
       // API 요청
       const response = await axios.post(
@@ -163,7 +162,7 @@ export default function CalendarPhoto() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${getAccessCookie}`,
+            Authorization: `Bearer ${accessCookie["accessCookie"]}`,
           },
         }
       );
@@ -193,6 +192,25 @@ export default function CalendarPhoto() {
     dispatch(setCalendarData({ memo, images }));
     navigate("/calendar");
   };
+
+  const [previousDate, setPreviousDate] = useState(date); // 이전 날짜 상태
+
+  useEffect(() => {
+    // 날짜가 변경되었을 때 초기화 로직
+    if (date !== previousDate) {
+      setImages([]); // 이미지 초기화
+      setMemo(""); // 메모 초기화
+      setPreviousDate(date); // 이전 날짜 업데이트
+    }
+  }, [date, previousDate]);
+
+  useEffect(() => {
+    // 컴포넌트가 언마운트될 때 실행되는 로직
+    return () => {
+      setImages([]); // 이미지 초기화
+      setMemo(""); // 메모 초기화
+    };
+  }, []);
 
   return (
     <S.Container>
