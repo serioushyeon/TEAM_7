@@ -2,7 +2,7 @@
 
 <h1 align="center"><strong><a href="https://moodbarcode.com"> ⭐️ MOOCO ⭐️ </h1>
 
-<h3 align="center">👉 단풍톤 TEAM_7의 백엔드 레포지토리입니다. 👈</a></strong></h3>
+<h3 align="center">👉 단풍톤 TEAM_7의 프론트엔드 레포지토리입니다. 👈</a></strong></h3>
 
 <br>
 
