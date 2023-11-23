@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import moment from "moment";
+import { apiClient } from "../../api/ApiClient";
 import formatDate from "../../components/calendar/FormatDate";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -98,7 +99,7 @@ export default function MyCalendar() {
 
   const fetchCalendarInfo = async () => {
     try {
-      const response = await axios.get(`/api/v1/user/calender`, {
+      const response = await apiClient.get(`/api/v1/user/calender`, {
         params: {
           startDate: startDate,
           endDate: endDate,

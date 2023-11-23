@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { S } from "./CPhtoStyle";
 import axios from "axios";
+import { apiClient } from "../../api/ApiClient";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -23,7 +24,8 @@ export default function CalendarPhoto() {
   // const [memo, setMemo] = useState("");
   const maxLength = 100;
 
-  const [getAccessCookie, removeCookie] = useCookies(["access_cookie"]);
+  const [removeCookie] = useCookies(["accessCookie"]);
+  const getAccessCookie = localStorage.getItem("accessCookie");
 
   // 이미지 상태
   // const [images, setImages] = useState([]);
@@ -45,7 +47,7 @@ export default function CalendarPhoto() {
   useEffect(() => {
     const fetchDayData = async () => {
       try {
-        const response = await axios.get(`/api/v1/user/${date}`, {
+        const response = await apiClient.get(`/api/v1/user/${date}`, {
           headers: {
             Authorization: `Bearer ${getAccessCookie}`,
           },
