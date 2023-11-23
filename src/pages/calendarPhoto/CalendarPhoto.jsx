@@ -27,6 +27,8 @@ export default function CalendarPhoto() {
   const [removeCookie] = useCookies(["accessCookie"]);
   const getAccessCookie = localStorage.getItem("accessCookie");
 
+  console.log("날짜", date);
+
   // 이미지 상태
   // const [images, setImages] = useState([]);
   const fileInputRef = useRef(null);
