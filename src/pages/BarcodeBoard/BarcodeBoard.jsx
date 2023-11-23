@@ -9,7 +9,6 @@ import Modal from 'react-modal';
 import Toast from '../../components/EventToast/EventToast'
 import html2canvas from 'html2canvas';
 import saveAs from "file-saver";
-import barcode from "../../assets/images/Barcode/barcodebg.jpg"
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setTicket } from "../../redux/ticketSlice";
