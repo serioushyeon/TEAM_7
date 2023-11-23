@@ -1,27 +1,23 @@
 import React, { useState, useRef, useEffect } from "react";
 import { S } from "./CPhtoStyle";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { setCalendarData } from "../../redux/CalendarPhotoBoard";
 import PhotoOption from "../../components/calendar/PhotoOption";
-import { setActiveStartDate, toggleSelected } from "../../redux/CalendarUI";
 import { useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 export default function CalendarPhoto() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+
   const { date } = useParams();
-
-  // 일자 데이터
-  const dateInfo = useSelector((state) => state.date);
-  const dateDay = useSelector((state) => state.dateDay.dateDay);
-
-  // const calendarPhotoData = useSelector((state) => state.calendarPhotoBoard);
-  // console.log("Calendar Photo Board State:", calendarPhotoData); // 상태 확인
+  // 요일 데이터
+  const { dayOfWeek } = location.state || {};
+  const dateRedux = useSelector((state) => state.dateDay); // redux의 dateDay 상태
 
   // Redux 스토어에서 데이터 가져오기
   const calendarPhotoData = useSelector((state) => state.CalendarPhotoBoard);
@@ -33,27 +29,17 @@ export default function CalendarPhoto() {
   // const [memo, setMemo] = useState("");
   const maxLength = 100;
 
+  const [getAccessCookie, setAccessCookie, removeCookie] = useCookies([
+    "access_cookie",
+  ]);
+
   // 이미지 상태
   // const [images, setImages] = useState([]);
   const fileInputRef = useRef(null);
-  const [accessCookie, setAccessCookie, removeCookie] = useCookies([
-    "accessCookie",
-  ]);
 
   // 대표 사진 상태
   const [representativeImageIndex, setRepresentativeImageIndex] =
     useState(null);
-
-  // 받은 데이터확인
-  // console.log("dateInfo: ", dateInfo);
-  // console.log(
-  //   "일 클릭(사진X) : year: ",
-  //   dateDay.year,
-  //   "month: ",
-  //   dateDay.month,
-  //   "day: ",
-  //   dateDay.day
-  // );
 
   // 로그아웃 처리 함수
   const handleLogout = () => {
@@ -105,7 +91,7 @@ export default function CalendarPhoto() {
     };
 
     fetchDayData();
-  }, [date, navigate]);
+  }, [date]);
 
   // 메모 실시간 변경
   const handleMemoChange = (e) => {
@@ -191,7 +177,7 @@ export default function CalendarPhoto() {
 
       // API 요청
       const response = await axios.post(
-        `/api/v1/user/${dateInfo.date}`,
+        `/api/v1/user/${dateRedux.date}`,
         formData,
         {
           headers: {
@@ -201,19 +187,14 @@ export default function CalendarPhoto() {
         }
       );
 
-      console.log("Post successful. Response Data:", response.data);
+      console.log("성공 :", response.data);
     } catch (error) {
-      console.error("Error posting data", error);
+      console.error("에러 : ", error);
       console.log(
         "Data attempted to post:",
         images.map((image) => image.file)
       );
     }
-  };
-
-  // 날짜 변경 핸들러
-  const updateActiveStartDate = (year, month) => {
-    dispatch(setActiveStartDate(new Date(year, month).toISOString()));
   };
 
   // 취소 버튼 클릭 시 캘린더로 이동
@@ -248,8 +229,8 @@ export default function CalendarPhoto() {
 
   return (
     <S.Container>
-      <PhotoOption />
-      <S.DayWeek>{dateInfo.dayOfWeek}</S.DayWeek>
+      <PhotoOption date={date} />
+      <S.DayWeek>{dayOfWeek}</S.DayWeek>
       <S.SmallText>
         <S.DateColor>{date}</S.DateColor>
       </S.SmallText>
