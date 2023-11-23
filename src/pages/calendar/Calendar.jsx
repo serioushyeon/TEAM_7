@@ -24,6 +24,8 @@ export default function MyCalendar() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
+  console.log(value);
+
   // 31개의 빈 데이터를 포함하는 thumbnailInfoList 초기화
   const initializeThumbnailInfoList = () =>
     Array.from({ length: 35 }, () => ({
