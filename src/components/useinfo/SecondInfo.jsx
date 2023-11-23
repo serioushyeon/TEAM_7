@@ -181,10 +181,8 @@ export default function Second() {
         </>
       ) : (
         <S.ProfileBox>
-          {user.profileImage ? (
-            <S.Images src={user.profileImage} alt="프로필사진" />
-          ) : (
-            <S.Images src={defaultImage} />
+          {<S.Images src={user.profileImage} alt="프로필사진" /> || (
+            <S.Images src={defaultImage} alt="기본프로필" />
           )}
         </S.ProfileBox>
       )}

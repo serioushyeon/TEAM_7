@@ -60,11 +60,12 @@ export default function CalendarPhoto() {
       try {
         const response = await axios.get(`/api/v1/user/${date}`);
         const fetchedData = response.data;
+        console.log("가져온 데이터: ", response.data);
 
         // 가져온 데이터로 상태 업데이트
-        setMemo(fetchedData.memo);
+        setMemo(fetchedData?.memo);
         setImages(
-          fetchedData.dayImageList.map((imageUrl, index) => ({
+          fetchedData?.dayImageList.map((imageUrl, index) => ({
             id: index,
             file: new File([], imageUrl), // File 객체 생성 (또는 다른 방식 사용)
           }))
@@ -101,12 +102,12 @@ export default function CalendarPhoto() {
 
   // 파일 선택 핸들러 수정
   const handleFileSelect = (event) => {
-    const files = Array.from(event.target.files).map((file) => ({
+    const files = Array.from(event.target.files)?.map((file) => ({
       id: Date.now() + file.name, // 고유 ID 생성
       file: file,
     }));
 
-    if (files.length + images.length > 4) {
+    if (files?.length + images?.length > 4) {
       alert("최대 4장의 사진만 업로드 가능합니다.");
       return;
     }
@@ -161,7 +162,7 @@ export default function CalendarPhoto() {
       formData.append("memo", memo);
 
       // 이미지 추가
-      if (images.length > 0) {
+      if (images?.length > 0) {
         // 첫 번째 이미지는 'thumbnail'로 추가
         formData.append("thumbnail", images[0].file);
       }
@@ -192,7 +193,7 @@ export default function CalendarPhoto() {
       console.error("에러 : ", error);
       console.log(
         "데이터 전송 : ",
-        images.map((image) => image.file)
+        images?.map((image) => image.file)
       );
     }
   };
@@ -238,7 +239,7 @@ export default function CalendarPhoto() {
       </S.SettingPhoto>
       <S.PhotoWrapper>
         <S.PhotoContainer>
-          {Array.from({ length: 5 }).map((_, index) => {
+          {Array.from({ length: 5 })?.map((_, index) => {
             const image = images[index - 1];
             // 첫 번째 줄과 두 번째 줄 구분
             const isSecondRow = index >= 3;
@@ -272,7 +273,7 @@ export default function CalendarPhoto() {
                 {index === 0 ? (
                   <>
                     <S.CPhotoImage />
-                    <S.CPhotoText>{images.length}/4</S.CPhotoText>
+                    <S.CPhotoText>{images?.length}/4</S.CPhotoText>
                   </>
                 ) : (
                   <>
