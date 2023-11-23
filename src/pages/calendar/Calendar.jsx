@@ -141,8 +141,8 @@ export default function MyCalendar() {
       const postBarcordInfo = async () => {
         try {
           // startDate, endDate 형식은 YYYY-MM-DD
-          const response = await axios.post(
-            `${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/new-barcode`,
+          const response = await apiClient.post(
+            `/api/v1/user/new-barcode`,
             {
               year: dateRedux.year,
               month: dateRedux.month,

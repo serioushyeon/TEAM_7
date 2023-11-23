@@ -6,6 +6,7 @@ import { BsCalendarHeart } from "react-icons/bs";
 import userBarcord from "../../assets/images/userinfo/SubStartBar.png";
 import defaultProfileImage from "../../assets/images/userinfo/SubStartPro.png";
 import defaultImage from "../../assets/images/userinfo/defaultProfile.svg";
+import { apiClient } from "../../api/ApiClient";
 // import { userData } from "./userData";
 
 export default function Second() {
@@ -44,15 +45,12 @@ export default function Second() {
   // get 메서드는 한 번만!
   const getUserInfo = async () => {
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/user-info`,
-        {
-          headers: {
-            // 쿠키 보냄
-            Authorization: `Bearer ${getAccessCookie}`,
-          },
-        }
-      );
+      const response = await apiClient.get(`/api/v1/user/user-info`, {
+        headers: {
+          // 쿠키 보냄
+          Authorization: `Bearer ${getAccessCookie}`,
+        },
+      });
       console.log("성공 : ", response.data);
 
       setUser(response.data);
