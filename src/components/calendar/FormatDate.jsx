@@ -1,9 +1,12 @@
-function formatDate(year, month, day) {
-    // 월과 일이 한 자리 수일 때 앞에 0을 붙인다.
-    const formattedMonth = month < 9 ? `0${month + 1}` : `${month + 1}`;
-    const formattedDay = day < 10 ? `0${day}` : `${day}`;
+function formatDate(date) {
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1; // getMonth()는 0부터 시작하므로 1을 더함
+  const day = date.getDate();
 
-    return `${year}-${formattedMonth}-${formattedDay}`;
+  const formattedMonth = month < 10 ? `0${month}` : month;
+  const formattedDay = day < 10 ? `0${day}` : day;
+
+  return `${year}-${formattedMonth}-${formattedDay}`;
 }
 
 export default formatDate;
