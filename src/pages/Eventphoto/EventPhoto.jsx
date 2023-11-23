@@ -7,10 +7,11 @@ import Toast from '../../components/EventToast/EventToast';
 //사진 import
 import EventIconBefore from "../../assets/images/EventPhoto/EventIconBefore.png";
 import EventIconAfter from "../../assets/images/EventPhoto/EventIconAfter.png";
-
+import BarcodeLoading from "../../components/BarcodeLoading/BarcodeLoading"
 import axios from "axios";
 
 function EventPhoto() {
+  const [loading, setLoading] = useState(false);
   const {eventId} =  useParams();  
   const [images, setImages] = useState([]);
   const [eventName, setEventName] = useState();
@@ -100,7 +101,7 @@ function EventPhoto() {
 
   const handleSubmit = async () => {
     const formData = new FormData();
-
+    setLoading(true);
     for (const image of images) {
       const response = await fetch(image);
       const blob = await response.blob();
@@ -125,15 +126,18 @@ function EventPhoto() {
       });
 
       if (response.status === 200) {
+        setLoading(false);
         alert("이미지가 저장되었습니다 :)");
         if(!isGuest){
           navigate(`/event`);
         }
       }
        else {
+        setLoading(false);
         alert("업로드에 실패했습니다.");
       }
     } catch (error) {
+      setLoading(false);
       console.error("Error uploading images:", error);
       alert("네트워크 오류가 발생했습니다.");
     }
@@ -203,6 +207,7 @@ function EventPhoto() {
     }
   };
   const handleBarcodeGeneration = async () => {
+    setLoading(true);
       try {
         const response = await apiClient.post(`/api/v1/event/${eventId}/result`, {
           eventId : eventId
@@ -211,14 +216,18 @@ function EventPhoto() {
             Authorization: `Bearer ${getAccessCookie}`
         }
       }).then();
+        setLoading(false);
         console.log("Barcode generated successfully:", response.data);
         navigate("/bcstore");
       } catch (error) {
+        setLoading(false);
+        alert("바코드 생성에 실패하였습니다.")
         console.error("Error in generating barcode:", error);
       }
   };
   return (
     <>
+    {loading ? <BarcodeLoading/> : <></>}
     {isGuest? <S.Navigation></S.Navigation> : <></>}
     <S.EventPhotoWrapper>
       {toast && <Toast setToast={setToast} text={"클립보드에 복사되었습니다."}/>}
