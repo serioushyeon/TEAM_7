@@ -98,17 +98,20 @@ export default function MyCalendar() {
 
   const fetchCalendarInfo = async () => {
     try {
-      const response = await axios.get("/api/v1/user/calender", {
-        params: {
-          startDate: startDate,
-          endDate: endDate,
-          year: dateRedux.year,
-          month: dateRedux.month,
-        },
-        headers: {
-          Authorization: `Bearer ${getAccessCookie}`,
-        },
-      });
+      const response = await axios.get(
+        `${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/calender`,
+        {
+          params: {
+            startDate: startDate,
+            endDate: endDate,
+            year: dateRedux.year,
+            month: dateRedux.month,
+          },
+          headers: {
+            Authorization: `Bearer ${getAccessCookie}`,
+          },
+        }
+      );
       console.log("data : ", response.data);
       setDataList(response.data);
     } catch (error) {
