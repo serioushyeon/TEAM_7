@@ -59,6 +59,7 @@ export default function CalendarPhoto() {
           }
         );
         const fetchedData = response.data;
+        console.log(response.data);
         // 가져온 데이터로 상태 업데이트
         setMemo(fetchedData.memo);
         setImages(
