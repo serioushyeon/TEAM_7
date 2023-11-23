@@ -19,8 +19,10 @@ export default function CalendarPhoto() {
   const { dayOfWeek } = location.state || {};
   const dateRedux = useSelector((state) => state.dateDay); // redux의 dateDay 상태
 
-  // Redux 스토어에서 데이터 가져오기
-  const calendarPhotoData = useSelector((state) => state.CalendarPhotoBoard);
+  const [calendarPhotoData, setCalendarPhotoDate] = useState({
+    memo: "",
+    images: [],
+  });
 
   // 컴포넌트 상태 초기화
   const [memo, setMemo] = useState(calendarPhotoData?.memo || "");
@@ -29,9 +31,7 @@ export default function CalendarPhoto() {
   // const [memo, setMemo] = useState("");
   const maxLength = 100;
 
-  const [getAccessCookie, setAccessCookie, removeCookie] = useCookies([
-    "access_cookie",
-  ]);
+  const [getAccessCookie, removeCookie] = useCookies(["access_cookie"]);
 
   // 이미지 상태
   // const [images, setImages] = useState([]);
@@ -191,7 +191,7 @@ export default function CalendarPhoto() {
     } catch (error) {
       console.error("에러 : ", error);
       console.log(
-        "Data attempted to post:",
+        "데이터 전송 : ",
         images.map((image) => image.file)
       );
     }
@@ -204,7 +204,6 @@ export default function CalendarPhoto() {
 
   const handleSave = () => {
     postCalendarData();
-    dispatch(setCalendarData({ memo, images }));
     navigate("/calendar");
   };
 
