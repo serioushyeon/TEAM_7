@@ -161,11 +161,7 @@ export default function Second() {
       {edit ? (
         <>
           <S.ProfileBox>
-            {user.profileImage ? (
-              <S.Images src={user.profileUrl} alt="프로필사진" />
-            ) : (
-              <S.Images src={defaultImage} />
-            )}
+            <S.Images src={user?.profileUrl} alt="프로필사진" />
           </S.ProfileBox>
           <S.ProfileLabel htmlFor="profileImage">
             프로필 사진
@@ -181,9 +177,7 @@ export default function Second() {
         </>
       ) : (
         <S.ProfileBox>
-          {<S.Images src={user.profileUrl} alt="프로필사진" /> || (
-            <S.Images src={defaultImage} alt="기본프로필" />
-          )}
+          {<S.Images src={user?.profileUrl} alt="프로필사진" />}
         </S.ProfileBox>
       )}
       <S.NickName>
