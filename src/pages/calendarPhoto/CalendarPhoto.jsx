@@ -58,7 +58,11 @@ export default function CalendarPhoto() {
   useEffect(() => {
     const fetchDayData = async () => {
       try {
-        const response = await axios.get(`/api/v1/user/${date}`);
+        const response = await axios.get(`/api/v1/user/${date}`{
+          headers: {
+            Authorization: `Bearer ${getAccessCookie}`,
+          },
+        });
         const fetchedData = response.data;
         console.log("가져온 데이터: ", response.data);
 
