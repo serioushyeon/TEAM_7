@@ -85,7 +85,6 @@ function App() {
             {/* <MoodCloud /> */}
             <Route path="/bcstore" element={<MoodCloud />} />
             {/* <BarcodeBoard /> */}
-            <Route path="/ticket" element={<BarcodeBoard />} />
             <Route path="/ticket/:id" element={<BarcodeBoard />} />
             <Route path="/ticket/:id/guest" element={<BarcodeBoard />} />
             {/* </Route> */}

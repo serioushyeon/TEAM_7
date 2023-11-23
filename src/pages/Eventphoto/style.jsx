@@ -92,6 +92,7 @@ export const UploadChangeItem = styled.div`
   cursor: pointer;
   border-radius: 4px;
   color: ${(props) => (props.isSelected ? "#F28B50" : "black")};
+  background-color: #faf6f4;
 `;
 export const makeBarcode = styled.div`
   width: 100px;
@@ -103,6 +104,7 @@ export const makeBarcode = styled.div`
   cursor: pointer;
   border-radius: 4px;
   color: ${(props) => (props.isSelected ? "#F28B50" : "black")};
+  background-color: #faf6f4;
 `;
 
 export const Navigation = styled.div`
