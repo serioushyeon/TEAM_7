@@ -17,18 +17,13 @@ export default function CalendarPhoto() {
   const { dayOfWeek } = location.state || {};
   const dateRedux = useSelector((state) => state.dateDay); // redux의 dateDay 상태
 
-  // Redux 스토어에서 데이터 가져오기
-  const calendarPhotoData = useSelector((state) => state.CalendarPhotoBoard);
-
   // 컴포넌트 상태 초기화
-  const [memo, setMemo] = useState(calendarPhotoData?.memo || "");
-  const [images, setImages] = useState(calendarPhotoData?.images || []);
+  const [memo, setMemo] = useState("");
+  const [images, setImages] = useState([]);
   // const [memo, setMemo] = useState("");
   const maxLength = 100;
 
-  const [getAccessCookie, setAccessCookie, removeCookie] = useCookies([
-    "access_cookie",
-  ]);
+  const [getAccessCookie, removeCookie] = useCookies(["access_cookie"]);
 
   // 이미지 상태
   // const [images, setImages] = useState([]);
@@ -50,14 +45,11 @@ export default function CalendarPhoto() {
   useEffect(() => {
     const fetchDayData = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/${date}`,
-          {
-            headers: {
-              Authorization: `Bearer ${getAccessCookie}`,
-            },
-          }
-        );
+        const response = await axios.get(`/api/v1/user/${date}`, {
+          headers: {
+            Authorization: `Bearer ${getAccessCookie}`,
+          },
+        });
         const fetchedData = response.data;
         console.log(response.data);
         // 가져온 데이터로 상태 업데이트
