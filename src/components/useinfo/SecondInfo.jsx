@@ -24,7 +24,7 @@ export default function Second() {
     gender: "",
     dateOfIssue: "",
     barcodeCount: 0,
-    profileImage: "",
+    profileUrl: "",
     recentBarcodeImg: "",
     recentBarcodeTitleList: ["", "", ""],
     modalActive: false,
@@ -162,7 +162,7 @@ export default function Second() {
         <>
           <S.ProfileBox>
             {user.profileImage ? (
-              <S.Images src={user.profileImage} alt="프로필사진" />
+              <S.Images src={user.profileUrl} alt="프로필사진" />
             ) : (
               <S.Images src={defaultImage} />
             )}
@@ -181,7 +181,7 @@ export default function Second() {
         </>
       ) : (
         <S.ProfileBox>
-          {<S.Images src={user.profileImage} alt="프로필사진" /> || (
+          {<S.Images src={user.profileUrl} alt="프로필사진" /> || (
             <S.Images src={defaultImage} alt="기본프로필" />
           )}
         </S.ProfileBox>
