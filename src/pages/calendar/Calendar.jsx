@@ -17,14 +17,27 @@ export default function MyCalendar() {
   const getAccessCookie = localStorage.getItem("accessCookie");
 
   // 현재 선택한 일자
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [value, onChange] = useState(new Date());
   const [isDisabled, setIsDisabed] = useState(false);
   const dateRedux = useSelector((state) => state.dateDay); // redux의 dateDay 상태
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [activeDate, setActiveDate] = useState(
-    new Date(dateRedux.activeStartDate)
-  );
+
+  // 31개의 빈 데이터를 포함하는 thumbnailInfoList 초기화
+  const initializeThumbnailInfoList = () =>
+    Array.from({ length: 35 }, () => ({
+      thumbnailUrl: "",
+      date: "",
+    }));
+
+  // 초기 상태 정의
+  const initialState = {
+    thumbnailInfoList: initializeThumbnailInfoList(),
+    buttonStatus: false,
+  };
+
+  // 사진 저장
+  const [dataList, setDataList] = useState(initialState);
 
   const getCalendarStartDate = (year, month) => {
     const firstDayOfMonth = new Date(year, month, 1);
@@ -47,22 +60,30 @@ export default function MyCalendar() {
     return { newStartDay, newEndDay };
   };
 
-  const [content, setContent] = useState({
-    thumbnailInfoList: [], // 우선 빈 배열로 초기화
-    buttonStatus: "",
-  });
-
   const handleDateChange = (date) => {
-    setSelectedDate(date);
-    console.log("선택한 날짜 : ", date);
+    const days = [
+      "일요일",
+      "월요일",
+      "화요일",
+      "수요일",
+      "목요일",
+      "금요일",
+      "토요일",
+    ];
+
+    onChange(date);
     // 리덕스에 일 저장
-    dispatch(updateDay({ day: date.getDate() }));
+    dispatch(updateDay({ day: date.getDay() }));
+
+    const formattedDate = formatDate(date);
+    const dayOfWeek = days[date.getDay()];
+    navigate(`/calendar-photo/${formattedDate}`, {
+      state: { dayOfWeek },
+    });
   };
 
   // 마운트
   useEffect(() => {
-    setActiveDate(new Date(dateRedux.activeStartDate));
-
     const { newStartDay, newEndDay } = getCalendarStartDate(
       dateRedux.year,
       // 1을 더해야 출력이 정확하다.
@@ -73,7 +94,7 @@ export default function MyCalendar() {
     setEndDate(formatDate(newEndDay));
 
     fetchCalendarInfo();
-  }, [dateRedux.activeStartDate]);
+  }, [dateRedux.activeStartDate, value]);
 
   const fetchCalendarInfo = async () => {
     try {
@@ -89,27 +110,12 @@ export default function MyCalendar() {
         },
       });
       console.log("data : ", response.data);
+      setDataList(response.data);
     } catch (error) {
       console.error("Error fetching calendar info:", error);
     }
   };
 
-  // 변경하는 값들 의존성으로 넣기
-
-  // 사용자가 클릭한 날짜를 redux에 저장한다. api 폴더에서 함수만 가져옴.
-
-  // 사진이 없는 경우, 사진 등록 창으로 이동하는 함수
-  function handleLocatePhoto(date) {
-    // 날짜 형식을 'YYYY-MM-DD'로 변환
-    const formattedDate = moment(date).format("YYYY-MM-DD");
-    navigate(`/calendar-photo/${formattedDate}`);
-  }
-  // 사진이 있는 경우, 사진 표시 창으로 이동하는 함수
-  function handleLocateDay(date) {
-    // 날짜 형식을 'YYYY-MM-DD'로 변환
-    const formattedDate = moment(date).format("YYYY-MM-DD");
-    navigate(`/calendar-non-photo/${formattedDate}`);
-  }
   // 일요일, 토요일 색상 변경
   const tileClassName = ({ date, view }) => {
     // 달력의 'month' 뷰일 때만 클래스를 적용한다.
@@ -134,8 +140,8 @@ export default function MyCalendar() {
           const response = await axios.post(
             `${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/new-barcode`,
             {
-              year: dateRange.year,
-              month: dateRange.month,
+              year: dateRedux.year,
+              month: dateRedux.month,
             },
             {
               headers: {
@@ -167,13 +173,13 @@ export default function MyCalendar() {
       <S.BackImage>
         <S.CalendarImage src={Calendar1} alt="Calendar1" />
         <S.CalendarText>Calendar</S.CalendarText>
-        <CalendarOption />
+        <CalendarOption value={value} setValue={onChange} />
         <Calendar
           local="en"
           onChange={handleDateChange}
-          activeStartDate={activeDate}
+          activeStartDate={value}
           tileClassName={tileClassName}
-          value={selectedDate}
+          value={value}
           next2Label={null}
           prev2Label={null}
           nextLabel={null}
@@ -182,10 +188,10 @@ export default function MyCalendar() {
           formatShortWeekday={(local, date) => moment(date).format("ddd")}
           formatDay={(local, date) => moment(date).format("D")}
           // 날짜 칸에 보여지는 콘텐츠
-          tileContent={({ date, view }) => {
+          tileContent={({ date }) => {
             // 날짜에 해당하는 이미지 데이터를 찾는다.
             // moment로 date 내부 데이터에서 day만 빼옴.
-            const imageEntry = content.thumbnailInfoList?.find((entry) =>
+            const imageEntry = dataList.thumbnailInfoList?.find((entry) =>
               moment(date).isSame(entry.date, "day")
             );
             // width를 지정하고 height를 auto로 하면 안됌.
@@ -205,11 +211,7 @@ export default function MyCalendar() {
               };
               // 해당하는 이미지 데이터가 있다면 이미지 태그를 생성한다.
               return (
-                <div
-                  className="report-image"
-                  style={style}
-                  onClick={() => handleLocateDay(selectedDate)}
-                >
+                <div className="report-image" style={style}>
                   <S.DayImage src={imageEntry.thumbnailUrl} />
                 </div>
               );
@@ -220,13 +222,7 @@ export default function MyCalendar() {
                 width: "auto",
                 height: "4.5rem",
               };
-              return (
-                <div
-                  className="no_image"
-                  style={style}
-                  onClick={() => handleLocatePhoto(selectedDate)}
-                />
-              );
+              return <div className="no_image" style={style} />;
             }
           }}
         />

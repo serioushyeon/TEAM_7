@@ -6,8 +6,7 @@ const initialDateState = {
   year: today.getFullYear(),
   month: today.getMonth(), // 월은 0부터 시작한다.
   day: today.getDate(),
-  activeStartDate: today.toISOString(), // 날짜를 문자열로 변환한다.
-  // 리덕스는 비직렬화 데이터를 저장할 수 없기 때문이다. (ex. date)
+  // 리덕스는 비직렬화 데이터를 저장할 수 없다. (ex. date)
 };
 
 export const dateDaySlice = createSlice({
@@ -30,14 +29,8 @@ export const dateDaySlice = createSlice({
       const { year } = action.payload;
       state.year = year;
     },
-
-    setActiveStartDate: (state, action) => {
-      const { newDate } = action.payload;
-      state.activeStartDate = newDate.toISOString();
-    },
   },
 });
 
-export const { updateDay, updateMonth, updateYear, setActiveStartDate } =
-  dateDaySlice.actions;
+export const { updateDay, updateMonth, updateYear } = dateDaySlice.actions;
 export default dateDaySlice.reducer;

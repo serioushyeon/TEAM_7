@@ -1,18 +1,12 @@
 import { S } from "../../pages/calendar/CalendarStyle";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  updateMonth,
-  updateYear,
-  setActiveStartDate,
-} from "../../redux/dateDaySlice";
+import { updateMonth, updateYear } from "../../redux/dateDaySlice";
 
 // 월 변경 선택 시 startDate와 endDate를 서버로 보낸다.
-export default function CalendarOption() {
+export default function CalendarOption(value) {
   const dispatch = useDispatch();
   const dateRedux = useSelector((state) => state.dateDay); // redux의 dateDay 상태
-  console.log("redux activeStartDate: ", dateRedux.activeStartDate);
-
   const [selected, setSelected] = useState(false);
 
   // date 객체가 자동으로 년, 월을 조절한다.
@@ -20,11 +14,14 @@ export default function CalendarOption() {
   const handleYearChange = (year) => {
     // 새로운 날짜로 업데이트 후 리덕스에 저장한다.
     const newDate = new Date(year, dateRedux.month, 1);
+    value.setValue(newDate);
     handleDateChange(newDate);
   };
 
   const handleMonthChange = (month) => {
     const newDate = new Date(dateRedux.year, month, 1);
+    console.log("new", newDate);
+    value.setValue(newDate);
     handleDateChange(newDate);
   };
 
@@ -32,7 +29,6 @@ export default function CalendarOption() {
   const handleDateChange = (newDate) => {
     dispatch(updateYear({ year: newDate.getFullYear() }));
     dispatch(updateMonth({ month: newDate.getMonth() }));
-    dispatch(setActiveStartDate({ newDate }));
   };
 
   // 1월부터 12월까지 옵션 드롭다운 생성
