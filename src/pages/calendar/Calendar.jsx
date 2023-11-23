@@ -4,7 +4,6 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { apiClient } from "../../api/ApiClient";
 import { useCookies } from "react-cookie";
 import Calendar1 from "../../assets/images/calendar/Calendar1.svg";
 
@@ -36,7 +35,6 @@ export default function MyCalendar() {
   const [isDisabled, setIsDisabed] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [accessCookie] = useCookies(["accessCookie"]);
   const getAccessCookie = localStorage.getItem("accessCookie");
   const { startDate, endDate, year, month, thumbnailInfoList, buttonStatus } =
     useSelector((state) => ({
@@ -48,15 +46,15 @@ export default function MyCalendar() {
       buttonStatus: state.photoList.buttonStatus,
     }));
 
-    // 시작 페이지 날짜 지정
+  // 시작 페이지 날짜 지정
   const activeStartDateString = useSelector(
     (state) => state.calendarUI.activeStartDate
   );
 
-    // Date 객체로 변환함.
+  // Date 객체로 변환함.
   const activeStartDate = new Date(activeStartDateString);
 
-      // 날짜 범위(시작일, 끝일, 월, 년)
+  // 날짜 범위(시작일, 끝일, 월, 년)
   const dateRange = useSelector((state) => state.dateRange.dateRange);
   console.log(
     "startDate2: ",
@@ -67,27 +65,26 @@ export default function MyCalendar() {
   console.log("Rangeyear:", dateRange.year, "Rangemonth: ", dateRange.month);
   console.log("disabled", isDisabled);
 
-    const fetchCalendarInfo = async () => {
-      try {
-        const response = await axios.get("/api/v1/user/calender", {
-          params: {
-            startDate: dateRange.startDate,
-            endDate: dateRange.endDate,
-            year: dateRange.year,
-            month: dateRange.month
-          },
-          headers: {
-            Authorization: `Bearer ${getAccessCookie}`,
-          },
-        });
-        console.log('data : ', response.data);
-        return response.data;
-      } catch (error) {
-        console.error("Error fetching calendar info:", error);
-      }
-    };
-// 변경하는 값들 의존성으로 넣기
-
+  const fetchCalendarInfo = async () => {
+    try {
+      const response = await axios.get("/api/v1/user/calender", {
+        params: {
+          startDate: dateRange.startDate,
+          endDate: dateRange.endDate,
+          year: dateRange.year,
+          month: dateRange.month,
+        },
+        headers: {
+          Authorization: `Bearer ${getAccessCookie}`,
+        },
+      });
+      console.log("data : ", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching calendar info:", error);
+    }
+  };
+  // 변경하는 값들 의존성으로 넣기
 
   // 날짜 변경 핸들러
   const updateActiveStartDate = (year, month) => {
@@ -96,7 +93,6 @@ export default function MyCalendar() {
 
   // redux와 user 동기화
   useEffect(() => {
-
     const today = new Date(); // 현재 날짜와 시간
     const year = today.getFullYear(); // 현재 연도
     const month = today.getMonth(); // 현재 월 (1을 더함)
@@ -107,14 +103,14 @@ export default function MyCalendar() {
     (async () => {
       const data = await fetchCalendarInfo();
 
-      console.log({useEffectData: data});
-// 업데이트된 리스트를 dispatch로 전달
+      console.log({ useEffectData: data });
+      // 업데이트된 리스트를 dispatch로 전달
       dispatch(setThumbnailInfoList(data?.thumbnailInfoList));
       dispatch(setButtonStatus(data?.buttonStatus));
-    })()
-  }, [ dateRange.startDate, dateRange.endDate ]);
+    })();
+  }, [dateRange.startDate, dateRange.endDate]);
 
-  console.log({thumbnailInfoList});
+  console.log({ thumbnailInfoList });
   // getCalendarInfo 함수를 useEffect 밖으로 이동
   // const getCalendarInfo = async (startDate, endDate, year, month) => {
   //   try {
@@ -194,7 +190,7 @@ export default function MyCalendar() {
     getCalendarInfo(startDate2, endDate2, year, month);
   }, [year, month, dispatch, accessCookie]);
   */
-/*  const tileContent = ({ date, view }) => {
+  /*  const tileContent = ({ date, view }) => {
     if (view === "month") {
       const dateString = moment(date).format("YYYY-MM-DD");
       const imageEntry = thumbnailInfoList.find(

@@ -91,8 +91,6 @@ const StyledOptionsBox = styled.div`
   border: 1px solid var(--BasicWhiteFontColor, #fff);
   background: rgba(0, 0, 0, 0.66);
   z-index: 100;
-
-  display: ${(props) => (props.show ? "block" : "none")};
 `;
 // ul에 padding: 0을 지정해야 기존의 점 여백이 사라짐.
 
