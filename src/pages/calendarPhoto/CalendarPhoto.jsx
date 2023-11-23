@@ -13,28 +13,24 @@ export default function CalendarPhoto() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
+  const maxLength = 100;
 
   const { date } = useParams();
-  // 요일 데이터
-  const { dayOfWeek } = location.state || {};
+  const { dayOfWeek } = location.state || {}; // 요일데이터
   const dateRedux = useSelector((state) => state.dateDay); // redux의 dateDay 상태
 
+  const [getAccessCookie, removeCookie] = useCookies(["access_cookie"]);
+
+  // 받아올 state
   const [calendarPhotoData, setCalendarPhotoDate] = useState({
+    dayImageList: [],
     memo: "",
-    images: [],
   });
 
   // 컴포넌트 상태 초기화
   const [memo, setMemo] = useState(calendarPhotoData?.memo || "");
   const [images, setImages] = useState(calendarPhotoData?.images || []);
 
-  // const [memo, setMemo] = useState("");
-  const maxLength = 100;
-
-  const [getAccessCookie, removeCookie] = useCookies(["access_cookie"]);
-
-  // 이미지 상태
-  // const [images, setImages] = useState([]);
   const fileInputRef = useRef(null);
 
   // 대표 사진 상태
@@ -58,7 +54,7 @@ export default function CalendarPhoto() {
   useEffect(() => {
     const fetchDayData = async () => {
       try {
-        const response = await axios.get(`/api/v1/user/${date}`{
+        const response = await axios.get("/api/v1/user/${date}", {
           headers: {
             Authorization: `Bearer ${getAccessCookie}`,
           },
