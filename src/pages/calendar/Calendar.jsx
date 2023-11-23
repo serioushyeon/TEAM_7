@@ -36,6 +36,7 @@ export default function MyCalendar() {
     thumbnailInfoList: initializeThumbnailInfoList(),
     buttonStatus: false,
   };
+  console.log("날짜: ", formatDate(value));
 
   // 사진 저장
   const [dataList, setDataList] = useState(initialState);
