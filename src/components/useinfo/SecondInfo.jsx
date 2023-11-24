@@ -68,7 +68,7 @@ export default function Second() {
     const formData = new FormData();
 
     // 파일을 formdata로 전송
-    formData.append("profileUrl", fileState);
+    formData.append("profileImage", fileState);
 
     formData.append("nickname", user.nickname);
     formData.append("birth", user.birth);
@@ -101,7 +101,7 @@ export default function Second() {
     const formData = new FormData();
 
     const file = e.target.files[0];
-    formData.append("file", file);
+    formData.append("profileImage", file);
     setFileState(file);
 
     // 미리보기 url
