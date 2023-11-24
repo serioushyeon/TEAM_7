@@ -89,9 +89,9 @@ export default function MyCalendar() {
   // 마운트
   useEffect(() => {
     const { newStartDay, newEndDay } = getCalendarStartDate(
-      value.getFullYear(),
+      dateRedux.year,
       // 1을 더해야 출력이 정확하다.
-      value.getMonth() + 1
+      dateRedux.month
     );
 
     setStartDate(formatDate(newStartDay));
