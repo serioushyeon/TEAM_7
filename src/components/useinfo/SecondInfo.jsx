@@ -17,7 +17,7 @@ export default function Second() {
   const [edit, setEdit] = useState(false);
 
   // 입력받을 값들은 개별적으로 정의하였다.
-  const [fileState, setFileState] = useState("");
+  const [fileState, setFileState] = useState();
   const [birth, setBirth] = useState(null);
   const [user, setUser] = useState({
     nickname: "",
@@ -68,15 +68,15 @@ export default function Second() {
     const formData = new FormData();
 
     // 파일을 formdata로 전송
-    formData.append("profileImage", fileState);
+    formData.append("profileUrl", fileState);
 
     formData.append("nickname", user.nickname);
     formData.append("birth", user.birth);
     formData.append("gender", user.gender);
 
     try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/user-info`,
+      const response = await apiClient.post(
+        `/api/v1/user/user-info`,
         formData,
         {
           headers: {
@@ -98,7 +98,11 @@ export default function Second() {
 
   // 프로필 이미지 핸들러
   const handleProfileImageChange = (e) => {
+    const formData = new FormData();
+
     const file = e.target.files[0];
+    formData.append("file", file);
+    setFileState(file);
 
     // 미리보기 url
     const objectUrl = URL.createObjectURL(file);
