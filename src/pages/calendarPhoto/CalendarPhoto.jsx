@@ -30,6 +30,7 @@ export default function CalendarPhoto() {
     "access_cookie",
   ]);
 
+  console.log("images : ", images);
   // 이미지 상태
   // const [images, setImages] = useState([]);
   const fileInputRef = useRef(null);
@@ -93,7 +94,7 @@ export default function CalendarPhoto() {
       id: Date.now() + file.name, // 고유 ID 생성
       file: file,
     }));
-    if (files.length + images.length > 4) {
+    if (files?.length + images?.length > 4) {
       alert("최대 4장의 사진만 업로드 가능합니다.");
       return;
     }
@@ -136,7 +137,7 @@ export default function CalendarPhoto() {
       // 메모 추가
       formData.append("memo", memo);
       // 이미지 추가
-      if (images.length > 0) {
+      if (images?.length > 0) {
         // 첫 번째 이미지는 'thumbnail'로 추가
         formData.append("thumbnail", images[0].file);
       }
@@ -208,7 +209,7 @@ export default function CalendarPhoto() {
       <S.PhotoWrapper>
         <S.PhotoContainer>
           {Array.from({ length: 5 }).map((_, index) => {
-            const image = images[index - 1];
+            const image = index > 0 ? images[index - 1] : null;
             // 첫 번째 줄과 두 번째 줄 구분
             const isSecondRow = index >= 3;
             return (
@@ -240,7 +241,7 @@ export default function CalendarPhoto() {
                 {index === 0 ? (
                   <>
                     <S.CPhotoImage />
-                    <S.CPhotoText>{images.length}/4</S.CPhotoText>
+                    <S.CPhotoText>{images?.length}/4</S.CPhotoText>
                   </>
                 ) : (
                   <>
@@ -283,7 +284,7 @@ export default function CalendarPhoto() {
           onChange={handleMemoChange}
           maxLength={100}
         />
-        <S.StyledMaxLength>{`${memo.length}/${maxLength}`}</S.StyledMaxLength>
+        <S.StyledMaxLength>{`${memo?.length}/${maxLength}`}</S.StyledMaxLength>
       </S.SettingMemo>
       <S.UploadChange>
         <S.UploadChangeItem onClick={handleLocateCalendar}>
