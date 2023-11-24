@@ -18,6 +18,7 @@ export default function Second() {
 
   // 입력받을 값들은 개별적으로 정의하였다.
   const [fileState, setFileState] = useState();
+  const [imageUrl, setImageUrl] = useState("");
   const [birth, setBirth] = useState(null);
   const [user, setUser] = useState({
     nickname: "",
@@ -69,7 +70,6 @@ export default function Second() {
 
     // 파일을 formdata로 전송
     formData.append("profileImage", fileState);
-
     formData.append("nickname", user.nickname);
     formData.append("birth", user.birth);
     formData.append("gender", user.gender);
@@ -98,17 +98,21 @@ export default function Second() {
 
   // 프로필 이미지 핸들러
   const handleProfileImageChange = (e) => {
-    const formData = new FormData();
-
     const file = e.target.files[0];
-    formData.append("profileImage", file);
     setFileState(file);
 
-    // 미리보기 url
-    const objectUrl = URL.createObjectURL(file);
+    console.log("file : ", fileState);
 
-    setUser((prevUser) => ({ ...prevUser, profileImage: objectUrl }));
-    console.log("image url: ", objectUrl);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageUrl(reader.result);
+        setUser((prevUser) => ({ ...prevUser, profileUrl: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+
+    console.log("image url: ", user.profileUrl);
     // console.log(user.profileImage);
   };
 
