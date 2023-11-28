@@ -43,6 +43,21 @@ export default function CalendarPhoto() {
     navigate("/");
   };
 
+  const setFileStatusFromImages = async (imageUrls) => {
+    try {
+      const filePromises = imageUrls.map(async (url) => {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return new File([blob], "image.jpg", { type: "image/jpeg" });
+      });
+
+      const files = await Promise.all(filePromises);
+      setFileStatus(files); // fileStatus 상태를 업데이트합니다.
+    } catch (error) {
+      console.error("Error converting images to files", error);
+    }
+  };
+
   // 파일도 같이 받아와야할듯
   const getDayData = async () => {
     console.log("date : ", date);
@@ -60,6 +75,8 @@ export default function CalendarPhoto() {
       // 나중에 받은 데이터 파일로 변경해야함.
       setImages(response.data.dayImageList);
       setMemo(response.data.memo);
+      // getDayData 함수 내에서 다음과 같이 사용할 수 있습니다:
+      setFileStatusFromImages(response.data.dayImageList);
     } catch (error) {
       if (error.response && error.response.status === 404) {
         if (error.response.data.code === "DAY_NOT_FOUND") {
