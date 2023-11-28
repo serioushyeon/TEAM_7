@@ -2,12 +2,14 @@ import React, { useState, useRef, useEffect } from "react";
 import { S } from "./CPhtoStyle";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { updateMonth, updateYear } from "../../redux/dateDaySlice";
 import PhotoOption from "../../components/calendar/PhotoOption";
 import { useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
 export default function CalendarPhoto() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
   const { date } = useParams();
 
@@ -157,11 +159,20 @@ export default function CalendarPhoto() {
     }
   };
 
-  // 취소 버튼 클릭 시 캘린더로 이동
+  const handleDateChange = () => {
+    const newDate = new Date(); // 현재 날짜
+
+    dispatch(updateYear({ year: newDate.getFullYear() })); // 현재 연도로 업데이트
+    dispatch(updateMonth({ month: newDate.getMonth() })); // 현재 월로 업데이트
+  };
+
+  // 취소 버튼 클릭 시 현재 날짜로 이동
   function handleCancle() {
+    handleDateChange();
     navigate("/calendar");
   }
 
+  // 저장 버튼 클릭 시 저장한 날짜로 이동
   const handleSave = () => {
     postCalendarData();
     navigate("/calendar");

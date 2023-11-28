@@ -46,7 +46,6 @@ export default function MyCalendar() {
     thumbnailInfoList: initializeThumbnailInfoList(),
     buttonStatus: false,
   };
-  console.log("날짜: ", formatDate(value));
 
   // 사진 저장
   const [dataList, setDataList] = useState(initialState);
@@ -93,6 +92,11 @@ export default function MyCalendar() {
       state: { dayOfWeek },
     });
   };
+
+  useEffect(() => {
+    const myDate = new Date(dateRedux.year, dateRedux.month, 1);
+    onChange(myDate);
+  }, []);
 
   // 마운트
   useEffect(() => {
