@@ -278,6 +278,8 @@ export default function MyCalendar() {
               const style = {
                 width: "auto",
                 height: "4.5rem",
+                outline: "none",
+                border: "none",
               };
               return <div className="no_image" style={style} />;
             }
