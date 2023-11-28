@@ -82,7 +82,7 @@ export default function CalendarPhoto() {
 
   // 메모 실시간 변경
   const handleMemoChange = (e) => {
-    setMemo(e.value.target);
+    setMemo(e.target.value);
     console.log("memo : ", memo);
   };
 
@@ -254,7 +254,11 @@ export default function CalendarPhoto() {
           onChange={handleMemoChange}
           maxLength={100}
         />
-        <S.StyledMaxLength>{`${memo?.length}/${maxLength}`}</S.StyledMaxLength>
+        {!memo ? (
+          <S.StyledMaxLength>{`0/${maxLength}`}</S.StyledMaxLength>
+        ) : (
+          <S.StyledMaxLength>{`${memo.length}/${maxLength}`}</S.StyledMaxLength>
+        )}
       </S.SettingMemo>
       <S.UploadChange>
         <S.UploadChangeItem onClick={handleCancle}>취소</S.UploadChangeItem>
