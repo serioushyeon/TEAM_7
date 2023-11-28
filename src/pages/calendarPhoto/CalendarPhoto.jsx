@@ -46,7 +46,12 @@ export default function CalendarPhoto() {
   const getDayData = async () => {
     console.log("date : ", date);
     try {
-      const response = await apiClient.get(`/api/v1/user/${date}`);
+      const response = await apiClient.get(`/api/v1/user/${date}`, {
+        headers: {
+          // 쿠키 보냄
+          Authorization: `Bearer ${getAccessCookie}`,
+        },
+      });
 
       // 데이터는 useState에 세팅한다.
       console.log("받은 데이터 : ", response.data);
@@ -137,12 +142,12 @@ export default function CalendarPhoto() {
       // 이미지 추가
       if (fileStatus?.length > 0) {
         // 첫 번째 이미지는 'thumbnail'로 추가
-        formData.append("thumbnail", fileStatus[0].file);
+        formData.append("thumbnail", fileStatus[0]);
       }
 
       // 나머지 이미지들은 'photo1', 'photo2', 'photo3'로 추가
       fileStatus.slice(1).forEach((file, index) => {
-        formData.append(`photo${index + 1}`, file.file);
+        formData.append(`photo${index + 1}`, file);
       });
 
       console.log("formData : ", formData);
