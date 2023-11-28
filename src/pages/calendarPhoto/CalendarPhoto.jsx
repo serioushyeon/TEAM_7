@@ -164,10 +164,13 @@ export default function CalendarPhoto() {
         // 첫 번째 이미지는 'thumbnail'로 추가
         formData.append("thumbnail", fileStatus[0].file);
       }
-      // 나머지 이미지들은 'photo1', 'photo2', 'photo3'로 추가
-      fileStatus.slice(1).forEach((file, index) => {
-        formData.append(`photo${index + 1}`, file.file);
-      });
+
+      if (fileStatus.length > 0) {
+        // 나머지 이미지들은 'photo1', 'photo2', 'photo3'로 추가
+        fileStatus.slice(1).forEach((file, index) => {
+          formData.append(`photo${index + 1}`, file.file);
+        });
+      }
 
       console.log("file : ", fileStatus);
 
