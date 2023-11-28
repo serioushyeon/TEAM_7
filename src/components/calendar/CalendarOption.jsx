@@ -36,7 +36,7 @@ export default function CalendarOption(value) {
     const options = [];
 
     for (let _month = 0; _month < 12; _month++) {
-      const dateOption = new Date(dateRedux.year, _month, 1);
+      const dateOption = new Date(dateRedux.year, _month, dateRedux.day);
       options.push(
         <S.StyledOptionsList key={_month} value={_month}>
           <S.StyledOptions

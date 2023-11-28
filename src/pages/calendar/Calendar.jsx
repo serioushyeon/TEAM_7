@@ -24,7 +24,15 @@ export default function MyCalendar() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  console.log(value);
+  console.log("value : ", value);
+  console.log(
+    dateRedux.year,
+    "년 ",
+    dateRedux.month,
+    "월 ",
+    dateRedux.day,
+    "일"
+  );
 
   // 31개의 빈 데이터를 포함하는 thumbnailInfoList 초기화
   const initializeThumbnailInfoList = () =>
@@ -96,11 +104,15 @@ export default function MyCalendar() {
 
     setStartDate(formatDate(newStartDay));
     setEndDate(formatDate(newEndDay));
-
-    fetchCalendarInfo();
   }, [dateRedux.activeStartDate, value]);
 
+  // 마운트
+  useEffect(() => {
+    fetchCalendarInfo();
+  }, [startDate, endDate]);
+
   const fetchCalendarInfo = async () => {
+    console.log("보낸 startDate === ", startDate, ", endDate === ", endDate);
     try {
       const response = await apiClient.get(`/api/v1/user/calender`, {
         params: {
