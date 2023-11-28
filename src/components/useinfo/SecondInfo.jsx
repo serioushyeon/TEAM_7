@@ -35,7 +35,8 @@ export default function Second() {
   });
 
   // 쿠키 받아오기
-  const [getAccessCookie, removeCookie] = localStorage.getItem("accessCookie");
+  const getAccessCookie = localStorage.getItem("accessCookie");
+  const removeCookie = localStorage.getItem("accessCookie");
   // const getRefreshCookie = localStorage.getItem("refreshCookie");
 
   // const defaultpro = "../../assets/images/userinfo/SubStartPro.png";

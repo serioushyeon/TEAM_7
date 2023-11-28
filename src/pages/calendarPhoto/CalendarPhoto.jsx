@@ -28,7 +28,8 @@ export default function CalendarPhoto() {
 
   const maxLength = 100;
 
-  const [getAccessCookie, removeCookie] = localStorage.getItem("accessCookie");
+  const getAccessCookie = localStorage.getItem("accessCookie");
+  const removeCookie = localStorage.getItem("accessCookie");
 
   // 로그아웃 처리 함수
   const handleLogout = () => {
