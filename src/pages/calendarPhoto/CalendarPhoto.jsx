@@ -164,11 +164,11 @@ export default function CalendarPhoto() {
       formData.append("thumbnail", fileStatus[0].file);
 
       // 나머지 이미지들은 'photo1', 'photo2', 'photo3'로 추가
-      fileStatus.slice(1).forEach((file, index) => {
-        formData.append(`photo${index + 1}`, file.file);
-      });
+      formData.append("photo1", fileStatus[1].file);
+      formData.append("photo2", fileStatus[2].file);
+      formData.append("photo3", fileStatus[3].file);
 
-      console.log("file : ", fileStatus);
+      console.log("file : ", fileStatus[0].file, fileStatus[1].file);
 
       // API 요청
       const response = await axios.post(`/api/v1/user/${date}`, formData, {
