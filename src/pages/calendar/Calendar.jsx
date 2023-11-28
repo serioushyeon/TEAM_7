@@ -59,7 +59,7 @@ export default function MyCalendar() {
     // 한 주의 시작(월요일)까지 이동한다.
     newStartDay.setDate(
       newStartDay.getDate() -
-        (newStartDay.getDay() === 0 ? 6 : newStartDay.getDay() - 1)
+        (newStartDay.getDay() === 0 ? 6 : newStartDay.getDay() - 2)
     );
 
     // 한 주의 끝(일요일)까지 이동한다.
