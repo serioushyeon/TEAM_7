@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { S } from "./Style";
 import { ko } from "date-fns/esm/locale";
+import { useNavigate } from "react-router-dom";
 import { BsCalendarHeart } from "react-icons/bs";
 import userBarcord from "../../assets/images/userinfo/SubStartBar.png";
 import defaultProfileImage from "../../assets/images/userinfo/SubStartPro.png";
@@ -15,6 +16,7 @@ export default function Second() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [edit, setEdit] = useState(false);
+  const navigate = useNavigate();
 
   // 입력받을 값들은 개별적으로 정의하였다.
   const [fileState, setFileState] = useState();
@@ -33,7 +35,7 @@ export default function Second() {
   });
 
   // 쿠키 받아오기
-  const getAccessCookie = localStorage.getItem("accessCookie");
+  const [getAccessCookie, removeCookie] = localStorage.getItem("accessCookie");
   // const getRefreshCookie = localStorage.getItem("refreshCookie");
 
   // const defaultpro = "../../assets/images/userinfo/SubStartPro.png";
@@ -42,6 +44,18 @@ export default function Second() {
     return user && user.profileImage ? user.profileImage : defaultProfileImage;
   };
   */
+
+  // 로그아웃 처리 함수
+  const handleLogout = () => {
+    // 쿠키 삭제
+    removeCookie("accessCookie", { path: "/" });
+    removeCookie("refreshCookie", { path: "/" });
+    // 로컬 스토리지에서 토큰 삭제
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    // 로그인 페이지로 리다이렉트
+    navigate("/");
+  };
 
   // get 메서드는 한 번만!
   const getUserInfo = async () => {
@@ -57,6 +71,23 @@ export default function Second() {
       setUser(response.data);
     } catch (error) {
       console.log(error);
+      if (error.response && error.response.status === 404) {
+        if (error.response.data.code === "DAY_NOT_FOUND") {
+          // 'DAY_NOT_FOUND' 에러 처리
+          alert("정상적이지 않은 경로입니다. 캘린더 페이지로 이동합니다.");
+          navigate("/calendar");
+        } else if (error.response.data.code === "USER_NOT_FOUND") {
+          // 'USER_NOT_FOUND' 에러 처리
+          alert(
+            "로그인한 사용자가 존재하지 않습니다. 로그인 페이지로 이동합니다."
+          );
+          handleLogout();
+        } else {
+          console.error("Error fetching day data", error);
+        }
+      } else {
+        console.error("Error fetching day data", error);
+      }
     }
   };
 
