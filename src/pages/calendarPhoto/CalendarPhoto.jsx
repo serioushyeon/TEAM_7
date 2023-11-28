@@ -171,9 +171,10 @@ export default function CalendarPhoto() {
       console.log("file : ", fileStatus[0].file, fileStatus[1].file);
 
       // API 요청
-      const response = await axios.post(`/api/v1/user/${date}`, formData, {
+      const response = await apiClient.post(`/api/v1/user/${date}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${getAccessCookie}`,
         },
       });
       console.log("성공 :", response.data);
