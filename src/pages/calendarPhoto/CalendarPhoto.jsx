@@ -151,7 +151,7 @@ export default function CalendarPhoto() {
     );
   };
 
-  const postCalendarData = async (fileStatus) => {
+  const postCalendarData = async () => {
     console.log("cookie : ", getAccessCookie);
     try {
       // 아아아아ㅏ아아마잉크으으ㅡㅇ
@@ -160,17 +160,13 @@ export default function CalendarPhoto() {
       // 메모 추가
       formData.append("memo", memo);
       // 이미지 추가
-      if (fileStatus.length > 0) {
-        // 첫 번째 이미지는 'thumbnail'로 추가
-        formData.append("thumbnail", fileStatus[0].file);
-      }
+      // 첫 번째 이미지는 'thumbnail'로 추가
+      formData.append("thumbnail", fileStatus[0].file);
 
-      if (fileStatus.length > 0) {
-        // 나머지 이미지들은 'photo1', 'photo2', 'photo3'로 추가
-        fileStatus.slice(1).forEach((file, index) => {
-          formData.append(`photo${index + 1}`, file.file);
-        });
-      }
+      // 나머지 이미지들은 'photo1', 'photo2', 'photo3'로 추가
+      fileStatus.slice(1).forEach((file, index) => {
+        formData.append(`photo${index + 1}`, file.file);
+      });
 
       console.log("file : ", fileStatus);
 
