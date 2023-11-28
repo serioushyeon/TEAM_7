@@ -140,6 +140,7 @@ export default function MyCalendar() {
   }, [startDate]);
 
   const fetchCalendarInfo = async () => {
+    console.log("cookie : ", getAccessCookie);
     console.log("보낸 startDate === ", startDate, ", endDate === ", endDate);
     try {
       const response = await apiClient.get(`/api/v1/user/calender`, {
