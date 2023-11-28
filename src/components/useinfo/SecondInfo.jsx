@@ -309,9 +309,7 @@ export default function Second() {
       </S.UserBarcord>
       {edit ? (
         <>
-          <S.SendButton type="submit" onClick={handleEditUserInfo}>
-            저장
-          </S.SendButton>
+          <S.SendButton onClick={handleEditUserInfo}>저장</S.SendButton>
         </>
       ) : (
         <></>
