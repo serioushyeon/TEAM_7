@@ -23,6 +23,7 @@ export default function MyCalendar() {
   const dateRedux = useSelector((state) => state.dateDay); // redux의 dateDay 상태
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [start, setStart] = useState(false);
 
   console.log("value : ", value);
   console.log(
@@ -71,6 +72,14 @@ export default function MyCalendar() {
     return { newStartDay, newEndDay };
   };
 
+  // 날짜를 'YYYY-MM-DD' 형식의 문자열로 변환하는 함수
+  const ChangeDate = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   const handleDateChange = (date) => {
     const days = [
       "일요일",
@@ -86,7 +95,7 @@ export default function MyCalendar() {
     // 리덕스에 일 저장
     dispatch(updateDay({ day: date.getDay() }));
 
-    const formattedDate = formatDate(date);
+    const formattedDate = ChangeDate(date);
     const dayOfWeek = days[date.getDay()];
     navigate(`/calendar-photo/${formattedDate}`, {
       state: { dayOfWeek },
@@ -106,14 +115,15 @@ export default function MyCalendar() {
       dateRedux.month
     );
 
-    setStartDate(formatDate(newStartDay));
-    setEndDate(formatDate(newEndDay));
-  }, [dateRedux.activeStartDate, value]);
+    setStart(!start);
+    setStartDate(ChangeDate(newStartDay));
+    setEndDate(ChangeDate(newEndDay));
+  }, [value]);
 
   // 마운트
   useEffect(() => {
     fetchCalendarInfo();
-  }, [startDate, endDate]);
+  }, [startDate]);
 
   const fetchCalendarInfo = async () => {
     console.log("보낸 startDate === ", startDate, ", endDate === ", endDate);
