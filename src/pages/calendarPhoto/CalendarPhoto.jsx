@@ -24,6 +24,7 @@ export default function CalendarPhoto() {
   const [draggedImage, setDraggedImage] = useState(null);
 
   console.log("memo : ", memo);
+  console.log("file : ", fileStatus[0].file);
 
   const maxLength = 100;
 
@@ -151,7 +152,7 @@ export default function CalendarPhoto() {
     );
   };
 
-  const postCalendarData = async () => {
+  const postCalendarData = async (fileStatus) => {
     console.log("cookie : ", getAccessCookie);
     try {
       // 아아아아ㅏ아아마잉크으으ㅡㅇ
@@ -160,27 +161,16 @@ export default function CalendarPhoto() {
       // 메모 추가
       formData.append("memo", memo);
       // 이미지 추가
-      const response1 = await fetch(URL.createObjectURL(fileStatus[0].file));
-      const blob1 = await response1.blob();
-      const file1 = new File([blob1], "thumbnail.jpg", { type: "image/jpeg" });
-      formData.append("thumbnail", file1);
+      if (fileStatus.length > 0) {
+        // 첫 번째 이미지는 'thumbnail'로 추가
+        formData.append("thumbnail", fileStatus[0].file);
+      }
+      // 나머지 이미지들은 'photo1', 'photo2', 'photo3'로 추가
+      fileStatus.slice(1).forEach((file, index) => {
+        formData.append(`photo${index + 1}`, file.file);
+      });
 
-      const response2 = await fetch(URL.createObjectURL(fileStatus[1].file));
-      const blob2 = await response2.blob();
-      const file2 = new File([blob2], "photo1.jpg", { type: "image/jpeg" });
-      formData.append("photo1", file2);
-
-      const response3 = await fetch(URL.createObjectURL(fileStatus[2].file));
-      const blob3 = await response3.blob();
-      const file3 = new File([blob3], "photo2.jpg", { type: "image/jpeg" });
-      formData.append("photo2", file3);
-
-      const response4 = await fetch(URL.createObjectURL(fileStatus[3].file));
-      const blob4 = await response4.blob();
-      const file4 = new File([blob4], "photo3.jpg", { type: "image/jpeg" });
-      formData.append("photo3", file4);
-
-      console.log("formData : ", formData);
+      console.log("file : ", fileStatus);
 
       // API 요청
       const response = await axios.post(`/api/v1/user/${date}`, formData, {
