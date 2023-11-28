@@ -60,6 +60,7 @@ export default function Second() {
 
   // get 메서드는 한 번만!
   const getUserInfo = async () => {
+    console.log("cookie : ", getAccessCookie);
     try {
       const response = await apiClient.get(`/api/v1/user/user-info`, {
         headers: {

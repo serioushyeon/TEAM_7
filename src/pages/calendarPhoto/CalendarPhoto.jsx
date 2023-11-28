@@ -44,6 +44,7 @@ export default function CalendarPhoto() {
   };
 
   const setFileStatusFromImages = async (imageUrls) => {
+    console.log("cookie : ", getAccessCookie);
     try {
       const filePromises = imageUrls.map(async (url) => {
         const response = await fetch(url);
@@ -152,6 +153,7 @@ export default function CalendarPhoto() {
   };
 
   const postCalendarData = async () => {
+    console.log("cookie : ", getAccessCookie);
     try {
       // FormData 객체 생성
       const formData = new FormData();
