@@ -168,7 +168,7 @@ export default function CalendarPhoto() {
       if (fileStatus.length > 0) {
         // 나머지 이미지들은 'photo1', 'photo2', 'photo3'로 추가
         fileStatus.slice(1).forEach((file, index) => {
-          formData.append(`photo${index + 1}`, file.file);
+          formData.append(`photo${index + 1}`, file[index].file);
         });
       }
 
