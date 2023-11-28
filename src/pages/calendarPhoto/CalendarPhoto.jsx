@@ -23,8 +23,8 @@ export default function CalendarPhoto() {
   const [images, setImages] = useState([]);
   const [draggedImage, setDraggedImage] = useState(null);
 
-  console.log("file : ", fileStatus);
   console.log("memo : ", memo);
+  console.log("file : ", fileStatus[0].file);
 
   const maxLength = 100;
 
@@ -168,10 +168,9 @@ export default function CalendarPhoto() {
       console.log("formData : ", formData);
 
       // API 요청
-      const response = await apiClient.post(`/api/v1/user/${date}`, formData, {
+      const response = await axios.post(`/api/v1/user/${date}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${getAccessCookie}`,
         },
       });
       console.log("성공 :", response.data);
