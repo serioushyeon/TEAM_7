@@ -160,15 +160,10 @@ export default function CalendarPhoto() {
       // 메모 추가
       formData.append("memo", memo);
       // 이미지 추가
-      if (fileStatus?.length > 0) {
-        // 첫 번째 이미지는 'thumbnail'로 추가
-        formData.append("thumbnail", fileStatus[0]);
-      }
-
-      // 나머지 이미지들은 'photo1', 'photo2', 'photo3'로 추가
-      fileStatus.slice(1).forEach((file, index) => {
-        formData.append(`photo${index + 1}`, file);
-      });
+      formData.append("thumbnail", fileStatus[0].file);
+      formData.append("photo1", fileStatus[1].file);
+      formData.append("photo2", fileStatus[2].file);
+      formData.append("photo3", fileStatus[3].file);
 
       console.log("formData : ", formData);
 
