@@ -7,6 +7,7 @@ import { updateMonth, updateYear } from "../../redux/dateDaySlice";
 import PhotoOption from "../../components/calendar/PhotoOption";
 import { useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { apiClient } from "../../api/ApiClient";
 export default function CalendarPhoto() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -147,7 +148,7 @@ export default function CalendarPhoto() {
       console.log("formData : ", formData);
 
       // API 요청
-      const response = await axios.post(`/api/v1/user/${date}`, formData, {
+      const response = await apiClient.post(`/api/v1/user/${date}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${getAccessCookie}`,
