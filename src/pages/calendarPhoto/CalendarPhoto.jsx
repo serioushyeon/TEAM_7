@@ -24,7 +24,6 @@ export default function CalendarPhoto() {
   const [draggedImage, setDraggedImage] = useState(null);
 
   console.log("memo : ", memo);
-  console.log("file : ", fileStatus[0].file);
 
   const maxLength = 100;
 
