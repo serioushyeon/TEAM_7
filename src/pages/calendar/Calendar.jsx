@@ -187,7 +187,7 @@ export default function MyCalendar() {
         }
       };
       postBarcordInfo();
-      navigate("/ticket");
+      navigate("/new-barcord");
     }
     // 아니라면
     else {
