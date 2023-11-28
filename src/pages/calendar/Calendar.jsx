@@ -56,10 +56,10 @@ export default function MyCalendar() {
     const lastDayOfMonth = new Date(year, month + 1, 0);
 
     const newStartDay = new Date(firstDayOfMonth);
-    // 한 주의 시작(월요일)
+    // 한 주의 시작(월요일)까지 이동한다.
     newStartDay.setDate(
       newStartDay.getDate() -
-        (newStartDay.getDay() === 0 ? -6 : 1 - newStartDay.getDay())
+        (newStartDay.getDay() === 0 ? 6 : newStartDay.getDay() - 1)
     );
 
     // 한 주의 끝(일요일)까지 이동한다.
