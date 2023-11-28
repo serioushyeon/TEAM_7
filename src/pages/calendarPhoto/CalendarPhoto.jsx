@@ -24,7 +24,6 @@ export default function CalendarPhoto() {
   const [draggedImage, setDraggedImage] = useState(null);
 
   console.log("memo : ", memo);
-  console.log("file : ", fileStatus[0].file);
 
   const maxLength = 100;
 
@@ -160,10 +159,10 @@ export default function CalendarPhoto() {
       // 메모 추가
       formData.append("memo", memo);
       // 이미지 추가
-      formData.append("thumbnail", fileStatus[0].file);
-      formData.append("photo1", fileStatus[1].file);
-      formData.append("photo2", fileStatus[2].file);
-      formData.append("photo3", fileStatus[3].file);
+      formData.append("thumbnail", JSON.stringify(fileStatus[0].file));
+      formData.append("photo1", JSON.stringify(fileStatus[1].file));
+      formData.append("photo2", JSON.stringify(fileStatus[2].file));
+      formData.append("photo3", JSON.stringify(fileStatus[3].file));
 
       console.log("formData : ", formData);
 
