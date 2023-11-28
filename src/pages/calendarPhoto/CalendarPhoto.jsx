@@ -20,7 +20,7 @@ export default function CalendarPhoto() {
 
   const [fileStatus, setFileStatus] = useState([]);
   const [memo, setMemo] = useState("");
-  const [images, setImages] = useState("");
+  const [images, setImages] = useState([]);
   const [draggedImage, setDraggedImage] = useState(null);
 
   console.log("file : ", fileStatus);
@@ -46,7 +46,7 @@ export default function CalendarPhoto() {
   const getDayData = async () => {
     console.log("date : ", date);
     try {
-      const response = await axios.get(`/api/v1/user/${date}`);
+      const response = await apiClient.get(`/api/v1/user/${date}`);
 
       // 데이터는 useState에 세팅한다.
       console.log("받은 데이터 : ", response.data);
@@ -78,7 +78,7 @@ export default function CalendarPhoto() {
   // 초기 렌더링 시 데이터를 불러온다.
   useEffect(() => {
     getDayData();
-  }, []);
+  }, [date]);
 
   // 메모 실시간 변경
   const handleMemoChange = (e) => {
