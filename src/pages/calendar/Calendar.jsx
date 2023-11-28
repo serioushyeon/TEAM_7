@@ -15,7 +15,20 @@ import CalendarOption from "../../components/calendar/CalendarOption";
 export default function MyCalendar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const getAccessCookie = localStorage.getItem("accessCookie");
+
+  const [getAccessCookie, removeCookie] = localStorage.getItem("accessCookie");
+
+  // 로그아웃 처리 함수
+  const handleLogout = () => {
+    // 쿠키 삭제
+    removeCookie("accessCookie", { path: "/" });
+    removeCookie("refreshCookie", { path: "/" });
+    // 로컬 스토리지에서 토큰 삭제
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    // 로그인 페이지로 리다이렉트
+    navigate("/");
+  };
 
   // 현재 선택한 일자
   const [value, onChange] = useState(new Date());
@@ -142,7 +155,19 @@ export default function MyCalendar() {
       console.log("data : ", response.data);
       setDataList(response.data);
     } catch (error) {
-      console.error("Error fetching calendar info:", error);
+      if (error.response && error.response.status === 404) {
+        if (error.response.data.code === "USER_NOT_FOUND") {
+          // 'USER_NOT_FOUND' 에러 처리
+          alert(
+            "로그인한 사용자가 존재하지 않습니다. 로그인 페이지로 이동합니다."
+          );
+          handleLogout();
+        } else {
+          console.error("Error fetching day data", error);
+        }
+      } else {
+        console.error("Error fetching day data", error);
+      }
     }
   };
 
