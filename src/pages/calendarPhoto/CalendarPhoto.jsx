@@ -180,6 +180,9 @@ export default function CalendarPhoto() {
         },
       });
       console.log("성공 :", response.data);
+
+      // 캘린더로 이동
+      navigate("/calendar");
     } catch (error) {
       console.error("에러 : ", error);
     }
@@ -197,12 +200,6 @@ export default function CalendarPhoto() {
     handleDateChange();
     navigate("/calendar");
   }
-
-  // 저장 버튼 클릭 시 저장한 날짜로 이동
-  const handleSave = () => {
-    postCalendarData();
-    navigate("/calendar");
-  };
 
   /*const [previousDate, setPreviousDate] = useState(date); // 이전 날짜 상태
   useEffect(() => {
@@ -287,9 +284,7 @@ export default function CalendarPhoto() {
       </S.SettingMemo>
       <S.UploadChange>
         <S.UploadChangeItem onClick={handleCancle}>취소</S.UploadChangeItem>
-        <S.UploadChangeItem type="submit" onClick={handleSave}>
-          저장
-        </S.UploadChangeItem>
+        <S.UploadChangeItem onClick={postCalendarData}>저장</S.UploadChangeItem>
       </S.UploadChange>
     </S.Container>
   );
