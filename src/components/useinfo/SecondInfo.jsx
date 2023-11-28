@@ -72,10 +72,10 @@ export default function Second() {
     } catch (error) {
       console.log(error);
       if (error.response && error.response.status === 404) {
-        if (error.response.data.code === "DAY_NOT_FOUND") {
+        if (error.response.data.code === "NICKNAME_EMPTY") {
           // 'DAY_NOT_FOUND' 에러 처리
-          alert("정상적이지 않은 경로입니다. 캘린더 페이지로 이동합니다.");
-          navigate("/calendar");
+          alert("닉네임을 작성해주세요.");
+          return;
         } else if (error.response.data.code === "USER_NOT_FOUND") {
           // 'USER_NOT_FOUND' 에러 처리
           alert(
