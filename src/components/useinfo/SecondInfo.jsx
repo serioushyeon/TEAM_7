@@ -134,7 +134,7 @@ export default function Second() {
     const file = e.target.files[0];
     setFileState(file);
 
-    console.log("file : ", fileState);
+    console.log("file : ", file);
 
     if (file) {
       const reader = new FileReader();

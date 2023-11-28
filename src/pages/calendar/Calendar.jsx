@@ -264,7 +264,6 @@ export default function MyCalendar() {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                padding: "3px",
               };
               // 해당하는 이미지 데이터가 있다면 이미지 태그를 생성한다.
               return (
@@ -273,8 +272,16 @@ export default function MyCalendar() {
                 </div>
               );
             }
-            // 사진 파일이 없으면 기본으로
-            else {
+            // 사진 파일이 null이라면
+            else if (imageEntry === null) {
+              const style = {
+                width: "auto",
+                height: "4.5rem",
+                outline: "none",
+                border: "none",
+              };
+              return <div className="no_image" style={style} />;
+            } else {
               const style = {
                 width: "auto",
                 height: "4.5rem",
