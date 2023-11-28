@@ -154,6 +154,7 @@ export default function CalendarPhoto() {
   const postCalendarData = async () => {
     console.log("cookie : ", getAccessCookie);
     try {
+      // 아아아아ㅏ아아마잉크으으ㅡㅇ
       // FormData 객체 생성
       const formData = new FormData();
       // 메모 추가
