@@ -186,39 +186,40 @@ export default function MyCalendar() {
       }
     }
   };
+
+  // 서버로 바코드 연, 월 전송
+  const postBarcordInfo = async () => {
+    try {
+      // startDate, endDate 형식은 YYYY-MM-DD
+      const response = await apiClient.post(
+        `/api/v1/user/new-barcode`,
+        {
+          year: dateRedux.year,
+          month: dateRedux.month,
+        },
+        {
+          headers: {
+            // 나중에 토큰 수정 필요
+            // Bearer 토근 앞에 공백 필요..?
+            Authorization: `Bearer ${getAccessCookie}`,
+          },
+        }
+      );
+      console.log("성공, response : ", response.data);
+    } catch (error) {
+      console.error("실패 error : ", error);
+    }
+  };
+
   // 바코드 생성 시
   function onClickBarcord() {
     console.log("dataList : ", dataList);
     // 사진 개수가 30 ~ 130개라면
     if (dataList.buttonStatus === "ACTIVE") {
-      // 서버로 바코드 연, 월 전송
-      const postBarcordInfo = async () => {
-        try {
-          // startDate, endDate 형식은 YYYY-MM-DD
-          const response = await apiClient.post(
-            `/api/v1/user/new-barcode`,
-            {
-              year: dateRedux.year,
-              month: dateRedux.month,
-            },
-            {
-              headers: {
-                // 나중에 토큰 수정 필요
-                // Bearer 토근 앞에 공백 필요..?
-                Authorization: `Bearer ${getAccessCookie}`,
-              },
-            }
-          );
-          console.log("성공, response : ", response.data);
-        } catch (error) {
-          console.error("실패 error : ", error);
-        }
-      };
       postBarcordInfo();
       navigate("/bcstore");
     } else if (dataList.buttonStatus === "ACTIVE_WITH_MODAL") {
       alert("바코드 생성이 가능합니다. ");
-      // eslint-disable-next-line no-undef
       postBarcordInfo();
       navigate("/bcstore");
     }
