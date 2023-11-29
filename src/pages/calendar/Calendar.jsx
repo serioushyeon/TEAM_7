@@ -188,6 +188,7 @@ export default function MyCalendar() {
   };
   // 바코드 생성 시
   function onClickBarcord() {
+    console.log("dataList : ", dataList);
     // 사진 개수가 30 ~ 130개라면
     if (dataList.buttonStatus === "ACTIVE") {
       // 서버로 바코드 연, 월 전송
