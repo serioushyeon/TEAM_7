@@ -44,11 +44,28 @@ export default function CalendarPhoto() {
   async function imageUrlsToFileStatus(imageUrls) {
     try {
       const filePromises = imageUrls.map(async (url, index) => {
-        const response = await fetch(url);
-        const blob = await response.blob();
-        const filename = `image_${index}.${blob.type.split("/")[1]}`; // 파일 이름 형식은 필요에 따라 조정
-        const file = new File([blob], filename, { type: blob.type });
-        return { id: Date.now() + filename, file: file };
+        if (!url) {
+          // URL이 비어 있는 경우, 빈 파일 객체 생성
+          return {
+            id: `empty_${index}`,
+            file: new File([], "", { type: "image/jpeg" }),
+          };
+        }
+
+        try {
+          const response = await fetch(url);
+          const blob = await response.blob();
+          const filename = `image_${index}.${blob.type.split("/")[1]}`; // 파일 이름 형식
+          const file = new File([blob], filename, { type: blob.type });
+          return { id: Date.now() + filename, file: file };
+        } catch (error) {
+          console.error("Error fetching image URL:", url, error);
+          // URL에서 파일을 가져오는 데 실패한 경우, 빈 파일 객체 생성
+          return {
+            id: `error_${index}`,
+            file: new File([], "", { type: "image/jpeg" }),
+          };
+        }
       });
 
       return await Promise.all(filePromises);
@@ -173,31 +190,21 @@ export default function CalendarPhoto() {
       // FormData 객체 생성
       const formData = new FormData();
       // 메모 추가
-      formData.append("memo", memo);
+      if (memo) {
+        formData.append("memo", memo);
+      } else {
+        formData.append("memo", "");
+      }
       // 이미지 추가
       // 첫 번째 이미지는 'thumbnail'로 추가
       // 첫 번째 이미지 추가 (thumbnail)
-      if (fileStatus[0]) {
-        formData.append("thumbnail", fileStatus[0].file);
-      } else {
-        formData.append("thumbnail", new File([], "", { type: "image/jpeg" }));
-      }
+      formData.append("thumbnail", fileStatus[0].file);
       // 나머지 이미지들은 'photo1', 'photo2', 'photo3'로 추가
-      if (fileStatus[1]) {
-        formData.append("photo1", fileStatus[1].file);
-      } else {
-        formData.append("photo1", new File([], "", { type: "image/jpeg" }));
-      }
-      if (fileStatus[2]) {
-        formData.append("photo2", fileStatus[2].file);
-      } else {
-        formData.append("photo2", new File([], "", { type: "image/jpeg" }));
-      }
-      if (fileStatus[3]) {
-        formData.append("photo3", fileStatus[3].file);
-      } else {
-        formData.append("photo3", new File([], "", { type: "image/jpeg" }));
-      }
+      formData.append("photo1", fileStatus[1].file);
+      formData.append("photo2", fileStatus[2].file);
+      formData.append("photo2", new File([], "", { type: "image/jpeg" }));
+      formData.append("photo3", fileStatus[3].file);
+      formData.append("photo3", new File([], "", { type: "image/jpeg" }));
 
       console.log("file : ", fileStatus[0].file, fileStatus[1].file);
 
