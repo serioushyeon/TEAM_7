@@ -20,7 +20,10 @@ export default function CalendarPhoto() {
 
   const [fileStatus, setFileStatus] = useState([]);
   const [memo, setMemo] = useState("");
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([
+    "https://velog.velcdn.com/images%2Frimo09%2Fpost%2Fea01215c-9ef4-447d-8634-537ed69fd360%2Fimage.png",
+    "",
+  ]);
   const [draggedImage, setDraggedImage] = useState(null);
 
   console.log("memo : ", memo);
@@ -42,20 +45,13 @@ export default function CalendarPhoto() {
     navigate("/");
   };
 
-  const setFileStatusFromImages = async (imageUrls) => {
-    console.log("cookie : ", getAccessCookie);
-    try {
-      const filePromises = imageUrls.map(async (url) => {
-        const response = await fetch(url);
-        const blob = await response.blob();
-        return new File([blob], "image.jpg", { type: "image/jpeg" });
-      });
-
-      const files = await Promise.all(filePromises);
-      setFileStatus(files); // fileStatus 상태를 업데이트합니다.
-    } catch (error) {
-      console.error("Error converting images to files", error);
-    }
+  const convertURLtoFile = async (url) => {
+    const response = await fetch(url);
+    const data = await response.blob();
+    const ext = url.split(".").pop();
+    const filename = url.split("/").pop();
+    const metadata = { type: `image/${ext}` };
+    return new File([data], filename, metadata);
   };
 
   // 파일도 같이 받아와야할듯
@@ -69,14 +65,26 @@ export default function CalendarPhoto() {
         },
       });
 
+      // URL을 File 객체로 변환
+      const filePromises = response.data.dayImageList.map((url) =>
+        convertURLtoFile(url)
+      );
+      const convertedFiles = await Promise.all(filePromises);
+
+      // File 객체 배열을 처리하여 fileStatus 배열을 생성
+      const files = convertedFiles.map((file) => ({
+        id: Date.now() + file.name,
+        file: file,
+      }));
+
       // 데이터는 useState에 세팅한다.
       console.log("받은 데이터 : ", response.data);
 
+      setFileStatus(files);
       // 나중에 받은 데이터 파일로 변경해야함.
       setImages(response.data.dayImageList);
       setMemo(response.data.memo);
-      // getDayData 함수 내에서 다음과 같이 사용할 수 있습니다:
-      setFileStatusFromImages(response.data.dayImageList);
+      // getDayData 함수 내에서 다음과 같이 사용할 수 있습니다.
     } catch (error) {
       if (error.response && error.response.status === 404) {
         if (error.response.data.code === "DAY_NOT_FOUND") {
@@ -161,12 +169,25 @@ export default function CalendarPhoto() {
       formData.append("memo", memo);
       // 이미지 추가
       // 첫 번째 이미지는 'thumbnail'로 추가
-      formData.append("thumbnail", fileStatus[0].file);
+      // 첫 번째 이미지 추가 (thumbnail)
+      formData.append(
+        "thumbnail",
+        fileStatus[0]?.file || new File([], "", { type: "image/jpeg" })
+      );
 
       // 나머지 이미지들은 'photo1', 'photo2', 'photo3'로 추가
-      formData.append("photo1", fileStatus[1].file);
-      formData.append("photo2", fileStatus[2].file);
-      formData.append("photo3", fileStatus[3].file);
+      formData.append(
+        "photo1",
+        fileStatus[1]?.file || new File([], "", { type: "image/jpeg" })
+      );
+      formData.append(
+        "photo2",
+        fileStatus[2]?.file || new File([], "", { type: "image/jpeg" })
+      );
+      formData.append(
+        "photo3",
+        fileStatus[3]?.file || new File([], "", { type: "image/jpeg" })
+      );
 
       console.log("file : ", fileStatus[0].file, fileStatus[1].file);
 
@@ -198,17 +219,6 @@ export default function CalendarPhoto() {
     handleDateChange();
     navigate("/calendar");
   }
-
-  /*const [previousDate, setPreviousDate] = useState(date); // 이전 날짜 상태
-  useEffect(() => {
-    // 날짜가 변경되었을 때 초기화 로직
-    if (date !== previousDate) {
-      setImages([]); // 이미지 초기화
-      setMemo(""); // 메모 초기화
-      setPreviousDate(date); // 이전 날짜 업데이트
-    }
-  }, [date, previousDate]);
-  */
 
   return (
     <S.Container>
