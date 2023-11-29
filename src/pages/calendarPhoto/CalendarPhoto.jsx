@@ -177,24 +177,27 @@ export default function CalendarPhoto() {
       // 이미지 추가
       // 첫 번째 이미지는 'thumbnail'로 추가
       // 첫 번째 이미지 추가 (thumbnail)
-      formData.append(
-        "thumbnail",
-        fileStatus[0]?.file || new File([], "", { type: "image/jpeg" })
-      );
-
+      if (fileStatus[0]) {
+        formData.append("thumbnail", fileStatus[0].file);
+      } else {
+        formData.append("thumbnail", new File([], "", { type: "image/jpeg" }));
+      }
       // 나머지 이미지들은 'photo1', 'photo2', 'photo3'로 추가
-      formData.append(
-        "photo1",
-        fileStatus[1]?.file || new File([], "", { type: "image/jpeg" })
-      );
-      formData.append(
-        "photo2",
-        fileStatus[2]?.file || new File([], "", { type: "image/jpeg" })
-      );
-      formData.append(
-        "photo3",
-        fileStatus[3]?.file || new File([], "", { type: "image/jpeg" })
-      );
+      if (fileStatus[1]) {
+        formData.append("photo1", fileStatus[1].file);
+      } else {
+        formData.append("photo1", new File([], "", { type: "image/jpeg" }));
+      }
+      if (fileStatus[2]) {
+        formData.append("photo2", fileStatus[2].file);
+      } else {
+        formData.append("photo2", new File([], "", { type: "image/jpeg" }));
+      }
+      if (fileStatus[3]) {
+        formData.append("photo3", fileStatus[3].file);
+      } else {
+        formData.append("photo3", new File([], "", { type: "image/jpeg" }));
+      }
 
       console.log("file : ", fileStatus[0].file, fileStatus[1].file);
 
