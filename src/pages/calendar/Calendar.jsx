@@ -257,7 +257,9 @@ export default function MyCalendar() {
             // height를 지정하고 width를 auto로 해야함.
             // 아야아아아아아
             //아
-            if (imageEntry) {
+            if (
+              !(imageEntry === null || imageEntry === undefined || !imageEntry)
+            ) {
               // Inline style for dynamic background image
               const style = {
                 width: "auto",
@@ -282,7 +284,7 @@ export default function MyCalendar() {
                 outline: "none",
                 border: "none",
               };
-              return <div className="no_image" style={style} />;
+              return <div className="non" style={style} />;
             } else {
               const style = {
                 width: "auto",
@@ -290,7 +292,7 @@ export default function MyCalendar() {
                 outline: "none",
                 border: "none",
               };
-              return <div className="no_image" style={style} />;
+              return <div className="non" style={style} />;
             }
           }}
         />
