@@ -215,7 +215,12 @@ export default function MyCalendar() {
         }
       };
       postBarcordInfo();
-      navigate("/new-barcord");
+      navigate("/bcstore");
+    } else if (dataList.buttonStatus === "ACTIVE_WITH_MODAL") {
+      alert("바코드 생성이 가능합니다. ");
+      // eslint-disable-next-line no-undef
+      postBarcordInfo();
+      navigate("/bcstore");
     }
     // 아니라면
     else if (dataList.buttonStatus === "INACTIVE") {
