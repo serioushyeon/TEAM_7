@@ -169,12 +169,25 @@ export default function CalendarPhoto() {
       formData.append("memo", memo);
       // 이미지 추가
       // 첫 번째 이미지는 'thumbnail'로 추가
-      formData.append("thumbnail", fileStatus[0].file);
+      // 첫 번째 이미지 추가 (thumbnail)
+      formData.append(
+        "thumbnail",
+        fileStatus[0]?.file || new File([], "", { type: "image/jpeg" })
+      );
 
       // 나머지 이미지들은 'photo1', 'photo2', 'photo3'로 추가
-      formData.append("photo1", fileStatus[1].file);
-      formData.append("photo2", fileStatus[2].file);
-      formData.append("photo3", fileStatus[3].file);
+      formData.append(
+        "photo1",
+        fileStatus[1]?.file || new File([], "", { type: "image/jpeg" })
+      );
+      formData.append(
+        "photo2",
+        fileStatus[2]?.file || new File([], "", { type: "image/jpeg" })
+      );
+      formData.append(
+        "photo3",
+        fileStatus[3]?.file || new File([], "", { type: "image/jpeg" })
+      );
 
       console.log("file : ", fileStatus[0].file, fileStatus[1].file);
 
