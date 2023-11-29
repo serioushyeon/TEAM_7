@@ -59,7 +59,7 @@ export default function MyCalendar() {
   // 초기 상태 정의
   const initialState = {
     thumbnailInfoList: initializeThumbnailInfoList(),
-    buttonStatus: false,
+    buttonStatus: "",
   };
 
   // 사진 저장
@@ -189,7 +189,7 @@ export default function MyCalendar() {
   // 바코드 생성 시
   function onClickBarcord() {
     // 사진 개수가 30 ~ 130개라면
-    if (isDisabled != false) {
+    if (initialState.buttonStatus === "ACTIVE") {
       // 서버로 바코드 연, 월 전송
       const postBarcordInfo = async () => {
         try {
@@ -217,8 +217,10 @@ export default function MyCalendar() {
       navigate("/new-barcord");
     }
     // 아니라면
-    else {
+    else if (initialState.buttonStatus === "INACTIVE") {
       alert("30개와 130개 사이의 사진만 가능합니다. ");
+    } else {
+      alert("통신 오류");
     }
   }
   // <S.StyledOptionsBox show={selected ? "true" : undefined}>
