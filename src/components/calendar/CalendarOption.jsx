@@ -1,137 +1,110 @@
-import { S } from '../../pages/calendar/CalendarStyle';
-import React, { useState, useEffect } from 'react';
-import moment from 'moment';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-import { setActiveStartDate, toggleSelected } from '../../redux/CalendarUI';
-import dateDaySlice, { updateDay, updateMonth, updateYear } from '../../redux/dateDaySlice';
-import { updateDateRange } from '../../redux/dateRangeSlice';
+import { S } from "../../pages/calendar/CalendarStyle";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { updateMonth, updateYear } from "../../redux/dateDaySlice";
 
 // 월 변경 선택 시 startDate와 endDate를 서버로 보낸다.
-export default function CalendarOption() {
-    const [newDay, setNewDay] = useState(moment().day());
-    const [newYear, setNewYear] = useState(moment().year());
-    const [newMonth, setNewMonth] = useState(moment().month());
-    const selected = useSelector((state) => state.calendarUI.selected);
-    const dateDay = useSelector((state) => state.dateDay.dateDay);
-
-    useEffect(() => {
-      // 들어올 때 new일자들을 변경한 dateDay 값으로 업데이트
-      setNewYear(dateDay.year);
-      setNewMonth(dateDay.month);
-      setNewDay(dateDay.day);
-    }, []);
-
+export default function CalendarOption(value) {
   const dispatch = useDispatch();
+  const dateRedux = useSelector((state) => state.dateDay); // redux의 dateDay 상태
+  const [selected, setSelected] = useState(false);
 
-  // 월 버튼 클릭 핸들러
-  const handleButtonClick = () => {
-    dispatch(toggleSelected());
-  }
-
-   // 년도 변경 핸들러
-const handleYearChange = (year) => {
-  console.log('year', year);
-  setNewYear(year);
-  dispatch(updateYear(year));
-  updateActiveStartDate(year, newMonth);
-  dispatch(updateDateRange({ year, newMonth}));
-
-  console.log('년 변경 : year: ', dateDay.year, 'month: ', dateDay.month, 'day: ', dateDay.day);
-};
-
-// 월 변경 핸들러
-const handleMonthChange = (month) => {
-  let year = newYear
-
-  if (month > 11) {
-    month = 0; // 12월 다음은 1월
-    year = year + 1; // 다음 해로 변경
-  } else if (month <0) {
-    month = 11; // 1월 이전은 12월
-    year = year - 1; // 이전 해로 변경
-  }
-
-  setNewMonth(month);
-  setNewYear(year);
-  updateActiveStartDate(year, month);
-  dispatch(updateDateRange({ year, month}));
-  dispatch(updateYear(year));
-  dispatch(updateMonth(month));
-
-  console.log('월 변경 : year: ', dateDay.year, 'month: ', dateDay.month, 'day: ', dateDay.day);
-};
-
-  // 날짜 변경 핸들러
-  const updateActiveStartDate = (year, month) => {
-    dispatch(setActiveStartDate(new Date(year, month).toISOString()));
+  // date 객체가 자동으로 년, 월을 조절한다.
+  // 월은 0부터 시작하므로, 표시할 때 1을 더한다.
+  const handleYearChange = (year) => {
+    // 새로운 날짜로 업데이트 후 리덕스에 저장한다.
+    const newDate = new Date(year, dateRedux.month, 1);
+    value.setValue(newDate);
+    handleDateChange(newDate);
   };
 
-  // 월 선택 드롭다운
+  const handleMonthChange = (month) => {
+    const newDate = new Date(dateRedux.year, month, 1);
+    console.log("new", newDate);
+    value.setValue(newDate);
+    handleDateChange(newDate);
+  };
+
+  // { newDate }는 객체로 전달해야한다.
+  const handleDateChange = (newDate) => {
+    dispatch(updateYear({ year: newDate.getFullYear() }));
+    dispatch(updateMonth({ month: newDate.getMonth() }));
+  };
+
+  // 1월부터 12월까지 옵션 드롭다운 생성
   const getMonthOptions = () => {
     const options = [];
 
-    for (let month = 0; month < 12; month++) {
-      const date = new Date(newYear, month, 1);
+    for (let _month = 0; _month < 12; _month++) {
+      const dateOption = new Date(dateRedux.year, _month, dateRedux.day);
       options.push(
-        <S.StyledOptionsList key={month} value={month}>
-          <S.StyledOptions onClick={() => 
-          { handleMonthChange(month);
-            handleButtonClick();}}>
-            {date.toLocaleDateString('default', { month: 'long' })}
-            </S.StyledOptions>
+        <S.StyledOptionsList key={_month} value={_month}>
+          <S.StyledOptions
+            onClick={() => {
+              handleMonthChange(_month);
+            }}
+          >
+            {dateOption.toLocaleDateString("default", { month: "long" })}
+          </S.StyledOptions>
         </S.StyledOptionsList>
       );
     }
     return options;
   };
 
-  useEffect(() => {
-    // 업데이트 후 dateDay 값에 새로 선택한 값 입력
-    dispatch(updateYear({ year: newYear }));
-    dispatch(updateMonth({ month: newMonth}));
-    dispatch(updateDay({day: newDay}));
-
-    console.log('year: ', newYear, 'month: ', newMonth, 'day: ', newDay);
-    console.log('dateDay year: ', dateDay.year, 'month: ', dateDay.month, 'day: ', dateDay.day);
-  }, [dateDay]);
+  const handleDropdown = () => {
+    setSelected(!selected);
+  };
 
   return (
     <>
-        <S.StyledSelect onChange={handleMonthChange} onClick={handleButtonClick}>Month</S.StyledSelect>
-          <S.StyledOptionsBox show={selected ? "true" : undefined}>
-            <S.StyledYear>
-            <S.YearText
-            top="0.6rem"
-            left="6.3rem"
-            >{dateDay.year}</S.YearText>
-          <S.StyledLeftButton 
-          onClick={() => handleYearChange(newYear - 1)}
-          top="1rem"
-          left="4.5rem" />
-          <S.StyledRightButton 
-          onClick={() => handleYearChange(newYear + 1)}
-          top="1rem"
-          left="9.8rem" />
+      <S.StyledSelect onChange={handleMonthChange} onClick={handleDropdown}>
+        Month
+      </S.StyledSelect>
+      {selected ? (
+        <S.StyledOptionsBox>
+          <S.StyledYear>
+            <S.YearText top="0.6rem" left="6.3rem">
+              {dateRedux.year}
+            </S.YearText>
+            <S.StyledLeftButton
+              onClick={() => {
+                handleYearChange(dateRedux.year - 1);
+              }}
+              top="1rem"
+              left="4.5rem"
+            />
+            <S.StyledRightButton
+              onClick={() => {
+                handleYearChange(dateRedux.year + 1);
+              }}
+              top="1rem"
+              left="9.8rem"
+            />
           </S.StyledYear>
-          <S.DeleteButton onClick={handleButtonClick}/>
-          <S.StyledMonth>
-        {getMonthOptions()}
-        </S.StyledMonth>
+          <S.DeleteButton onClick={handleDropdown} />
+          <S.StyledMonth>{getMonthOptions()}</S.StyledMonth>
         </S.StyledOptionsBox>
-        <S.YearText
-            top="8rem"
-            left="18rem"
-            >{dateDay.year}.{dateDay.month + 1}</S.YearText>
-        <S.StyledLeftButton 
-        onClick={() => handleMonthChange(newMonth - 1)}
+      ) : (
+        <></>
+      )}
+      <S.YearText top="8rem" left="18rem">
+        {dateRedux.year}.{dateRedux.month + 1}
+      </S.YearText>
+      <S.StyledLeftButton
+        onClick={() => {
+          handleMonthChange(dateRedux.month - 1);
+        }}
         top="8.5rem"
-        left="14.8rem" />
-        <S.StyledRightButton 
-        onClick={() => handleMonthChange(newMonth + 1)}
+        left="14.8rem"
+      />
+      <S.StyledRightButton
+        onClick={() => {
+          handleMonthChange(dateRedux.month + 1);
+        }}
         top="8.5rem"
-        left="16rem" />
+        left="16rem"
+      />
     </>
-  )
+  );
 }
-

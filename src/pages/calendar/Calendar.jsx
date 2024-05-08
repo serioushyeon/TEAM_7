@@ -1,235 +1,178 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "react-calendar";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 import { apiClient } from "../../api/ApiClient";
-import { useCookies } from "react-cookie";
+import formatDate from "../../components/calendar/FormatDate";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { updateDay } from "../../redux/dateDaySlice";
 import Calendar1 from "../../assets/images/calendar/Calendar1.svg";
-
-import { selectDate } from "../../redux/dateSlice";
-import { setActiveStartDate } from "../../redux/CalendarUI";
-import { updateDay, updateMonth, updateYear } from "../../redux/dateDaySlice";
-import {
-  setThumbnailInfoList,
-  setButtonStatus,
-} from "../../redux/calendarSlice";
-import { updateDateRange } from "../../redux/dateRangeSlice";
 import axios from "axios";
 import { S } from "./CalendarStyle";
 import "./Calendar.css";
 import CalendarOption from "../../components/calendar/CalendarOption";
-// import {
-//   selectDate,
-//   setActiveStartDate,
-//   updateDay,
-//   updateMonth,
-//   updateYear,
-//   setThumbnailInfoList,
-//   setButtonStatus,
-//   updateDateRange,
-// } from "../../redux";
 
 export default function MyCalendar() {
-  const [value, onChange] = useState(new Date());
-  const [isDisabled, setIsDisabed] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [accessCookie] = useCookies(["accessCookie"]);
+
   const getAccessCookie = localStorage.getItem("accessCookie");
-  const { startDate, endDate, year, month, thumbnailInfoList, buttonStatus } =
-    useSelector((state) => ({
-      startDate: state.dateRange.startDate,
-      endDate: state.dateRange.endDate,
-      year: state.dateRange.year,
-      month: state.dateRange.month,
-      thumbnailInfoList: state.photoList.thumbnailInfoList,
-      buttonStatus: state.photoList.buttonStatus,
-    }));
+  const removeCookie = localStorage.getItem("accessCookie");
 
-    // 시작 페이지 날짜 지정
-  const activeStartDateString = useSelector(
-    (state) => state.calendarUI.activeStartDate
-  );
-
-    // Date 객체로 변환함.
-  const activeStartDate = new Date(activeStartDateString);
-
-      // 날짜 범위(시작일, 끝일, 월, 년)
-  const dateRange = useSelector((state) => state.dateRange.dateRange);
-  console.log(
-    "startDate2: ",
-    dateRange.startDate,
-    "endDate2: ",
-    dateRange.endDate
-  );
-  console.log("Rangeyear:", dateRange.year, "Rangemonth: ", dateRange.month);
-  console.log("disabled", isDisabled);
-
-    const fetchCalendarInfo = async () => {
-      try {
-        const response = await axios.get("/api/v1/user/calender", {
-          params: {
-            startDate: dateRange.startDate,
-            endDate: dateRange.endDate,
-            year: dateRange.year,
-            month: dateRange.month
-          },
-          headers: {
-            Authorization: `Bearer ${getAccessCookie}`,
-          },
-        });
-        console.log('data : ', response.data);
-        return response.data;
-      } catch (error) {
-        console.error("Error fetching calendar info:", error);
-      }
-    };
-// 변경하는 값들 의존성으로 넣기
-
-
-  // 날짜 변경 핸들러
-  const updateActiveStartDate = (year, month) => {
-    dispatch(setActiveStartDate(new Date(year, month).toISOString()));
+  // 로그아웃 처리 함수
+  const handleLogout = () => {
+    // 쿠키 삭제
+    removeCookie("accessCookie", { path: "/" });
+    removeCookie("refreshCookie", { path: "/" });
+    // 로컬 스토리지에서 토큰 삭제
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    // 로그인 페이지로 리다이렉트
+    navigate("/");
   };
 
-  // redux와 user 동기화
+  // 현재 선택한 일자
+  const [value, onChange] = useState(new Date());
+  const [isDisabled, setIsDisabed] = useState(false);
+  const dateRedux = useSelector((state) => state.dateDay); // redux의 dateDay 상태
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [start, setStart] = useState(false);
+
+  console.log("value : ", value);
+  console.log(
+    dateRedux.year,
+    "년 ",
+    dateRedux.month,
+    "월 ",
+    dateRedux.day,
+    "일"
+  );
+
+  // 31개의 빈 데이터를 포함하는 thumbnailInfoList 초기화
+  const initializeThumbnailInfoList = () =>
+    Array.from({ length: 35 }, () => ({
+      thumbnailUrl: "",
+      date: "",
+    }));
+
+  // 초기 상태 정의
+  const initialState = {
+    thumbnailInfoList: initializeThumbnailInfoList(),
+    buttonStatus: "",
+  };
+
+  // 사진 저장
+  const [dataList, setDataList] = useState(initialState);
+
+  const getCalendarStartDate = (year, month) => {
+    const firstDayOfMonth = new Date(year, month, 1);
+    const lastDayOfMonth = new Date(year, month + 1, 0);
+
+    const newStartDay = new Date(firstDayOfMonth);
+    // 한 주의 시작(월요일)까지 이동한다.
+    newStartDay.setDate(
+      newStartDay.getDate() -
+        (newStartDay.getDay() === 0 ? 6 : newStartDay.getDay())
+    );
+
+    // 한 주의 끝(일요일)까지 이동한다.
+    const newEndDay = new Date(lastDayOfMonth);
+    newEndDay.setDate(
+      newEndDay.getDate() +
+        (newEndDay.getDay() === 0 ? 0 : 7 - newEndDay.getDay())
+    );
+
+    return { newStartDay, newEndDay };
+  };
+
+  // 날짜를 'YYYY-MM-DD' 형식의 문자열로 변환하는 함수
+  const ChangeDate = (date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  const handleDateChange = (date) => {
+    const days = [
+      "일요일",
+      "월요일",
+      "화요일",
+      "수요일",
+      "목요일",
+      "금요일",
+      "토요일",
+    ];
+
+    onChange(date);
+    // 리덕스에 일 저장
+    dispatch(updateDay({ day: date.getDay() }));
+
+    const formattedDate = ChangeDate(date);
+    const dayOfWeek = days[date.getDay()];
+    navigate(`/calendar-photo/${formattedDate}`, {
+      state: { dayOfWeek },
+    });
+  };
+
   useEffect(() => {
+    const myDate = new Date(dateRedux.year, dateRedux.month, 1);
+    onChange(myDate);
+  }, []);
 
-    const today = new Date(); // 현재 날짜와 시간
-    const year = today.getFullYear(); // 현재 연도
-    const month = today.getMonth(); // 현재 월 (1을 더함)
+  // 마운트
+  useEffect(() => {
+    const { newStartDay, newEndDay } = getCalendarStartDate(
+      dateRedux.year,
+      // 1을 더해야 출력이 정확하다.
+      dateRedux.month
+    );
 
-    updateActiveStartDate(year, month); // 시작 날짜 설정 함수 호출
-    dispatch(updateDateRange({ year, month })); // 월간 시작 및 종료 주소 설정 함수 호출
+    setStart(!start);
+    setStartDate(ChangeDate(newStartDay));
+    setEndDate(ChangeDate(newEndDay));
+  }, [value]);
 
-    (async () => {
-      const data = await fetchCalendarInfo();
+  // 마운트
+  useEffect(() => {
+    fetchCalendarInfo();
+  }, [startDate]);
 
-      console.log({useEffectData: data});
-// 업데이트된 리스트를 dispatch로 전달
-      dispatch(setThumbnailInfoList(data?.thumbnailInfoList));
-      dispatch(setButtonStatus(data?.buttonStatus));
-    })()
-  }, [ dateRange.startDate, dateRange.endDate ]);
-
-  console.log({thumbnailInfoList});
-  // getCalendarInfo 함수를 useEffect 밖으로 이동
-  // const getCalendarInfo = async (startDate, endDate, year, month) => {
-  //   try {
-  //     // 더미 데이터를 생성합니다.
-  //     const dummyResponseData = {
-  //       thumbnailInfoList: [
-  //         {
-  //           thumbnailUrl: "https://ifh.cc/g/qjT3Cg.png",
-  //           date: "2023-11-15",
-  //         },
-  //         {
-  //           thumbnailUrl: "https://ifh.cc/g/qjT3Cg.png",
-  //           date: "2023-11-20",
-  //         },
-  //         // 여기에 더 많은 더미 이미지 및 날짜를 추가할 수 있습니다.
-  //       ],
-  //       buttonStatus: "ACTIVE",
-  //     };
-  //     // Redux 스토어에 더미 데이터를 설정합니다.
-  //     dispatch(setThumbnailInfoList(dummyResponseData.thumbnailInfoList));
-  //     dispatch(setButtonStatus(dummyResponseData.buttonStatus));
-  //     setIsDisabed(dummyResponseData.buttonStatus !== "INACTIVE");
-  //   } catch (error) {
-  //     console.error("Error fetching calendar info:", error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   // getCalendarInfo 함수 호출
-  //   const newActiveStartDate = new Date(year, month, 1);
-  //   const startDate2 = moment(newActiveStartDate).format("YYYY-MM-DD");
-  //   const endDate2 = moment(newActiveStartDate)
-  //     .endOf("month")
-  //     .format("YYYY-MM-DD");
-  //   getCalendarInfo(startDate2, endDate2, year, month);
-  // }, [year, month, dispatch, accessCookie]);
-  // const tileContent = ({ date, view }) => {
-  //   if (view === "month") {
-  //     const dateString = moment(date).format("YYYY-MM-DD");
-  //     const imageEntry = thumbnailInfoList.find(
-  //       (entry) => entry.date === dateString
-  //     );
-  //     if (imageEntry) {
-  //       return (
-  //         <S.DayWrapper>
-  //           <div className="report-image" onClick={() => handleLocateDay(date)}>
-  //             <S.DayImage src={imageEntry.thumbnailUrl} />
-  //           </div>
-  //         </S.DayWrapper>
-  //       );
-  //     }
-  //   }
-  // };
-  // getCalendarInfo 함수를 useEffect 밖으로 이동
-  /* const getCalendarInfo = async (startDate, endDate, year, month) => {
+  const fetchCalendarInfo = async () => {
+    console.log("cookie : ", getAccessCookie);
+    console.log("보낸 startDate === ", startDate, ", endDate === ", endDate);
     try {
-      const response = await axios.get("/api/v1/user/calender", {
-        params: { startDate, endDate, year, month },
+      const response = await apiClient.get(`/api/v1/user/calender`, {
+        params: {
+          startDate: startDate,
+          endDate: endDate,
+          year: dateRedux.year,
+          month: dateRedux.month,
+        },
         headers: {
           Authorization: `Bearer ${getAccessCookie}`,
         },
       });
-      dispatch(setThumbnailInfoList(response.data.thumbnailInfoList));
-      dispatch(setButtonStatus(response.data.buttonStatus));
-      console.log(response.data);
-      setIsDisabed(response.data.buttonStatus !== "INACTIVE");
+      console.log("data : ", response.data);
+      setDataList(response.data);
     } catch (error) {
-      console.error("Error fetching calendar info:", error);
-    }
-  };
-  useEffect(() => {
-    // getCalendarInfo 함수 호출
-    const newActiveStartDate = new Date(year, month, 1);
-    const startDate2 = moment(newActiveStartDate).format("YYYY-MM-DD");
-    const endDate2 = moment(newActiveStartDate)
-      .endOf("month")
-      .format("YYYY-MM-DD");
-    getCalendarInfo(startDate2, endDate2, year, month);
-  }, [year, month, dispatch, accessCookie]);
-  */
-/*  const tileContent = ({ date, view }) => {
-    if (view === "month") {
-      const dateString = moment(date).format("YYYY-MM-DD");
-      const imageEntry = thumbnailInfoList.find(
-        (entry) => entry.date === dateString
-      );
-      if (imageEntry) {
-        return (
-          <div className="report-image" onClick={() => handleLocateDay(date)}>
-            <S.DayImage src={imageEntry.thumbnailUrl} />
-          </div>
-        );
+      if (error.response && error.response.status === 404) {
+        if (error.response.data.code === "USER_NOT_FOUND") {
+          // 'USER_NOT_FOUND' 에러 처리
+          alert(
+            "로그인한 사용자가 존재하지 않습니다. 로그인 페이지로 이동합니다."
+          );
+          handleLogout();
+        } else {
+          console.error("Error fetching day data", error);
+        }
+      } else {
+        console.error("Error fetching day data", error);
       }
     }
   };
-  */
-  // 사진이 없는 경우, 사진 등록 창으로 이동하는 함수
-  function handleLocatePhoto(date) {
-    // 날짜 형식을 'YYYY-MM-DD'로 변환
-    const formattedDate = moment(date).format("YYYY-MM-DD");
-    navigate(`/calendar-photo/${formattedDate}`);
-    dispatch(selectDate(formattedDate));
-    dispatch(updateDay({ day: moment(date).date() }));
-    dispatch(updateMonth({ month: moment(date).month() }));
-    dispatch(updateYear({ year: moment(date).year() }));
-  }
-  // 사진이 있는 경우, 사진 표시 창으로 이동하는 함수
-  function handleLocateDay(date) {
-    // 날짜 형식을 'YYYY-MM-DD'로 변환
-    const formattedDate = moment(date).format("YYYY-MM-DD");
-    navigate(`/calendar-non-photo/${formattedDate}`);
-    dispatch(selectDate(formattedDate));
-    dispatch(updateDay({ day: moment(date).date() }));
-    dispatch(updateMonth({ month: moment(date).month() }));
-    dispatch(updateYear({ year: moment(date).year() }));
-  }
+
   // 일요일, 토요일 색상 변경
   const tileClassName = ({ date, view }) => {
     // 달력의 'month' 뷰일 때만 클래스를 적용한다.
@@ -243,59 +186,66 @@ export default function MyCalendar() {
       }
     }
   };
+
+  // 서버로 바코드 연, 월 전송
+  const postBarcordInfo = async () => {
+    try {
+      // startDate, endDate 형식은 YYYY-MM-DD
+      const response = await apiClient.post(
+        `/api/v1/user/new-barcode`,
+        {
+          year: dateRedux.year,
+          month: dateRedux.month,
+        },
+        {
+          headers: {
+            // 나중에 토큰 수정 필요
+            // Bearer 토근 앞에 공백 필요..?
+            Authorization: `Bearer ${getAccessCookie}`,
+          },
+        }
+      );
+      console.log("성공, response : ", response.data);
+    } catch (error) {
+      console.error("실패 error : ", error);
+    }
+  };
+
   // 바코드 생성 시
   function onClickBarcord() {
+    console.log("dataList : ", dataList);
     // 사진 개수가 30 ~ 130개라면
-    if (isDisabled != false) {
-      // 서버로 바코드 연, 월 전송
-      const postBarcordInfo = async () => {
-        try {
-          // startDate, endDate 형식은 YYYY-MM-DD
-          const response = await axios.post(
-            `${import.meta.env.VITE_APP_SERVER_HOST}/api/v1/user/new-barcode`,
-            {
-              year: dateRange.year,
-              month: dateRange.month,
-            },
-            {
-              headers: {
-                // 나중에 토큰 수정 필요
-                // Bearer 토근 앞에 공백 필요..?
-                Authorization: `Bearer ${getAccessCookie}`,
-              },
-            }
-          );
-          console.log("성공, response : ", response.data);
-        } catch (error) {
-          console.error("실패 error : ", error);
-        }
-      };
+    if (dataList.buttonStatus === "ACTIVE") {
       postBarcordInfo();
-      navigate("/ticket");
+      navigate("/bcstore");
+    } else if (dataList.buttonStatus === "ACTIVE_WITH_MODAL") {
+      alert("바코드 생성이 가능합니다. ");
+      postBarcordInfo();
+      navigate("/bcstore");
     }
     // 아니라면
-    else {
+    else if (dataList.buttonStatus === "INACTIVE") {
       alert("30개와 130개 사이의 사진만 가능합니다. ");
+    } else {
+      alert("통신 오류");
     }
   }
   // <S.StyledOptionsBox show={selected ? "true" : undefined}>
   /* 위 문장에서 selected로만 하면 boolean이 아닌 값으로 DOM에 접근할 수 없다는 에러가 발생했는데,
     undefined인 경우를 설정해주니 오류가 해결됌. */
+
   return (
     <S.Container>
       <S.BackImage>
         <S.CalendarImage src={Calendar1} alt="Calendar1" />
         <S.CalendarText>Calendar</S.CalendarText>
-        <CalendarOption />
+        <CalendarOption value={value} setValue={onChange} />
         <Calendar
           local="en"
-          onChange={onChange}
-          value={value}
-          activeStartDate={activeStartDate}
-          onActiveStartDateChange={({ activeStartDate }) =>
-            setActiveStartDate(activeStartDate)
-          }
+          onChange={handleDateChange}
+          activeStartDate={value}
           tileClassName={tileClassName}
+          value={value}
           next2Label={null}
           prev2Label={null}
           nextLabel={null}
@@ -304,17 +254,19 @@ export default function MyCalendar() {
           formatShortWeekday={(local, date) => moment(date).format("ddd")}
           formatDay={(local, date) => moment(date).format("D")}
           // 날짜 칸에 보여지는 콘텐츠
-          tileContent={({ date, view }) => {
+          tileContent={({ date }) => {
             // 날짜에 해당하는 이미지 데이터를 찾는다.
             // moment로 date 내부 데이터에서 day만 빼옴.
-            const imageEntry = thumbnailInfoList?.find((entry) =>
+            const imageEntry = dataList.thumbnailInfoList?.find((entry) =>
               moment(date).isSame(entry.date, "day")
             );
             // width를 지정하고 height를 auto로 하면 안됌.
             // height를 지정하고 width를 auto로 해야함.
             // 아야아아아아아
             //아
-            if (imageEntry) {
+            if (
+              !(imageEntry === null || imageEntry === undefined || !imageEntry)
+            ) {
               // Inline style for dynamic background image
               const style = {
                 width: "auto",
@@ -323,32 +275,31 @@ export default function MyCalendar() {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                padding: "3px",
               };
               // 해당하는 이미지 데이터가 있다면 이미지 태그를 생성한다.
               return (
-                <div
-                  className="report-image"
-                  style={style}
-                  onClick={() => handleLocateDay(date)}
-                >
+                <div className="report-image" style={style}>
                   <S.DayImage src={imageEntry.thumbnailUrl} />
                 </div>
               );
             }
-            // 사진 파일이 없으면 기본으로
-            else {
+            // 사진 파일이 null이라면
+            else if (imageEntry === null) {
               const style = {
                 width: "auto",
                 height: "4.5rem",
+                outline: "none",
+                border: "none",
               };
-              return (
-                <div
-                  className="no_image"
-                  style={style}
-                  onClick={() => handleLocatePhoto(date)}
-                />
-              );
+              return <div className="non" style={style} />;
+            } else {
+              const style = {
+                width: "auto",
+                height: "4.5rem",
+                outline: "none",
+                border: "none",
+              };
+              return <div className="non" style={style} />;
             }
           }}
         />

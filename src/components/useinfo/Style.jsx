@@ -1,8 +1,7 @@
 import styled from "styled-components";
-import InfoBarcord from "../../assets/images/userinfo/infoBarcord.svg";
 import EditImoge from "../../assets/images/userinfo/editImoge.svg";
 import Cloud from "../../assets/images/userinfo/cloud.svg";
-import Profile from "../../assets/images/userinfo/profile.svg";
+import DatePicker from "react-datepicker";
 
 const BookContainer = styled.div`
   display: flex;
@@ -112,7 +111,19 @@ const Answer = styled.input`
 } */
 `;
 
-const WraperDate = styled.div``;
+const AnswerSpan = styled.span`
+  color: #5e5e5e;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  color: #000;
+  width: 115px;
+  border: none;
+  background-color: transparent;
+  border-bottom: ${(props) => (props.edit ? "solid #DDD 1px;" : "none;")};
+  /* outline: none; */
+`;
 
 const NickName = styled.div`
   display: block;
@@ -130,19 +141,13 @@ const Date = styled.div`
   font-size: 12px;
   top: 4.8125rem;
   left: 8.125rem;
-  width: auto;
-  height: 27px;
-`;
-
-const DatePick = styled.div`
-  margin-top: 5px;
 `;
 
 const Sex = styled.div`
   display: block;
   position: absolute;
   font-size: 12px;
-  top: 7.8rem;
+  top: 6.8rem;
   left: 8.125rem;
   width: auto;
   height: 27px;
@@ -153,7 +158,7 @@ const DateOfIssue = styled.div`
   display: block;
   position: absolute;
   font-size: 12px;
-  top: 9.75rem;
+  top: 8.75rem;
   left: 8.125rem;
   width: auto;
   height: 27px;
@@ -252,6 +257,25 @@ const SendButton = styled.button`
   text-align: center;
 `;
 
+const SDatePicker = styled(DatePicker)`
+  color: #5e5e5e;
+  font-size: 12px;
+  font-style: normal;
+  box-sizing: border-box;
+  font-weight: 400;
+  line-height: normal;
+  color: #000;
+  width: 130px;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+`;
+
+const SBsCalendarHeart = styled.div`
+  margin-left: 110px;
+  margin-top: -16px;
+`;
+
 export const S = {
   BookContainer,
   CloudImage,
@@ -272,6 +296,7 @@ export const S = {
   ProfileLabel,
   SendUserInfo,
   SendButton,
-  WraperDate,
-  DatePick,
+  AnswerSpan,
+  SDatePicker,
+  SBsCalendarHeart,
 };

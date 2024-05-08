@@ -9,7 +9,6 @@ import Modal from 'react-modal';
 import Toast from '../../components/EventToast/EventToast'
 import html2canvas from 'html2canvas';
 import saveAs from "file-saver";
-import barcode from "../../assets/images/Barcode/barcodebg.jpg"
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setTicket } from "../../redux/ticketSlice";
@@ -83,9 +82,7 @@ const BarcodeBoard = () => {
     //본인의 티켓 불러오기
     const fetchTicketData = async () => {
         try {
-          const response = await apiClient.get(`/api/v1/barcode/${id}`,{
-            headers: { Authorization: `Bearer ${getAccessCookie}` }
-          });
+          const response = await apiClient.get(`/api/v1/barcode/${id}`);
           dispatch(setTicket(response.data));
         } catch (error) {
           console.error("Error fetching data", error);
